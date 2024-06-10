@@ -67,13 +67,43 @@ const nodeTypes = {
 }
 const ReactFlowWrap = styled(ReactFlow)`
   .react-flow__edge-path {
-    stroke: black;
+    stroke: white;
   }
   .react-flow__edge .react-flow__edge-path--animated {
     animation: flow 0.5s linear;
     stroke-dasharray: 0, 0;
     fill: none;
     stroke: deepskyblue;
+  }
+  .react-flow__node--animated::before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background-color: #1a232a;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-image: conic-gradient(transparent, rgba(168, 239, 255, 1), transparent 30%);
+    animation: rotate 2s linear infinite;
+  }
+  .react-flow__node--animated::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 2px;
+    top: 2px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    background: #000;
+    border-radius: 50%;
+  }
+  @keyframes rotate {
+    100% {
+      transform: rotate(1turn);
+    }
   }
   @keyframes flow {
     0% {

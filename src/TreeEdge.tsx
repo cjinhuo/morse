@@ -38,7 +38,7 @@ export default memo(({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps
   return (
     <>
       {/* react-flow_edge-animate */}
-      <path className={className.join(' ')} strokeDasharray={strokeDasharray} id={id} d={edgePath}></path>
+      <path className={className.join(' ')} stroke='deepskyblue' strokeDasharray={strokeDasharray} id={id} d={edgePath}></path>
     </>
   )
 })
