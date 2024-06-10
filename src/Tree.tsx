@@ -69,9 +69,8 @@ const ReactFlowWrap = styled(ReactFlow)`
   .react-flow__edge-path {
     stroke: black;
   }
-  .react-flow__edge .react-flow_edge-animate {
-    /* stroke-dashoffset: 100; */
-    animation: flow 1s linear;
+  .react-flow__edge .react-flow__edge-path--animated {
+    animation: flow 0.5s linear;
     stroke-dasharray: 0, 0;
     fill: none;
     stroke: deepskyblue;
@@ -85,10 +84,6 @@ const ReactFlowWrap = styled(ReactFlow)`
       stroke-dasharray: 260, 0;
       stroke-dashoffset: 0;
     }
-    /* 100% {
-      stroke-dasharray: 0, 260;
-      stroke-dashoffset: -260;
-    } */
   }
 `
 export default function Tree() {
