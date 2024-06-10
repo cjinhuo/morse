@@ -3,6 +3,7 @@ import { useState } from 'react'
 import 'reactflow/dist/style.css'
 import TreeEdge, { MorseCodeType, type EdgeData } from './TreeEdge'
 import TreeNode, { type NodeData } from './TreeNode'
+import styled from 'styled-components'
 const initialNodes: Node<NodeData>[] = [
   {
     id: '1',
@@ -64,6 +65,32 @@ const edgeTypes = {
 const nodeTypes = {
   tree: TreeNode,
 }
+const ReactFlowWrap = styled(ReactFlow)`
+  .react-flow__edge-path {
+    stroke: black;
+  }
+  .react-flow__edge .react-flow_edge-animate {
+    /* stroke-dashoffset: 100; */
+    animation: flow 1s linear;
+    stroke-dasharray: 0, 0;
+    fill: none;
+    stroke: deepskyblue;
+  }
+  @keyframes flow {
+    0% {
+      stroke-dasharray: 0, 260;
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dasharray: 260, 0;
+      stroke-dashoffset: 0;
+    }
+    /* 100% {
+      stroke-dasharray: 0, 260;
+      stroke-dashoffset: -260;
+    } */
+  }
+`
 export default function Tree() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
@@ -77,7 +104,7 @@ export default function Tree() {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <ReactFlow
+      <ReactFlowWrap
         defaultEdgeOptions={{ type: 'tree' }}
         nodes={nodes}
         edges={edges}
@@ -87,7 +114,7 @@ export default function Tree() {
         edgeTypes={edgeTypes}
         fitView>
         {/* <Background /> */}
-      </ReactFlow>
+      </ReactFlowWrap>
     </div>
   )
 }

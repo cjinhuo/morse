@@ -8,11 +8,6 @@ export enum MorseCodeType {
 export interface EdgeData {
   type: MorseCodeType
 }
-const Edge = styled.div`
-  .react-flow__edge-path {
-    /* stroke: #222; */
-  }
-`
 export default memo(({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps<EdgeData>) => {
   console.log('edge', id, sourceX, sourceY, targetX, targetY)
   // todo 需要计算两个节点之间的路径
@@ -27,6 +22,7 @@ export default memo(({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps
 
   return (
     <>
+      {/* react-flow_edge-animate */}
       <path className='react-flow__edge-path' stroke-dasharray={strokeDasharray} id={id} d={edgePath}></path>
     </>
   )

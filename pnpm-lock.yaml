@@ -23,6 +23,9 @@ importers:
       reactflow:
         specifier: ^11.11.3
         version: 11.11.3(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rxjs:
+        specifier: 8.0.0-alpha.14
+        version: 8.0.0-alpha.14
       styled-components:
         specifier: ^6.1.11
         version: 6.1.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -482,6 +485,9 @@ packages:
     peerDependencies:
       react: '>=17'
       react-dom: '>=17'
+
+  rxjs@8.0.0-alpha.14:
+    resolution: {integrity: sha512-oRCzFwbAMbo0+dVUeGUCCEf339mW7CESFvVDG3RTncD6yMtV2XoubFMpKEhBd2a9d04EpHl8QSz84/V/agG6bw==}
 
   scheduler@0.23.2:
     resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
@@ -1029,6 +1035,8 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
       - immer
+
+  rxjs@8.0.0-alpha.14: {}
 
   scheduler@0.23.2:
     dependencies:
