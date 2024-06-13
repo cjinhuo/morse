@@ -1,9 +1,10 @@
 import { useAtom } from 'jotai'
 import './App.css'
-import Tree from './flow-tree/Tree'
+import Tree from './flow/tree'
 import { fromEvent } from 'rxjs'
 import { HighlightEdgeAtom } from './atom'
 import React, { useEffect } from 'react'
+import Home from './pages/home/home'
 
 const App = () => {
   const [_, setHighlightEdge] = useAtom(HighlightEdgeAtom)
@@ -20,7 +21,11 @@ const App = () => {
       // }
     })
   }, [])
-  return <Tree />
+  return (
+    <>
+      <Home></Home>
+    </>
+  )
 }
 
 export default React.memo(App)
