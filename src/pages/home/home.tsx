@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div className='text-amber-100'>home</div>
+  return <div className='w-full px-8 grow'>home</div>
 }

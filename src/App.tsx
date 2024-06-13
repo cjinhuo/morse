@@ -6,6 +6,7 @@ import { HighlightEdgeAtom } from './atom'
 import React, { useEffect } from 'react'
 import Home from './pages/home/home'
 import Header from './components/header'
+import Footer from './components/footer'
 
 const App = () => {
   const [_, setHighlightEdge] = useAtom(HighlightEdgeAtom)
@@ -26,6 +27,8 @@ const App = () => {
     <>
       <Header></Header>
       <Home></Home>
+      <Footer></Footer>
+      {/* <Tree></Tree> */}
     </>
   )
 }
