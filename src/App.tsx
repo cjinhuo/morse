@@ -1,10 +1,11 @@
 import { useAtom } from 'jotai'
 import './App.css'
-import Tree from './flow/tree'
+import Tree from './components/flow/tree'
 import { fromEvent } from 'rxjs'
 import { HighlightEdgeAtom } from './atom'
 import React, { useEffect } from 'react'
 import Home from './pages/home/home'
+import Header from './components/header'
 
 const App = () => {
   const [_, setHighlightEdge] = useAtom(HighlightEdgeAtom)
@@ -23,6 +24,7 @@ const App = () => {
   }, [])
   return (
     <>
+      <Header></Header>
       <Home></Home>
     </>
   )
