@@ -1,9 +1,7 @@
-interface BinaryTreeNode {
-  left: BinaryTreeNode | null
-  right: BinaryTreeNode | null
-  value: string
-  label: string
-}
+import { MorseCodeCharType } from "./constants"
+import type { BinaryTreeNode } from "./types"
+
+
 
 function createBinaryTree(label: string, value: string) {
   const tree: BinaryTreeNode = Object.create(null)
@@ -12,10 +10,7 @@ function createBinaryTree(label: string, value: string) {
   return tree
 }
 
-enum MorseCodeCharType {
-  dotChar = '.',
-  dashChar = '-',
-}
+
 
 
 export const WORD_MORSE_CODE = {
@@ -119,3 +114,61 @@ export const SPECIAL_CHAR_MORSE_CODE = {
 // 规律：长短划交替形成对称的包围感，像括号包住内容。
 // 等号（=）：−···−
 // 规律：一个长划包住三个短点，表示等式的对称性。
+
+
+
+// const initialNodes: Node<NodeData>[] = [
+//   {
+//     id: '1',
+//     type: 'tree',
+//     data: { title: '', value: '' },
+//     draggable: false,
+//     connectable: false,
+//     position: { x: 250, y: 25 },
+//   },
+//   {
+//     id: '2',
+//     type: 'tree',
+//     draggable: false,
+//     connectable: false,
+//     data: { title: 'E', value: '.' },
+//     position: { x: 150, y: 125 },
+//   },
+//   {
+//     id: '3',
+//     type: 'tree',
+//     draggable: false,
+//     connectable: false,
+//     data: { title: 'T', value: '.-' },
+//     position: { x: 400, y: 125 },
+//   },
+//   {
+//     id: '4',
+//     type: 'tree',
+//     draggable: false,
+//     connectable: false,
+//     data: { title: 'I', value: '..' },
+//     position: { x: 250, y: 250 },
+//   },
+// ]
+
+// const initialEdges: Edge<EdgeData>[] = [
+//   {
+//     id: 'e1-2',
+//     source: '1',
+//     target: '2',
+//     type: 'tree',
+//     data: {
+//       type: MorseCodeType.dot,
+//     },
+//   },
+//   {
+//     id: 'e1-3',
+//     source: '1',
+//     target: '3',
+//     type: 'tree',
+//     data: {
+//       type: MorseCodeType.dash,
+//     },
+//   },
+// ]

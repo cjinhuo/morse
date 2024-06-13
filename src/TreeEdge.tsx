@@ -3,13 +3,8 @@ import { memo, useEffect, useState } from 'react'
 import { BaseEdge, getStraightPath, type EdgeProps } from 'reactflow'
 import styled from 'styled-components'
 import { HighlightEdgeAtom } from './atom'
-export enum MorseCodeType {
-  dot = 'dot',
-  dash = 'dash',
-}
-export interface EdgeData {
-  type: MorseCodeType
-}
+import { MorseCodeType, type EdgeData } from './constants'
+
 const ClassNameInit = ['react-flow__edge-path']
 export default memo(({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps<EdgeData>) => {
   const edgeId = useAtomValue(HighlightEdgeAtom)

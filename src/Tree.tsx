@@ -1,64 +1,98 @@
 import ReactFlow, { type Node, type Edge, useEdgesState, useNodesState, Background } from 'reactflow'
 import { useState } from 'react'
 import 'reactflow/dist/style.css'
-import TreeEdge, { MorseCodeType, type EdgeData } from './TreeEdge'
+import TreeEdge from './TreeEdge'
 import TreeNode, { type NodeData } from './TreeNode'
 import styled from 'styled-components'
-const initialNodes: Node<NodeData>[] = [
-  {
-    id: '1',
-    type: 'tree',
-    data: { title: '', value: '' },
-    draggable: false,
-    connectable: false,
-    position: { x: 250, y: 25 },
-  },
-  {
-    id: '2',
-    type: 'tree',
-    draggable: false,
-    connectable: false,
-    data: { title: 'E', value: '.' },
-    position: { x: 100, y: 125 },
-  },
-  {
-    id: '3',
-    type: 'tree',
-    draggable: false,
-    connectable: false,
-    data: { title: 'T', value: '.-' },
-    position: { x: 400, y: 125 },
-  },
-  {
-    id: '4',
-    type: 'tree',
-    draggable: false,
-    connectable: false,
-    data: { title: 'I', value: '..' },
-    position: { x: 250, y: 250 },
-  },
-]
+import { WORD_MORSE_CODE, builtMorseBinaryTree } from './data'
+import { FLOW_TREE_NAME, MorseCodeType, type EdgeData } from './constants'
+import type { BinaryTreeNode, FlowTreeNode } from './types'
+import dagre from 'dagre'
+import { Position } from '@xyflow/react'
+const dagreGraph = new dagre.graphlib.Graph()
+dagreGraph.setDefaultEdgeLabel(() => ({}))
 
-const initialEdges: Edge<EdgeData>[] = [
-  {
-    id: 'e1-2',
-    source: '1',
-    target: '2',
-    type: 'tree',
-    data: {
-      type: MorseCodeType.dot,
-    },
-  },
-  {
-    id: 'e1-3',
-    source: '1',
-    target: '3',
-    type: 'tree',
-    data: {
-      type: MorseCodeType.dash,
-    },
-  },
-]
+const nodeWidth = 172
+const nodeHeight = 36
+const getLayoutedElements = (nodes: Node<NodeData>[], edges: Edge<EdgeData>[], direction = 'TB') => {
+  const isHorizontal = direction === 'LR'
+  dagreGraph.setGraph({ rankdir: direction })
+
+  nodes.forEach((node) => {
+    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight })
+  })
+
+  edges.forEach((edge) => {
+    dagreGraph.setEdge(edge.source, edge.target)
+  })
+
+  dagre.layout(dagreGraph)
+
+  nodes.forEach((node) => {
+    const nodeWithPosition = dagreGraph.node(node.id)
+    node.targetPosition = isHorizontal ? Position.Left : Position.Top
+    node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom
+
+    // We are shifting the dagre node position (anchor=center center) to the top left
+    // so it matches the React Flow node anchor point (top left).
+    node.position = {
+      x: nodeWithPosition.x - nodeWidth / 2,
+      y: nodeWithPosition.y - nodeHeight / 2,
+    }
+
+    return node
+  })
+
+  return { nodes, edges }
+}
+const wordMorseCodeTree = builtMorseBinaryTree(WORD_MORSE_CODE)
+// const nodes = wordMorseCodeTree
+function traverseMorseCodeBinaryTreeByBfs(root: BinaryTreeNode) {
+  let id = 0
+  const stack: FlowTreeNode[] = [root]
+  const nodes: Node<NodeData>[] = []
+  const edges: Edge<EdgeData>[] = []
+  while (stack.length !== 0) {
+    id++
+    const node = stack.shift()
+    if (!node) {
+      break
+    }
+    if (node.parentId) {
+      edges.push({
+        id: `${id}`,
+        source: node.parentId,
+        target: String(id),
+        type: FLOW_TREE_NAME,
+        data: {
+          type: node.morseCodeType === MorseCodeType.dot ? MorseCodeType.dot : MorseCodeType.dash,
+        },
+      })
+    }
+    nodes.push({
+      id: String(id),
+      type: FLOW_TREE_NAME,
+      data: { title: node.label, value: node.value },
+      draggable: false,
+      connectable: false,
+      position: { x: 0, y: 0 },
+    })
+    node.left &&
+      stack.push({
+        ...node.left,
+        parentId: String(id),
+        morseCodeType: MorseCodeType.dot,
+      })
+    node.right &&
+      stack.push({
+        ...node.right,
+        parentId: String(id),
+        morseCodeType: MorseCodeType.dash,
+      })
+  }
+  return [nodes, edges] as const
+}
+
 const edgeTypes = {
   tree: TreeEdge,
 }
@@ -116,9 +150,12 @@ const ReactFlowWrap = styled(ReactFlow)`
     }
   }
 `
+const [morseNodes, morseEdges] = traverseMorseCodeBinaryTreeByBfs(wordMorseCodeTree)
+const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(morseNodes, morseEdges)
 export default function Tree() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+  console.log('layoutedNodes', layoutedNodes)
+  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes)
+  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges)
 
   return (
     <div
