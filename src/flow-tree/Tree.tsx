@@ -1,14 +1,14 @@
 import ReactFlow, { type Node, type Edge, useEdgesState, useNodesState, Background } from 'reactflow'
-import { useState } from 'react'
 import 'reactflow/dist/style.css'
 import TreeEdge from './TreeEdge'
-import TreeNode, { type NodeData } from './TreeNode'
 import styled from 'styled-components'
-import { WORD_MORSE_CODE, builtMorseBinaryTree } from './data'
-import { FLOW_TREE_NAME, MorseCodeType, type EdgeData } from './constants'
-import type { BinaryTreeNode, FlowTreeNode } from './types'
+import { builtMorseBinaryTree } from '../utils'
+import { FLOW_TREE_NAME, WORD_MORSE_CODE, type EdgeData } from '../constants'
+import { MorseCodeType, type BinaryTreeNode, type FlowTreeNode } from '../types'
 import dagre from 'dagre'
 import { Position } from '@xyflow/react'
+import type { NodeData } from './TreeNode'
+import TreeNode from './TreeNode'
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
 
@@ -46,7 +46,6 @@ const getLayoutedElements = (nodes: Node<NodeData>[], edges: Edge<EdgeData>[], d
   return { nodes, edges }
 }
 const wordMorseCodeTree = builtMorseBinaryTree(WORD_MORSE_CODE)
-// const nodes = wordMorseCodeTree
 function traverseMorseCodeBinaryTreeByBfs(root: BinaryTreeNode) {
   let id = 0
   const stack: FlowTreeNode[] = [root]
@@ -101,7 +100,7 @@ const nodeTypes = {
 }
 const ReactFlowWrap = styled(ReactFlow)`
   .react-flow__edge-path {
-    stroke: white;
+    /* stroke: white; */
   }
   .react-flow__edge .react-flow__edge-path--animated {
     animation: flow 0.5s linear;
@@ -131,7 +130,7 @@ const ReactFlowWrap = styled(ReactFlow)`
     top: 2px;
     width: calc(100% - 4px);
     height: calc(100% - 4px);
-    background: #000;
+    /* background: #000; */
     border-radius: 50%;
   }
   @keyframes rotate {
@@ -175,7 +174,7 @@ export default function Tree() {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView>
-        {/* <Background /> */}
+        <Background />
       </ReactFlowWrap>
     </div>
   )

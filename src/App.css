@@ -1,3 +1,4 @@
+@import '../node_modules/modern-normalize/modern-normalize.css';
 
 html, body, #root {
   width: 100%;
@@ -6,5 +7,5 @@ html, body, #root {
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
-  background-color: black;
+  /* background-color: black; */
 }

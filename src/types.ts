@@ -1,5 +1,11 @@
-import type { MorseCodeType } from "./constants"
-
+export enum MorseCodeType {
+  dot = 'dot',
+  dash = 'dash',
+}
+export enum MorseCodeCharType {
+  dotChar = '.',
+  dashChar = '-',
+}
 export interface BinaryTreeNode {
   left: BinaryTreeNode | null
   right: BinaryTreeNode | null

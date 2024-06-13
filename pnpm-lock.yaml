@@ -17,6 +17,9 @@ importers:
       jotai:
         specifier: ^2.8.3
         version: 2.8.3(@types/react@18.3.3)(react@18.3.1)
+      modern-normalize:
+        specifier: ^2.0.0
+        version: 2.0.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -469,6 +472,10 @@ packages:
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
+
+  modern-normalize@2.0.0:
+    resolution: {integrity: sha512-CxBoEVKh5U4DH3XuNbc5ONLF6dQBc8dSc7pdZ1957FGbIO5JBqGqqchhET9dTexri8/pk9xBL6+5ceOtCIp1QA==}
+    engines: {node: '>=6'}
 
   nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
@@ -1028,6 +1035,8 @@ snapshots:
   loose-envify@1.4.0:
     dependencies:
       js-tokens: 4.0.0
+
+  modern-normalize@2.0.0: {}
 
   nanoid@3.3.7: {}
 
