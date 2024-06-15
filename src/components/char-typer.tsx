@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { fromEvent } from 'rxjs'
 import { setClassNameWithArray } from '../utils'
-
+import typeWriterAudio from '../assets/typewriter.mp3'
 const FunInputContainer = styled.div`
   position: relative;
   #caret {
@@ -29,11 +29,12 @@ const FunInputContainer = styled.div`
     font-size: 3rem;
   }
   .correct {
+    color: green;
   }
   .error {
+    color: red;
   }
   .active {
-    color: red;
   }
 `
 const PresetData = 'I am iron man!'
@@ -43,6 +44,10 @@ type PropType = {
 const WORD_CONTAINER_CLASS_NAME = 'word'
 const CHAR_CLASS_NAME = 'char'
 const CHAR_ACTIVE_CLASS_NAME = 'active'
+const CHAR_CORRECT_CLASS_NAME = 'correct'
+const CHAR_ERROR_CLASS_NAME = 'error'
+const sound = new Audio(typeWriterAudio)
+console.log('typeWriterAudio', typeWriterAudio)
 export default function CharTyper({ data }: PropType) {
   useEffect(() => {
     const caretNode = document.querySelector('#caret') as HTMLElement
@@ -55,8 +60,11 @@ export default function CharTyper({ data }: PropType) {
     const keyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown')
     const keyDownEventSubscription = keyDownEvent.subscribe((e) => {
       if (!activeChar) return
+      sound.currentTime = 0
+      sound.play()
       const wordContent = activeChar.innerHTML === '&nbsp;' ? ' ' : activeChar.innerHTML
       if (wordContent === e.key) {
+        activeChar.classList.add(CHAR_CORRECT_CLASS_NAME)
         activeChar.classList.remove(CHAR_ACTIVE_CLASS_NAME)
         const nextChar = activeChar.nextElementSibling as HTMLElement
         if (nextChar) {
@@ -90,7 +98,7 @@ export default function CharTyper({ data }: PropType) {
             {char}
           </span>
         ))}
-        <span className={CHAR_CLASS_NAME}>&nbsp;</span>
+        {index !== words.length - 1 && <span className={CHAR_CLASS_NAME}>&nbsp;</span>}
       </div>
     ))
   }, [data])

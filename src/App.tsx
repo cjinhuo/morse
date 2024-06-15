@@ -12,10 +12,9 @@ const App = () => {
   const [_, setHighlightEdge] = useAtom(HighlightEdgeAtom)
 
   useEffect(() => {
-    console.log('11')
     const keyDownEvent = fromEvent(document, 'keydown')
     keyDownEvent.subscribe((e) => {
-      console.log('keyDownEvent', e)
+      // console.log('keyDownEvent', e)
       // if (e.key === 'a') {
       //   setHighlightEdge('e1-2')
       // } else {
