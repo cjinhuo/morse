@@ -28,3 +28,7 @@ export function builtMorseBinaryTree(morseCodeObject: { [key: string]: string })
   return root
 }
 
+export function setClassNameWithArray(...args: string[]): string {
+  return args.filter(Boolean).join(' ')
+}
+

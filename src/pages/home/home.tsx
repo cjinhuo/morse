@@ -1,9 +1,9 @@
-import FunInput from './fun-input'
+import CharTyper from '../../components/char-typer'
 
 export default function Home() {
   return (
     <div className='w-full px-8 grow'>
-      <FunInput></FunInput>
+      <CharTyper data={'hello world!'}></CharTyper>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import type { MorseCodeType } from "./types"
 
+
 export interface EdgeData {
   type: MorseCodeType
 }
