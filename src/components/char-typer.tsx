@@ -1,11 +1,11 @@
-import { useEffect, useLayoutEffect, useMemo } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 import { fromEvent } from 'rxjs'
 import { setClassNameWithArray } from '../utils'
 import typeWriterAudio from '../assets/typewriter.mp3'
 const FunInputContainer = styled.div`
   position: relative;
-  #caret {
+  .caret {
     height: 3rem;
     position: absolute;
     animation: caretFlashSmooth 1s infinite;
@@ -49,10 +49,13 @@ const CHAR_ERROR_CLASS_NAME = 'error'
 const sound = new Audio(typeWriterAudio)
 console.log('typeWriterAudio', typeWriterAudio)
 export default function CharTyper({ data }: PropType) {
+  const caretRef = useRef(null)
+
   useEffect(() => {
-    const caretNode = document.querySelector('#caret') as HTMLElement
+    const caretNode = caretRef.current as HTMLElement | null
+    if (!caretNode) return
+
     document.querySelector(`.${WORD_CONTAINER_CLASS_NAME}`)?.firstElementChild?.classList.add(CHAR_ACTIVE_CLASS_NAME)
-    console.log('caretNode', caretNode)
     let activeChar = document.querySelector(`.${CHAR_CLASS_NAME}.${CHAR_ACTIVE_CLASS_NAME}`) as HTMLElement | null
     if (activeChar) {
       caretNode!.style.left = `${activeChar.offsetLeft}px`
@@ -105,7 +108,8 @@ export default function CharTyper({ data }: PropType) {
   return (
     <FunInputContainer>
       {TypeBlock}
-      <div id='caret'></div>
+      <div className='caret' ref={caretRef}></div>
+      <iframe id='morse-decoder-iframe' src='https://embed.morsedecoder.com#-|.|%2F|%20|1|0.1|500|sine' width='100%' height='160'></iframe>
     </FunInputContainer>
   )
 }
