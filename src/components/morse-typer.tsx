@@ -17,32 +17,26 @@ function playTone(waveform: OscillatorType = 'sine', duration = 1) {
 }
 
 export default function MorseTyper() {
-  // 创建键盘事件 Observable
   const keyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-    filter((e) => e.code === 'Space' && !e.repeat) // 过滤空格键 并排除键盘自动重复的事件
+    filter((e) => e.code === 'Space' && !e.repeat)
   )
-
   const keyUpEvent = fromEvent<KeyboardEvent>(document, 'keyup').pipe(filter((e) => e.code === 'Space'))
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = keyDownEvent
       .pipe(
         switchMap(() => {
           const oscillator = playTone()
           oscillator.start()
-          const timer$ = timer(500)
           return race(
             keyUpEvent.pipe(tap(() => oscillator.stop())),
-            timer$.pipe(
-              tap(() => {
-                oscillator.stop()
-              })
-            )
+            timer(500).pipe(tap(() => oscillator.stop()))
           ).pipe(takeUntil(keyDownEvent))
         })
       )
       .subscribe()
     return () => subscription.unsubscribe()
   }, [])
-  return <div>MorseTyper</div>
+  return <div>press Space</div>
 }

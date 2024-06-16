@@ -58,7 +58,7 @@ export default function CharTyper({ data }: PropType) {
     document.querySelector(`.${WORD_CONTAINER_CLASS_NAME}`)?.firstElementChild?.classList.add(CHAR_ACTIVE_CLASS_NAME)
     let activeChar = document.querySelector(`.${CHAR_CLASS_NAME}.${CHAR_ACTIVE_CLASS_NAME}`) as HTMLElement | null
     if (activeChar) {
-      caretNode!.style.left = `${activeChar.offsetLeft}px`
+      caretNode.style.left = `${activeChar.offsetLeft}px`
     }
     const keyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown')
     const keyDownEventSubscription = keyDownEvent.subscribe((e) => {
@@ -75,7 +75,7 @@ export default function CharTyper({ data }: PropType) {
           activeChar.classList.add(CHAR_ACTIVE_CLASS_NAME)
         } else {
           const nextWords = activeChar.parentElement?.nextElementSibling
-          if (nextWords && nextWords.className.includes(WORD_CONTAINER_CLASS_NAME)) {
+          if (nextWords?.className.includes(WORD_CONTAINER_CLASS_NAME)) {
             activeChar = nextWords.firstElementChild as HTMLElement
             activeChar.classList.add(CHAR_ACTIVE_CLASS_NAME)
           } else {
@@ -95,9 +95,9 @@ export default function CharTyper({ data }: PropType) {
     if (data.length === 0) return null
     const words = data.split(' ')
     return words.map((word, index) => (
-      <div key={index} className={setClassNameWithArray(WORD_CONTAINER_CLASS_NAME, 'inline-block')}>
+      <div key={word} className={setClassNameWithArray(WORD_CONTAINER_CLASS_NAME, 'inline-block')}>
         {Array.from(word).map((char, index) => (
-          <span key={index} className={CHAR_CLASS_NAME}>
+          <span key={word} className={CHAR_CLASS_NAME}>
             {char}
           </span>
         ))}
@@ -108,8 +108,13 @@ export default function CharTyper({ data }: PropType) {
   return (
     <FunInputContainer>
       {TypeBlock}
-      <div className='caret' ref={caretRef}></div>
-      <iframe id='morse-decoder-iframe' src='https://embed.morsedecoder.com#-|.|%2F|%20|1|0.1|500|sine' width='100%' height='160'></iframe>
+      <div className='caret' ref={caretRef} />
+      {/* <iframe
+        id='morse-decoder-iframe'
+        src='https://embed.morsedecoder.com#-|.|%2F|%20|1|0.1|500|sine'
+        width='100%'
+        height='160'
+      /> */}
     </FunInputContainer>
   )
 }
