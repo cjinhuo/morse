@@ -1,15 +1,20 @@
 export interface EdgeData {
   type: MorseCodeType
 }
+
+// the max time for down Space key
+export const MAX_KEY_DOWN_TIME_MS = 400
 // the critical point between dot and dash
 export const DOT_CRITICAL_POINT_TIME = 130
+// the critical point between char and char
+export const CHAR_CRITICAL_POINT_TIME = 450
 export const LOCAL_STORAGE_KEY = 'morse'
 
 export const FLOW_TREE_NAME = 'tree'
 
 export enum MorseCodeType {
-  dot = 'dot',
-  dash = 'dash',
+  dot = 1,
+  dash = 2,
 }
 export enum MorseCodeCharType {
   dotChar = '.',
@@ -20,6 +25,12 @@ export enum CHAR_STATUS {
   active = 'active',
   correct = 'correct',
   error = 'error',
+}
+
+export enum TYPING_STATUS {
+  idle = 'idle',
+  typing = 'typing',
+  done = 'done',
 }
 
 export const WORD_CONTAINER_CLASS_NAME = 'word'

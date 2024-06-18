@@ -1,24 +1,26 @@
 import { useEffect } from 'react'
-import { filter, fromEvent, race, switchMap, takeUntil, tap, timer } from 'rxjs'
-import { DOT_CRITICAL_POINT_TIME } from '../constants'
+import {
+  buffer,
+  bufferTime,
+  debounceTime,
+  filter,
+  from,
+  fromEvent,
+  map,
+  race,
+  switchMap,
+  takeUntil,
+  tap,
+  timer,
+} from 'rxjs'
+import { CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, MAX_KEY_DOWN_TIME_MS, TYPING_STATUS } from '../constants'
 import CharWithMorseCode from './char-with-morse-code'
-
-const audioContext = new window.AudioContext()
-function playTone(waveform: OscillatorType = 'sine', duration = 1) {
-  const oscillator = audioContext.createOscillator()
-  oscillator.type = waveform
-  oscillator.frequency.setValueAtTime(600, audioContext.currentTime) // A4 note
-  const gainNode = audioContext.createGain()
-  // 音量大小
-  gainNode.gain.setValueAtTime(0.6, audioContext.currentTime)
-
-  oscillator.connect(gainNode)
-  gainNode.connect(audioContext.destination)
-
-  return oscillator
-}
+import { CurrentMorseCodeSetAtom } from '../atom'
+import { useAtom, useSetAtom } from 'jotai'
+import { getOscillatorNodeWithParams, subscribeKeyEventForMorseCode } from '../utils'
 
 export default function MorseTyper() {
+  const setCurrentMorseCode = useSetAtom(CurrentMorseCodeSetAtom)
   const keyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
     filter((e) => e.code === 'Space' && !e.repeat)
   )
@@ -26,30 +28,18 @@ export default function MorseTyper() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    const subscription = keyDownEvent
-      .pipe(
-        switchMap(() => {
-          const startTime = Date.now()
-          const oscillator = playTone()
-          oscillator.start()
-          return race(
-            keyUpEvent.pipe(
-              tap(() => {
-                const endTime = Date.now()
-                if (endTime - startTime < DOT_CRITICAL_POINT_TIME) {
-                  console.log('dot')
-                } else {
-                  console.log('dash')
-                }
-                oscillator.stop()
-              })
-            ),
-            timer(500).pipe(tap(() => oscillator.stop()))
-          ).pipe(takeUntil(keyDownEvent))
-        })
-      )
-      .subscribe()
-    return () => subscription.unsubscribe()
+    const [$singleChar, $fragment] = subscribeKeyEventForMorseCode(getOscillatorNodeWithParams)
+    const singleCharSubscription = $singleChar.subscribe((char) => {})
+    const fragmentSubscription = $fragment.subscribe((fragment) => {
+      setCurrentMorseCode({
+        status: TYPING_STATUS.typing,
+        morseCode: fragment.join(''),
+      })
+    })
+    return () => {
+      singleCharSubscription.unsubscribe()
+      fragmentSubscription.unsubscribe()
+    }
   }, [])
   return (
     <div>
