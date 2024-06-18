@@ -1,11 +1,30 @@
-import type { MorseCodeType } from "./types"
-
-
 export interface EdgeData {
   type: MorseCodeType
 }
+// the critical point between dot and dash
+export const DOT_CRITICAL_POINT_TIME = 130
+export const LOCAL_STORAGE_KEY = 'morse'
 
 export const FLOW_TREE_NAME = 'tree'
+
+export enum MorseCodeType {
+  dot = 'dot',
+  dash = 'dash',
+}
+export enum MorseCodeCharType {
+  dotChar = '.',
+  dashChar = '-',
+}
+
+export enum CHAR_STATUS {
+  active = 'active',
+  correct = 'correct',
+  error = 'error',
+}
+
+export const WORD_CONTAINER_CLASS_NAME = 'word'
+export const CHAR_CLASS_NAME = 'char'
+
 
 export const WORD_MORSE_CODE = {
   A: '.-',
@@ -34,7 +53,7 @@ export const WORD_MORSE_CODE = {
   X: '-..-',
   Y: '-.--',
   Z: '--..',
-}
+} as Record<string, string>
 
 export const NUMBER_MORSE_CODE = {
   0: '-----',
@@ -47,7 +66,7 @@ export const NUMBER_MORSE_CODE = {
   7: '--...',
   8: '---..',
   9: '----.',
-}
+} as Record<string, string>
 export const SPECIAL_CHAR_MORSE_CODE = {
   '.': '.-.-.-',
   ',': '--..--',
@@ -67,7 +86,7 @@ export const SPECIAL_CHAR_MORSE_CODE = {
   '"': '.-..-.',
   $: '...-..-',
   '@': '.--.-.',
-}
+} as Record<string, string>
 
 
 // 句点（.）：······

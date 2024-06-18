@@ -9,14 +9,14 @@
     "useIgnoreFile": true
   },
   "formatter": {
-    "indentStyle": "space",
-    "lineWidth": 100
+    "enabled": false
   },
   "javascript": {
     "formatter": {
+      "enabled": false,
       "quoteStyle": "single",
       "lineWidth": 100
-    }
+    },
   },
   "linter": {
     "enabled": true,

@@ -2,8 +2,7 @@ import { useAtomValue } from 'jotai'
 import { memo, useEffect, useState } from 'react'
 import { BaseEdge, getStraightPath, type EdgeProps } from 'reactflow'
 import { HighlightEdgeAtom } from '../../atom'
-import { type EdgeData } from '../../constants'
-import { MorseCodeType } from '../../types'
+import { MorseCodeType, type EdgeData } from '../../constants'
 
 const ClassNameInit = ['react-flow__edge-path']
 export default memo(({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps<EdgeData>) => {
@@ -33,7 +32,12 @@ export default memo(({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps
   return (
     <>
       {/* react-flow_edge-animate */}
-      <path className={className.join(' ')} stroke='deepskyblue' strokeDasharray={strokeDasharray} id={id} d={edgePath}></path>
+      <path
+        className={className.join(' ')}
+        stroke='deepskyblue'
+        strokeDasharray={strokeDasharray}
+        id={id}
+        d={edgePath}></path>
     </>
   )
 })

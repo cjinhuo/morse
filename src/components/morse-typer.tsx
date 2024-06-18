@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import { filter, fromEvent, race, switchMap, takeUntil, tap, timer } from 'rxjs'
+import { DOT_CRITICAL_POINT_TIME } from '../constants'
+import CharWithMorseCode from './char-with-morse-code'
 
 const audioContext = new window.AudioContext()
 function playTone(waveform: OscillatorType = 'sine', duration = 1) {
@@ -27,10 +29,21 @@ export default function MorseTyper() {
     const subscription = keyDownEvent
       .pipe(
         switchMap(() => {
+          const startTime = Date.now()
           const oscillator = playTone()
           oscillator.start()
           return race(
-            keyUpEvent.pipe(tap(() => oscillator.stop())),
+            keyUpEvent.pipe(
+              tap(() => {
+                const endTime = Date.now()
+                if (endTime - startTime < DOT_CRITICAL_POINT_TIME) {
+                  console.log('dot')
+                } else {
+                  console.log('dash')
+                }
+                oscillator.stop()
+              })
+            ),
             timer(500).pipe(tap(() => oscillator.stop()))
           ).pipe(takeUntil(keyDownEvent))
         })
@@ -38,5 +51,9 @@ export default function MorseTyper() {
       .subscribe()
     return () => subscription.unsubscribe()
   }, [])
-  return <div>press Space</div>
+  return (
+    <div>
+      <CharWithMorseCode char='A'></CharWithMorseCode>
+    </div>
+  )
 }

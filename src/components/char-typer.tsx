@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { fromEvent } from 'rxjs'
 import { setClassNameWithArray } from '../utils'
 import typeWriterAudio from '../assets/typewriter.mp3'
+import { CHAR_CLASS_NAME, CHAR_STATUS, WORD_CONTAINER_CLASS_NAME } from '../constants'
 const FunInputContainer = styled.div`
   position: relative;
   .caret {
@@ -41,11 +42,6 @@ const PresetData = 'I am iron man!'
 type PropType = {
   data: string
 }
-const WORD_CONTAINER_CLASS_NAME = 'word'
-const CHAR_CLASS_NAME = 'char'
-const CHAR_ACTIVE_CLASS_NAME = 'active'
-const CHAR_CORRECT_CLASS_NAME = 'correct'
-const CHAR_ERROR_CLASS_NAME = 'error'
 const sound = new Audio(typeWriterAudio)
 console.log('typeWriterAudio', typeWriterAudio)
 export default function CharTyper({ data }: PropType) {
@@ -55,8 +51,8 @@ export default function CharTyper({ data }: PropType) {
     const caretNode = caretRef.current as HTMLElement | null
     if (!caretNode) return
 
-    document.querySelector(`.${WORD_CONTAINER_CLASS_NAME}`)?.firstElementChild?.classList.add(CHAR_ACTIVE_CLASS_NAME)
-    let activeChar = document.querySelector(`.${CHAR_CLASS_NAME}.${CHAR_ACTIVE_CLASS_NAME}`) as HTMLElement | null
+    document.querySelector(`.${WORD_CONTAINER_CLASS_NAME}`)?.firstElementChild?.classList.add(CHAR_STATUS.active)
+    let activeChar = document.querySelector(`.${CHAR_CLASS_NAME}.${CHAR_STATUS.active}`) as HTMLElement | null
     if (activeChar) {
       caretNode.style.left = `${activeChar.offsetLeft}px`
     }
@@ -67,17 +63,17 @@ export default function CharTyper({ data }: PropType) {
       sound.play()
       const wordContent = activeChar.innerHTML === '&nbsp;' ? ' ' : activeChar.innerHTML
       if (wordContent === e.key) {
-        activeChar.classList.add(CHAR_CORRECT_CLASS_NAME)
-        activeChar.classList.remove(CHAR_ACTIVE_CLASS_NAME)
+        activeChar.classList.add(CHAR_STATUS.correct)
+        activeChar.classList.remove(CHAR_STATUS.active)
         const nextChar = activeChar.nextElementSibling as HTMLElement
         if (nextChar) {
           activeChar = nextChar
-          activeChar.classList.add(CHAR_ACTIVE_CLASS_NAME)
+          activeChar.classList.add(CHAR_STATUS.active)
         } else {
           const nextWords = activeChar.parentElement?.nextElementSibling
           if (nextWords?.className.includes(WORD_CONTAINER_CLASS_NAME)) {
             activeChar = nextWords.firstElementChild as HTMLElement
-            activeChar.classList.add(CHAR_ACTIVE_CLASS_NAME)
+            activeChar.classList.add(CHAR_STATUS.active)
           } else {
             activeChar = null
           }
@@ -109,12 +105,6 @@ export default function CharTyper({ data }: PropType) {
     <FunInputContainer>
       {TypeBlock}
       <div className='caret' ref={caretRef} />
-      {/* <iframe
-        id='morse-decoder-iframe'
-        src='https://embed.morsedecoder.com#-|.|%2F|%20|1|0.1|500|sine'
-        width='100%'
-        height='160'
-      /> */}
     </FunInputContainer>
   )
 }
