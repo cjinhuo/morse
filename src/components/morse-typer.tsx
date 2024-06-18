@@ -1,40 +1,34 @@
 import { useEffect } from 'react'
-import {
-  buffer,
-  bufferTime,
-  debounceTime,
-  filter,
-  from,
-  fromEvent,
-  map,
-  race,
-  switchMap,
-  takeUntil,
-  tap,
-  timer,
-} from 'rxjs'
-import { CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, MAX_KEY_DOWN_TIME_MS, TYPING_STATUS } from '../constants'
+import { TYPING_STATUS } from '../constants'
 import CharWithMorseCode from './char-with-morse-code'
-import { CurrentMorseCodeSetAtom } from '../atom'
-import { useAtom, useSetAtom } from 'jotai'
+import { InputtingMorseCodeAtom } from '../atom'
+import { useSetAtom } from 'jotai'
 import { getOscillatorNodeWithParams, subscribeKeyEventForMorseCode } from '../utils'
 
 export default function MorseTyper() {
-  const setCurrentMorseCode = useSetAtom(CurrentMorseCodeSetAtom)
-  const keyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-    filter((e) => e.code === 'Space' && !e.repeat)
-  )
-  const keyUpEvent = fromEvent<KeyboardEvent>(document, 'keyup').pipe(filter((e) => e.code === 'Space'))
+  const setCurrentMorseCode = useSetAtom(InputtingMorseCodeAtom)
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const [$singleChar, $fragment] = subscribeKeyEventForMorseCode(getOscillatorNodeWithParams)
-    const singleCharSubscription = $singleChar.subscribe((char) => {})
-    const fragmentSubscription = $fragment.subscribe((fragment) => {
-      setCurrentMorseCode({
-        status: TYPING_STATUS.typing,
-        morseCode: fragment.join(''),
+    const singleCharSubscription = $singleChar.subscribe((char) => {
+      setCurrentMorseCode((prev) => {
+        return prev.status !== TYPING_STATUS.typing
+          ? {
+              status: TYPING_STATUS.typing,
+              morseCode: char,
+            }
+          : {
+              status: TYPING_STATUS.typing,
+              morseCode: prev.morseCode + char,
+            }
       })
+    })
+    const fragmentSubscription = $fragment.subscribe((fragment) => {
+      console.log('fragment', fragment)
+      setCurrentMorseCode((prev) => ({
+        status: TYPING_STATUS.done,
+        morseCode: prev.morseCode,
+      }))
     })
     return () => {
       singleCharSubscription.unsubscribe()

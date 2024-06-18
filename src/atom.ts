@@ -5,7 +5,7 @@ export const HighlightEdgeAtom = atomWithReset('');
 
 
 
-export const CurrentMorseCodeSetAtom = atomWithReset<{
+export const InputtingMorseCodeAtom = atomWithReset<{
   morseCode: string
   status: TYPING_STATUS
 }>({

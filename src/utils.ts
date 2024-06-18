@@ -48,7 +48,9 @@ export function getOscillatorNodeWithParams(waveform: OscillatorType = 'sine', d
   return oscillator
 }
 
+
 export function subscribeKeyEventForMorseCode(getOscillatorNode: () => OscillatorNode) {
+  // todo 这里可以支持改成任意键位和支持鼠标左右键
   const $keyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
     filter((e) => e.code === 'Space' && !e.repeat)
   )
@@ -64,16 +66,16 @@ export function subscribeKeyEventForMorseCode(getOscillatorNode: () => Oscillato
             // console.log('key down duration :', Date.now() - startTime)
             oscillator.stop()
             if (Date.now() - startTime < DOT_CRITICAL_POINT_TIME) {
-              return MorseCodeType.dot
+              return MorseCodeCharType.dotChar
             } else {
-              return MorseCodeType.dash
+              return MorseCodeCharType.dashChar
             }
           })
         ),
         timer(MAX_KEY_DOWN_TIME_MS).pipe(
           map(() => {
             oscillator.stop()
-            return MorseCodeType.dash
+            return MorseCodeCharType.dashChar
           })
         )
       ).pipe(takeUntil($keyDownEvent))

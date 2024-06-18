@@ -7,10 +7,15 @@ export const MAX_KEY_DOWN_TIME_MS = 400
 // the critical point between dot and dash
 export const DOT_CRITICAL_POINT_TIME = 130
 // the critical point between char and char
-export const CHAR_CRITICAL_POINT_TIME = 450
+export const CHAR_CRITICAL_POINT_TIME = 500
 export const LOCAL_STORAGE_KEY = 'morse'
 
 export const FLOW_TREE_NAME = 'tree'
+
+export enum SupportKeyCodeType {
+  space = 'Space',
+  
+}
 
 export enum MorseCodeType {
   dot = 1,
