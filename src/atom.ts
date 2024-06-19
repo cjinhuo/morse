@@ -12,3 +12,5 @@ export const InputtingMorseCodeAtom = atomWithReset<{
   morseCode: '',
   status: TYPING_STATUS.idle,
 })
+
+export const ActiveMorseCodeAtom = atomWithReset<string>('')

@@ -1,13 +1,22 @@
-import { useEffect } from 'react'
-import { TYPING_STATUS } from '../constants'
+import { useEffect, useRef } from 'react'
+import { CHAR_STATUS, TYPING_STATUS } from '../constants'
 import CharWithMorseCode from './char-with-morse-code'
 import { InputtingMorseCodeAtom } from '../atom'
 import { useSetAtom } from 'jotai'
 import { getOscillatorNodeWithParams, subscribeKeyEventForMorseCode } from '../utils'
+import PureTypeChar from './pure-type-char'
 
 export default function MorseTyper() {
   const setCurrentMorseCode = useSetAtom(InputtingMorseCodeAtom)
+  const pureTypeCharRef = useRef<{ next: (status: CHAR_STATUS) => void; start: () => void } | null>(null)
 
+  setTimeout(() => {
+    pureTypeCharRef.current?.start()
+    pureTypeCharRef.current?.next(CHAR_STATUS.correct)
+    setInterval(() => {
+      pureTypeCharRef.current?.next(CHAR_STATUS.correct)
+    }, 1000)
+  }, 2000)
   useEffect(() => {
     const [$singleChar, $fragment] = subscribeKeyEventForMorseCode(getOscillatorNodeWithParams)
     const singleCharSubscription = $singleChar.subscribe((char) => {
@@ -37,7 +46,7 @@ export default function MorseTyper() {
   }, [])
   return (
     <div>
-      <CharWithMorseCode char='A'></CharWithMorseCode>
+      <PureTypeChar data='hello' ref={pureTypeCharRef}></PureTypeChar>
     </div>
   )
 }

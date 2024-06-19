@@ -25,17 +25,17 @@ const FunInputContainer = styled.div`
       opacity: 1;
     }
   }
-  .char {
+  .${WORD_CONTAINER_CLASS_NAME} {
     line-height: 3rem;
     font-size: 3rem;
   }
-  .correct {
+  .${CHAR_STATUS.correct} {
     color: green;
   }
-  .error {
+  .${CHAR_STATUS.error} {
     color: red;
   }
-  .active {
+  .${CHAR_STATUS.active} {
   }
 `
 const PresetData = 'I am iron man!'
@@ -43,14 +43,12 @@ type PropType = {
   data: string
 }
 const sound = new Audio(typeWriterAudio)
-console.log('typeWriterAudio', typeWriterAudio)
 export default function CharTyper({ data }: PropType) {
   const caretRef = useRef(null)
 
   useEffect(() => {
     const caretNode = caretRef.current as HTMLElement | null
     if (!caretNode) return
-
     document.querySelector(`.${WORD_CONTAINER_CLASS_NAME}`)?.firstElementChild?.classList.add(CHAR_STATUS.active)
     let activeChar = document.querySelector(`.${CHAR_CLASS_NAME}.${CHAR_STATUS.active}`) as HTMLElement | null
     if (activeChar) {

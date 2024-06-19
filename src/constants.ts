@@ -32,6 +32,12 @@ export enum CHAR_STATUS {
   error = 'error',
 }
 
+export enum MACHINE_STATE {
+  
+  running = 'running',
+  close = 'close',
+}
+
 export enum TYPING_STATUS {
   idle = 'idle',
   typing = 'typing',
