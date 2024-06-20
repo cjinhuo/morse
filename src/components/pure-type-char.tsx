@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { CHAR_CLASS_NAME, CHAR_STATUS, WORD_CONTAINER_CLASS_NAME } from '../constants'
+import { CHAR_CLASS_NAME, CHAR_STATUS, WORD_CONTAINER_CLASS_NAME } from '../shared/constants'
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
-import { setClassNameWithArray } from '../utils'
+import { setClassNameWithArray } from '../shared/utils'
 
 const PureTypeCharContainer = styled.div`
   position: relative;

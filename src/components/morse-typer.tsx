@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { CHAR_STATUS, TYPING_STATUS, WORD_MORSE_CODE } from '../constants'
+import { CHAR_STATUS, TYPING_STATUS, WORD_MORSE_CODE } from '../shared/constants'
 import CharWithMorseCode from './char-with-morse-code'
-import { InputtingMorseCodeAtom } from '../atom'
+import { InputtingMorseCodeAtom } from '../atom/atom'
 import { useSetAtom } from 'jotai'
-import { getOscillatorNodeWithParams, subscribeKeyEventForMorseCode, transformMorseCodeToChar } from '../utils'
+import { getOscillatorNodeWithParams, subscribeKeyEventForMorseCode, transformMorseCodeToChar } from '../shared/utils'
 import PureTypeChar, { type RefMethodsType } from './pure-type-char'
 import { fromEvent } from 'rxjs'
 

@@ -16,6 +16,7 @@
     "modern-normalize": "^2.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1",
     "reactflow": "^11.11.3",
     "rxjs": "8.0.0-alpha.14",
     "styled-components": "^6.1.11"

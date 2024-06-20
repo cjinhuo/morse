@@ -1,5 +1,5 @@
 import { atomWithReset } from "jotai/utils";
-import { TYPING_STATUS } from "./constants";
+import { TYPING_STATUS } from "../shared/constants";
 
 export const HighlightEdgeAtom = atomWithReset('');
 

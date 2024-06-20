@@ -1,5 +1,5 @@
 import { buffer, debounceTime, filter, fromEvent, map, race, switchMap, takeUntil, timer } from 'rxjs'
-import { type BinaryTreeNode } from './types'
+import { type BinaryTreeNode } from '../types'
 import {  ALL_MORSE_CODE_MAP, ALL_MORSE_CODE_REVERSE_MAP, CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType } from './constants'
 
 function createBinaryTree(label: string, value: string) {

@@ -1,4 +1,4 @@
-import type { MorseCodeType } from "./constants"
+import type { MorseCodeType } from "../shared/constants"
 
 
 

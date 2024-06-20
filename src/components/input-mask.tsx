@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai'
-import { InputtingMorseCodeAtom } from '../atom'
+import { InputtingMorseCodeAtom } from '../atom/atom'
 import styled from 'styled-components'
-import { TYPING_STATUS } from '../constants'
+import { TYPING_STATUS } from '../shared/constants'
 import { useMemo } from 'react'
 
 const InputMaskContainer = styled.div`

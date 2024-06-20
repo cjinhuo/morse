@@ -1,8 +1,8 @@
 import { useAtomValue } from 'jotai'
 import { memo, useEffect, useState } from 'react'
 import { BaseEdge, getStraightPath, type EdgeProps } from 'reactflow'
-import { HighlightEdgeAtom } from '../../atom'
-import { MorseCodeType, type EdgeData } from '../../constants'
+import { HighlightEdgeAtom } from '../../atom/atom'
+import { MorseCodeType, type EdgeData } from '../../shared/constants'
 
 const ClassNameInit = ['react-flow__edge-path']
 export default memo(({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps<EdgeData>) => {

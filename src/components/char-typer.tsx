@@ -1,9 +1,9 @@
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 import { fromEvent } from 'rxjs'
-import { setClassNameWithArray } from '../utils'
+import { setClassNameWithArray } from '../shared/utils'
 import typeWriterAudio from '../assets/typewriter.mp3'
-import { CHAR_CLASS_NAME, CHAR_STATUS, WORD_CONTAINER_CLASS_NAME } from '../constants'
+import { CHAR_CLASS_NAME, CHAR_STATUS, WORD_CONTAINER_CLASS_NAME } from '../shared/constants'
 const FunInputContainer = styled.div`
   position: relative;
   .caret {
