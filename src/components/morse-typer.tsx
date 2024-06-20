@@ -17,7 +17,7 @@ export default function MorseTyper() {
     let currentMorseCode = pureTypeCharRef.current.start()
     const [$singleChar, $fragment] = subscribeKeyEventForMorseCode(getOscillatorNodeWithParams)
     fromEvent<KeyboardEvent>(document, 'click').subscribe((e) => {
-      console.log('e.code', e.code)
+      console.log('e.code', e)
       if (e.code === 'enter') {
         // currentMorseCode = pureTypeCharRef.current!.start()
       }
@@ -41,12 +41,19 @@ export default function MorseTyper() {
       if (char && currentMorseCode?.innerHTML === char) {
         currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
       } else {
-        currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.error)
+        currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.error, char)
       }
+
       setCurrentMorseCode((prev) => ({
         status: TYPING_STATUS.done,
         morseCode: prev.morseCode,
       }))
+
+      if (!currentMorseCode) {
+        singleCharSubscription.unsubscribe()
+        fragmentSubscription.unsubscribe()
+        console.log('全部结束了')
+      }
     })
     return () => {
       singleCharSubscription.unsubscribe()

@@ -27,21 +27,46 @@ const PureTypeCharContainer = styled.div`
   }
 
   .${WORD_CONTAINER_CLASS_NAME} {
-    line-height: 3rem;
+    line-height: 3.4rem;
     font-size: 3rem;
   }
+  .${CHAR_CLASS_NAME} {
+    outline: 1px solid white;
+    position: relative;
+    display: inline-block;
+  }
+
   .${CHAR_STATUS.correct} {
     color: green;
   }
   .${CHAR_STATUS.error} {
     color: red;
+    background-color: pink;
   }
   .${CHAR_STATUS.active} {
+  }
+  .blink {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    animation: blink_smooth 1s linear;
+  }
+  @keyframes blink_smooth {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 `
 
 export interface RefMethodsType {
-  next: (status: CHAR_STATUS) => HTMLElement | null
+  next: (status: CHAR_STATUS, inputChar?: string) => HTMLElement | null
   start: () => HTMLElement | null
 }
 
@@ -77,7 +102,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
     ref,
     () => {
       return {
-        next(status: CHAR_STATUS) {
+        next(status: CHAR_STATUS, inputChar?: string) {
           if (!isStarted) {
             throw new Error('Next Fn Error: should run [start] fn first')
           }
@@ -99,6 +124,16 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
             } else {
               activeChar = null
             }
+          }
+          if (status === CHAR_STATUS.error && inputChar) {
+            // If input error char, append the error char to override current char. Inspiring by 'typing club'
+            const errorChar = document.createElement('span')
+            errorChar.classList.add('blink')
+            errorChar.innerHTML = inputChar
+            lastChar.appendChild(errorChar)
+            setTimeout(() => {
+              lastChar.removeChild(errorChar)
+            }, 1000)
           }
           if (activeChar) {
             caretRef.current!.style.left = `${activeChar.offsetLeft}px`

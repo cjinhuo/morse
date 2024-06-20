@@ -40,7 +40,7 @@ export function getOscillatorNodeWithParams(waveform: OscillatorType = 'sine', d
   oscillator.frequency.setValueAtTime(600, audioContext.currentTime) // A4 note
   const gainNode = audioContext.createGain()
   // 音量大小
-  gainNode.gain.setValueAtTime(0.6, audioContext.currentTime)
+  gainNode.gain.setValueAtTime(0.2, audioContext.currentTime)
 
   oscillator.connect(gainNode)
   gainNode.connect(audioContext.destination)
