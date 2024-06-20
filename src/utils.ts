@@ -1,6 +1,6 @@
 import { buffer, debounceTime, filter, fromEvent, map, race, switchMap, takeUntil, timer } from 'rxjs'
 import { type BinaryTreeNode } from './types'
-import { CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType, MorseCodeType } from './constants'
+import {  ALL_MORSE_CODE_MAP, ALL_MORSE_CODE_REVERSE_MAP, CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType } from './constants'
 
 function createBinaryTree(label: string, value: string) {
   const tree: BinaryTreeNode = Object.create(null)
@@ -83,7 +83,19 @@ export function subscribeKeyEventForMorseCode(getOscillatorNode: () => Oscillato
   )
   const $fragment = $singleChar.pipe(
     buffer($singleChar.pipe(debounceTime(CHAR_CRITICAL_POINT_TIME))),
-    filter(v => v.length > 0)
+    filter(v => v.length > 0),
+    map(v => v.join(''))
   )
   return [$singleChar, $fragment] as const
+}
+
+
+export function transformMorseCodeToChar(morseCode: string) {
+  const char = ALL_MORSE_CODE_REVERSE_MAP[morseCode]
+  return char || undefined
+}
+
+export function transformCharToMorseCode(char: string) {
+  const morseCode = ALL_MORSE_CODE_MAP[char]
+  return morseCode || undefined
 }

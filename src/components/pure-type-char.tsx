@@ -39,6 +39,12 @@ const PureTypeCharContainer = styled.div`
   .${CHAR_STATUS.active} {
   }
 `
+
+export interface RefMethodsType {
+  next: (status: CHAR_STATUS) => HTMLElement | null
+  start: () => HTMLElement | null
+}
+
 type PropType = {
   data: string
 }

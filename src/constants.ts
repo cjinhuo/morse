@@ -110,6 +110,20 @@ export const SPECIAL_CHAR_MORSE_CODE = {
   '@': '.--.-.',
 } as Record<string, string>
 
+export const ALL_MORSE_CODE_MAP = {
+  ...WORD_MORSE_CODE,
+  ...NUMBER_MORSE_CODE,
+  ...SPECIAL_CHAR_MORSE_CODE
+}
+
+export const ALL_MORSE_CODE_REVERSE_MAP = Object.entries(ALL_MORSE_CODE_MAP).reduce(
+  (acc, [key, value]) => {
+    acc[value] = key
+    return acc
+  },
+  {} as Record<string, string>
+)
+
 
 // 句点（.）：······
 // 规律：连续六个短点。简洁并与E的短点重复强调。
