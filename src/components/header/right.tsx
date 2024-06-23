@@ -1,13 +1,13 @@
-import React from 'react'
-import IconPark from '../icon-park'
-import { Typography } from '@douyinfe/semi-ui'
+import LinkWithIcon from '../link-with-icon'
+import { IconParkNames } from '../../shared/constants'
 export default function HeaderRight() {
   return (
     <div className='h-full flex'>
       {/* 建一个 typing 仓库 */}
-      <Typography.Text link={{ href: 'https://github.com/cjinhuo/morse', target: '_blank' }}>
-        <IconPark name='github'></IconPark>
-      </Typography.Text>
+      <LinkWithIcon
+        name={IconParkNames.github}
+        value='https://github.com/cjinhuo/cjinhuo.github.io'
+        type='link'></LinkWithIcon>
     </div>
   )
 }

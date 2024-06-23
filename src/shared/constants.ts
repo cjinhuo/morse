@@ -1,6 +1,19 @@
+export enum IconParkNames {
+  github = 'github',
+  info = 'info',
+  setting = 'setting',
+  keyboard = 'keyboard',
+  dark = 'dark',
+  light = 'light',
+  'morse-code-1' = 'morse-code-1',
+  'morse-code-2' = 'morse-code-2',
+  'morse-code' = 'morse-code',
+}
+
 export interface EdgeData {
   type: MorseCodeType
 }
+
 
 // the max time for down Space key
 export const MAX_KEY_DOWN_TIME_MS = 400
