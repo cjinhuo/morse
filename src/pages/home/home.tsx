@@ -3,10 +3,9 @@ import MorseTyper from '../../components/morse-typer'
 
 export default function Home() {
   return (
-    <div className='w-full px-8 grow'>
-      {/* <CharTyper data={'hello world!'} /> */}
+    <div className='w-full grow px-40 py-10'>
       <MorseTyper />
-      <InputMask></InputMask>
+      <InputMask />
     </div>
   )
 }

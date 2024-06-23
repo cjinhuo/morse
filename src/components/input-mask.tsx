@@ -50,7 +50,11 @@ export default function InputMask() {
   }, [status])
   return (
     <InputMaskContainer>
-      <div className={`text-3xl w-full h-full text-center bg-slate-400 ${blockClassName}`}>{morseCode}</div>
+      <div
+        style={{ backgroundColor: 'var(--color-neutral-8)', opacity: '0.8' }}
+        className={`text-3xl w-full h-full text-center rounded-2xl ${blockClassName}`}>
+        <div className='text-skin-neutral-4'>{morseCode}</div>
+      </div>
     </InputMaskContainer>
   )
 }

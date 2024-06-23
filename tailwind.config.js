@@ -7,6 +7,7 @@ module.exports = {
       backgroundColor: {
         skin: {
           background: 'var(--color-normal-bg)',
+          'background-reverse': 'var(--color-normal-bg-reverse)'
         },
       },
       maxWidth: {
@@ -22,6 +23,10 @@ module.exports = {
           'neutral-4': 'var(--color-neutral-4)',
           'neutral-5': 'var(--color-neutral-5)',
           'neutral-6': 'var(--color-neutral-6)',
+          'neutral-7': 'var(--color-neutral-7)',
+          'neutral-8': 'var(--color-neutral-8)',
+          'neutral-9': 'var(--color-neutral-9)',
+          'neutral-10': 'var(--color-neutral-10)',
           link: 'var(--color-link-href)',
         },
       },

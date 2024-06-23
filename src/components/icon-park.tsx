@@ -9,14 +9,15 @@ type IconParkProps = {
   rtl?: string
   spin?: string
   class?: string
+  style?: React.CSSProperties
 }
 export default function IconPark(props: IconParkProps) {
   // todo 修复类型错误 env.d.ts
   return (
     <iconpark-icon
-      size='1.5rem'
+      size='1.3rem'
       style={{ transition: 'color 0.1s' }}
-      class='text-skin-neutral-6 hover:text-skin-neutral-3'
+      class='text-skin-neutral-7 hover:text-skin-neutral-5'
       {...props}></iconpark-icon>
   )
 }

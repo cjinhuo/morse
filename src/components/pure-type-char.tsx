@@ -12,7 +12,7 @@ const PureTypeCharContainer = styled.div`
     animation: caretFlashSmooth 1s infinite;
     background: black;
     width: 0.2rem;
-    top: 0;
+    top: 3px;
     transition: 0.125s;
   }
   @keyframes caretFlashSmooth {
@@ -31,7 +31,7 @@ const PureTypeCharContainer = styled.div`
     font-size: 3rem;
   }
   .${CHAR_CLASS_NAME} {
-    outline: 1px solid white;
+    outline: 1px solid var(--color-linear-bg-start);
     position: relative;
     display: inline-block;
   }

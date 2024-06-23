@@ -1,15 +1,22 @@
+import './base-layout.css'
 import Header from '../header/header'
 import Footer from '../footer'
 import { Outlet } from 'react-router-dom'
 import React from 'react'
-import './base-layout.css'
+import { Layout } from '@douyinfe/semi-ui'
 
 function BaseLayout() {
   return (
     <>
-      <Header></Header>
-      <Outlet></Outlet>
-      <Footer></Footer>
+      <Layout.Header>
+        <Header></Header>
+      </Layout.Header>
+      <Layout.Content>
+        <Outlet></Outlet>
+      </Layout.Content>
+      <Layout.Footer>
+        <Footer></Footer>
+      </Layout.Footer>
     </>
   )
 }

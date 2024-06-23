@@ -3,6 +3,7 @@ export enum IconParkNames {
   info = 'info',
   setting = 'setting',
   keyboard = 'keyboard',
+  'keyboard-2' = 'keyboard-2',
   dark = 'dark',
   light = 'light',
   'morse-code-1' = 'morse-code-1',
