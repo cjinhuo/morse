@@ -1,4 +1,3 @@
-import CharTyper from '../../components/char-typer'
 import InputMask from '../../components/input-mask'
 import MorseTyper from '../../components/morse-typer'
 

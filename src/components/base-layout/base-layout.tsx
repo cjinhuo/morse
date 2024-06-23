@@ -1,13 +1,14 @@
-import Header from '../header'
-import Home from '../../pages/home/home'
+import Header from '../header/header'
 import Footer from '../footer'
+import { Outlet } from 'react-router-dom'
 import React from 'react'
+import './base-layout.css'
 
 function BaseLayout() {
   return (
     <>
       <Header></Header>
-      <Home></Home>
+      <Outlet></Outlet>
       <Footer></Footer>
     </>
   )

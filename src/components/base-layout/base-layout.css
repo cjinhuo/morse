@@ -1,4 +1,7 @@
 @import '../../../node_modules/modern-normalize/modern-normalize.css';
+@import '../../../node_modules/@icon-park/react/styles/index.css';
+@import './skin.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,7 +13,10 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  /* background-color: black; */
+}
+body {
+  	background-color: var(--color-normal-bg);
+  	background-image: linear-gradient(var(--color-linear-bg-start) 0%, var(--color-linear-bg-end) 100%);
 }
 #root{
   width: 100%;

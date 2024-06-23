@@ -10,6 +10,8 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@douyinfe/semi-ui": "^2.60.1",
+    "@icon-park/react": "^1.4.2",
     "@xyflow/react": "12.0.0-next.20",
     "dagre": "^0.8.5",
     "jotai": "^2.8.3",
