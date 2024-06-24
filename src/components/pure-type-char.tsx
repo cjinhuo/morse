@@ -2,27 +2,31 @@ import styled from 'styled-components'
 import { CHAR_CLASS_NAME, CHAR_STATUS, WORD_CONTAINER_CLASS_NAME } from '../shared/constants'
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { setClassNameWithArray } from '../shared/utils'
+import { Subject, debounceTime } from 'rxjs'
 
+const CARET_CLASS_NAME = 'caret'
+const CARET_ANIMATION_CLASS_NAME = 'caret-animation'
+const ERROR_CHAR_ANIMATION = 'blink'
 const PureTypeCharContainer = styled.div`
   position: relative;
-  .caret {
+  .${CARET_CLASS_NAME} {
     height: 3rem;
     position: absolute;
-    // todo当开始打字过程中去掉闪烁动画，防抖
-    animation: caretFlashSmooth 1s infinite;
-    background: black;
+    background-color: var(--color-neutral-4);
     width: 0.2rem;
     top: 3px;
     transition: 0.125s;
   }
+  .${CARET_ANIMATION_CLASS_NAME} {
+    animation: caretFlashSmooth 1s infinite;
+  }
   @keyframes caretFlashSmooth {
     0%,
     100% {
-      opacity: 0;
-    }
-
-    50% {
       opacity: 1;
+    }
+    50% {
+      opacity: 0;
     }
   }
 
@@ -32,6 +36,7 @@ const PureTypeCharContainer = styled.div`
   }
   .${CHAR_CLASS_NAME} {
     outline: 1px solid var(--color-linear-bg-start);
+    color: var(--color-neutral-4);
     position: relative;
     display: inline-block;
   }
@@ -45,7 +50,7 @@ const PureTypeCharContainer = styled.div`
   }
   .${CHAR_STATUS.active} {
   }
-  .blink {
+  .${ERROR_CHAR_ANIMATION} {
     position: absolute;
     top: 0;
     left: 0;
@@ -76,6 +81,17 @@ type PropType = {
 export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const caretRef = useRef<HTMLDivElement | null>(null)
+  const inputSubject = new Subject()
+  // after a two-second pause, the caret will flash again
+  inputSubject.pipe(debounceTime(2000)).subscribe(() => {
+    if (!caretRef.current || caretRef.current.classList.contains(CARET_ANIMATION_CLASS_NAME)) return
+    caretRef.current.classList.add(CARET_ANIMATION_CLASS_NAME)
+  })
+  const caretNext = () => {
+    if (!caretRef.current) return
+    caretRef.current.classList.remove(CARET_ANIMATION_CLASS_NAME)
+    inputSubject.next('')
+  }
   let isStarted = false
   let activeChar: HTMLElement | null = null
 
@@ -128,7 +144,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
           if (status === CHAR_STATUS.error && inputChar) {
             // If input error char, append the error char to override current char. Inspiring by 'typing club'
             const errorChar = document.createElement('span')
-            errorChar.classList.add('blink')
+            errorChar.classList.add(ERROR_CHAR_ANIMATION)
             errorChar.innerHTML = inputChar
             lastChar.appendChild(errorChar)
             setTimeout(() => {
@@ -140,6 +156,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
           } else {
             caretRef.current!.style.left = `${lastChar.offsetLeft + lastChar.getBoundingClientRect().width}px`
           }
+          caretNext()
           return activeChar
         },
         start() {
@@ -163,7 +180,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
   return (
     <PureTypeCharContainer ref={containerRef}>
       {TypeBlock}
-      <div className='caret' ref={caretRef} />
+      <div className={`${CARET_CLASS_NAME} ${CARET_ANIMATION_CLASS_NAME}`} ref={caretRef} />
     </PureTypeCharContainer>
   )
 })
