@@ -1,6 +1,6 @@
 import { buffer, debounceTime, filter, fromEvent, map, race, switchMap, takeUntil, timer } from 'rxjs'
 import { type BinaryTreeNode } from '../types'
-import {  ALL_MORSE_CODE_MAP, ALL_MORSE_CODE_REVERSE_MAP, CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType } from './constants'
+import {  ALL_MORSE_CODE_MAP, ALL_MORSE_CODE_REVERSE_MAP, CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType, NEWLINE_SYMBOL, SEPARATE_SYMBOL } from './constants'
 
 function createBinaryTree(label: string, value: string) {
   const tree: BinaryTreeNode = Object.create(null)
@@ -92,10 +92,26 @@ export function subscribeKeyEventForMorseCode(getOscillatorNode: () => Oscillato
 
 export function transformMorseCodeToChar(morseCode: string) {
   const char = ALL_MORSE_CODE_REVERSE_MAP[morseCode]
-  return char || undefined
+  return char || null
 }
 
+/**
+ * transform single char to morse code
+ * @param char single char
+ * @returns 
+ */
 export function transformCharToMorseCode(char: string) {
   const morseCode = ALL_MORSE_CODE_MAP[char]
-  return morseCode || undefined
+  return morseCode || null
+}
+
+/**
+ * transform string to morse code which could includes space
+ * @param str string
+ */
+export function transformStringToMorseCode(str: string) {
+  return Array.from(str).reduce((result, char) => {
+    result += char ? transformCharToMorseCode(char) + SEPARATE_SYMBOL : NEWLINE_SYMBOL
+     return result
+  },'')
 }

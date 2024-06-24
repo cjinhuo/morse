@@ -3,6 +3,8 @@ import { InputtingMorseCodeAtom } from '../atom/atom'
 import styled from 'styled-components'
 import { TYPING_STATUS } from '../shared/constants'
 import { useMemo } from 'react'
+import { transformMorseCodeToChar } from '../shared/utils'
+import MorseCodeSvg from './morse-code-svg'
 
 const InputMaskContainer = styled.div`
   position: fixed;
@@ -17,7 +19,7 @@ const InputMaskContainer = styled.div`
     animation: maskHideAnimation 1s forwards;
   }
   .visibility-show {
-    animation: maskShowAnimation 0.8s forwards;
+    animation: maskShowAnimation 0.5s forwards;
   }
 
   @keyframes maskShowAnimation {
@@ -38,22 +40,26 @@ const InputMaskContainer = styled.div`
     }
   }
 `
+
 export default function InputMask() {
   const { morseCode, status } = useAtomValue(InputtingMorseCodeAtom)
 
-  const blockClassName = useMemo(() => {
-    if (status === TYPING_STATUS.idle) return 'hidden'
+  const [blockClassName, targetChar] = useMemo(() => {
+    if (status === TYPING_STATUS.idle) return ['visibility-show']
     if (status === TYPING_STATUS.done) {
-      return 'visibility-hidden'
+      return ['visibility-show', transformMorseCodeToChar(morseCode)]
     }
-    return 'visibility-show'
-  }, [status])
+    return ['visibility-show']
+  }, [status, morseCode])
+
   return (
     <InputMaskContainer>
       <div
         style={{ backgroundColor: 'var(--color-neutral-8)', opacity: '0.8' }}
-        className={`text-3xl w-full h-full text-center rounded-2xl ${blockClassName}`}>
-        <div className='text-skin-neutral-4'>{morseCode}</div>
+        className={`text-3xl w-full h-full flex justify-center items-center rounded-2xl ${blockClassName}`}>
+        <div className='text-skin-neutral-4'>
+          {targetChar === null ? '-> invalid morse code' : <MorseCodeSvg morseCode={morseCode}></MorseCodeSvg>}
+        </div>
       </div>
     </InputMaskContainer>
   )

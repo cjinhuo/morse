@@ -38,10 +38,12 @@ export default function MorseTyper() {
     const fragmentSubscription = $fragment.subscribe((fragment) => {
       console.log('fragment', fragment)
       const char = transformMorseCodeToChar(fragment)
-      if (char && currentMorseCode?.innerHTML === char) {
-        currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
-      } else {
-        currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.error, char)
+      if (char) {
+        if (currentMorseCode?.innerHTML === char) {
+          currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
+        } else {
+          currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.error, char)
+        }
       }
 
       setCurrentMorseCode((prev) => ({

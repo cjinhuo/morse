@@ -61,6 +61,8 @@ export enum TYPING_STATUS {
 export const WORD_CONTAINER_CLASS_NAME = 'word'
 export const CHAR_CLASS_NAME = 'char'
 
+export const SEPARATE_SYMBOL = '|'
+export const NEWLINE_SYMBOL = '+'
 
 export const WORD_MORSE_CODE = {
   A: '.-',

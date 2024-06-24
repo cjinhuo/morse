@@ -13,3 +13,4 @@ export interface FlowTreeNode extends BinaryTreeNode {
   parentId?: string
   morseCodeType?: MorseCodeType
 }
+
