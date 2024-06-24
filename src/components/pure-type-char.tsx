@@ -15,7 +15,7 @@ const PureTypeCharContainer = styled.div`
     background-color: var(--color-neutral-4);
     width: 0.2rem;
     top: 3px;
-    transition: 0.125s;
+    transition: 0.2s;
   }
   .${CARET_ANIMATION_CLASS_NAME} {
     animation: caretFlashSmooth 1s infinite;
@@ -35,7 +35,8 @@ const PureTypeCharContainer = styled.div`
     font-size: 3rem;
   }
   .${CHAR_CLASS_NAME} {
-    outline: 1px solid var(--color-linear-bg-start);
+    /* outline: 1px solid var(--color-linear-bg-start); */
+    margin-right: 0.2rem;
     color: var(--color-neutral-4);
     position: relative;
     display: inline-block;
@@ -87,6 +88,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
     if (!caretRef.current || caretRef.current.classList.contains(CARET_ANIMATION_CLASS_NAME)) return
     caretRef.current.classList.add(CARET_ANIMATION_CLASS_NAME)
   })
+
   const caretNext = () => {
     if (!caretRef.current) return
     caretRef.current.classList.remove(CARET_ANIMATION_CLASS_NAME)
@@ -105,11 +107,11 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
     return words.map((word, index) => (
       <div key={word} className={setClassNameWithArray(WORD_CONTAINER_CLASS_NAME, 'inline-block')}>
         {Array.from(word).map((char, index) => (
-          <span key={word} className={CHAR_CLASS_NAME}>
+          <div key={word} className={CHAR_CLASS_NAME}>
             {char}
-          </span>
+          </div>
         ))}
-        {index !== words.length - 1 && <span className={CHAR_CLASS_NAME}>&nbsp;</span>}
+        {index !== words.length - 1 && <div className={`${CHAR_CLASS_NAME} w-6`}></div>}
       </div>
     ))
   }, [data])
@@ -156,6 +158,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
           } else {
             caretRef.current!.style.left = `${lastChar.offsetLeft + lastChar.getBoundingClientRect().width}px`
           }
+          // 输入过程时光标动画将会被移除
           caretNext()
           return activeChar
         },

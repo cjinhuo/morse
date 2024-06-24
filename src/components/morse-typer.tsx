@@ -50,8 +50,13 @@ export default function MorseTyper() {
         status: TYPING_STATUS.done,
         morseCode: prev.morseCode,
       }))
-
-      if (!currentMorseCode) {
+      if (currentMorseCode) {
+        // 遇到空格自动跳过
+        console.log(currentMorseCode.innerText)
+        if (currentMorseCode.innerText === '') {
+          currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
+        }
+      } else {
         singleCharSubscription.unsubscribe()
         fragmentSubscription.unsubscribe()
         console.log('全部结束了')
@@ -64,7 +69,7 @@ export default function MorseTyper() {
   }, [])
   return (
     <div>
-      <PureTypeChar data='HELLO' ref={pureTypeCharRef}></PureTypeChar>
+      <PureTypeChar data='HELLO WORLD' ref={pureTypeCharRef}></PureTypeChar>
     </div>
   )
 }

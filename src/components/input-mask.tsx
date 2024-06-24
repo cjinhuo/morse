@@ -45,9 +45,9 @@ export default function InputMask() {
   const { morseCode, status } = useAtomValue(InputtingMorseCodeAtom)
 
   const [blockClassName, targetChar] = useMemo(() => {
-    if (status === TYPING_STATUS.idle) return ['visibility-show']
+    if (status === TYPING_STATUS.idle) return ['hidden']
     if (status === TYPING_STATUS.done) {
-      return ['visibility-show', transformMorseCodeToChar(morseCode)]
+      return ['visibility-hidden', transformMorseCodeToChar(morseCode)]
     }
     return ['visibility-show']
   }, [status, morseCode])
@@ -57,9 +57,8 @@ export default function InputMask() {
       <div
         style={{ backgroundColor: 'var(--color-neutral-8)', opacity: '0.8' }}
         className={`text-3xl w-full h-full flex justify-center items-center rounded-2xl ${blockClassName}`}>
-        <div className='text-skin-neutral-4'>
-          {targetChar === null ? '-> invalid morse code' : <MorseCodeSvg morseCode={morseCode}></MorseCodeSvg>}
-        </div>
+        <MorseCodeSvg morseCode={morseCode}></MorseCodeSvg>
+        <div className='text-skin-neutral-4'>{targetChar === null ? '-> invalid morse code' : targetChar}</div>
       </div>
     </InputMaskContainer>
   )
