@@ -1,16 +1,16 @@
-import { createHashRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import BaseLayout from '../components/base-layout/base-layout'
 import Home from '../pages/home/home'
 import About from '../pages/about/about'
 import LatinType from '../pages/latin-type/latin-type'
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     path: '/',
     element: <BaseLayout />,
     children: [
       {
         index: true,
-        path: '/',
+        path: '/morse',
         element: <Home></Home>,
       },
       {
