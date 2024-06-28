@@ -1,11 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { CHAR_STATUS, TYPING_STATUS, WORD_MORSE_CODE } from '../shared/constants'
-import CharWithMorseCode from './char-with-morse-code'
+import { CHAR_STATUS, TYPING_STATUS } from '../shared/constants'
 import { InputtingMorseCodeAtom } from '../atom/atom'
 import { useSetAtom } from 'jotai'
 import { getOscillatorNodeWithParams, subscribeKeyEventForMorseCode, transformMorseCodeToChar } from '../shared/utils'
 import PureTypeChar, { type RefMethodsType } from './pure-type-char'
-import { fromEvent } from 'rxjs'
 
 export default function MorseTyper() {
   const setCurrentMorseCode = useSetAtom(InputtingMorseCodeAtom)
@@ -16,12 +14,6 @@ export default function MorseTyper() {
 
     let currentMorseCode = pureTypeCharRef.current.start()
     const [$singleChar, $fragment] = subscribeKeyEventForMorseCode(getOscillatorNodeWithParams)
-    fromEvent<KeyboardEvent>(document, 'click').subscribe((e) => {
-      console.log('e.code', e)
-      if (e.code === 'enter') {
-        // currentMorseCode = pureTypeCharRef.current!.start()
-      }
-    })
     const singleCharSubscription = $singleChar.subscribe((char) => {
       setCurrentMorseCode((prev) => {
         return prev.status !== TYPING_STATUS.typing
@@ -36,7 +28,6 @@ export default function MorseTyper() {
       })
     })
     const fragmentSubscription = $fragment.subscribe((fragment) => {
-      console.log('fragment', fragment)
       const char = transformMorseCodeToChar(fragment)
       if (char) {
         if (currentMorseCode?.innerHTML === char) {
@@ -51,15 +42,14 @@ export default function MorseTyper() {
         morseCode: prev.morseCode,
       }))
       if (currentMorseCode) {
-        // 遇到空格自动跳过
-        console.log(currentMorseCode.innerText)
+        // skip when encounter space char
         if (currentMorseCode.innerText === '') {
           currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
         }
       } else {
         singleCharSubscription.unsubscribe()
         fragmentSubscription.unsubscribe()
-        console.log('全部结束了')
+        console.log('ALL over')
       }
     })
     return () => {

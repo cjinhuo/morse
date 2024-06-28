@@ -12,7 +12,9 @@ function BaseLayout() {
         <Header></Header>
       </Layout.Header>
       <Layout.Content>
-        <Outlet></Outlet>
+        <div className='w-full grow px-40 py-10'>
+          <Outlet></Outlet>
+        </div>
       </Layout.Content>
       <Layout.Footer>
         <Footer></Footer>

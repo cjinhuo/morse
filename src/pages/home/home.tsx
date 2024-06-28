@@ -3,7 +3,7 @@ import MorseTyper from '../../components/morse-typer'
 
 export default function Home() {
   return (
-    <div className='w-full grow px-40 py-10'>
+    <div className='w-full h-full'>
       <MorseTyper />
       <InputMask />
     </div>

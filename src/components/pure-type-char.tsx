@@ -15,7 +15,8 @@ const PureTypeCharContainer = styled.div`
     background-color: var(--color-neutral-4);
     width: 0.2rem;
     top: 3px;
-    transition: 0.2s;
+    left: 0;
+    transition: left 0.2s;
   }
   .${CARET_ANIMATION_CLASS_NAME} {
     animation: caretFlashSmooth 1s infinite;
@@ -37,17 +38,18 @@ const PureTypeCharContainer = styled.div`
   .${CHAR_CLASS_NAME} {
     /* outline: 1px solid var(--color-linear-bg-start); */
     margin-right: 0.2rem;
-    color: var(--color-neutral-4);
+    color: var(--color-neutral-6);
     position: relative;
     display: inline-block;
   }
 
   .${CHAR_STATUS.correct} {
-    color: green;
+    color: var(--color-neutral-4);
+    background-color: var(--color-neutral-8);
   }
   .${CHAR_STATUS.error} {
-    color: red;
-    background-color: pink;
+    color: #fb7185;
+    background-color: #fecdd3;
   }
   .${CHAR_STATUS.active} {
   }
@@ -105,9 +107,9 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
     if (data.length === 0) return null
     const words = data.split(' ')
     return words.map((word, index) => (
-      <div key={word} className={setClassNameWithArray(WORD_CONTAINER_CLASS_NAME, 'inline-block')}>
+      <div key={word} className={`inline-block ${WORD_CONTAINER_CLASS_NAME}`}>
         {Array.from(word).map((char, index) => (
-          <div key={word} className={CHAR_CLASS_NAME}>
+          <div key={`${word}-${index}`} className={CHAR_CLASS_NAME}>
             {char}
           </div>
         ))}
@@ -144,7 +146,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
             }
           }
           if (status === CHAR_STATUS.error && inputChar) {
-            // If input error char, append the error char to override current char. Inspiring by 'typing club'
+            // If inputting error char, append the error char to override current char. Inspiring by 'typing club'
             const errorChar = document.createElement('span')
             errorChar.classList.add(ERROR_CHAR_ANIMATION)
             errorChar.innerHTML = inputChar
@@ -158,7 +160,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
           } else {
             caretRef.current!.style.left = `${lastChar.offsetLeft + lastChar.getBoundingClientRect().width}px`
           }
-          // 输入过程时光标动画将会被移除
+          // stop the caret animation when typing
           caretNext()
           return activeChar
         },

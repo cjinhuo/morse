@@ -7,14 +7,12 @@ export default function LatinType() {
 
   useEffect(() => {
     if (!pureTypeCharRef.current) return
-    fromEvent(document, 'keydown').subscribe((e) => {
-      // todo 过滤特殊按键，如 shift 大小写 tab 键等等
-    })
+    fromEvent(document, 'keydown').subscribe((e) => {})
   }, [])
 
   return (
     <div>
-      <PureTypeChar data='HELLO' ref={pureTypeCharRef}></PureTypeChar>
+      <PureTypeChar data='hello world!' ref={pureTypeCharRef}></PureTypeChar>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { buffer, debounceTime, filter, fromEvent, map, race, switchMap, takeUntil, timer } from 'rxjs'
+import { buffer, debounceTime, filter, finalize, fromEvent, map, race, switchMap, takeUntil, timer } from 'rxjs'
 import { type BinaryTreeNode } from '../types'
 import {  ALL_MORSE_CODE_MAP, ALL_MORSE_CODE_REVERSE_MAP, CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType, NEWLINE_SYMBOL, SEPARATE_SYMBOL } from './constants'
 
@@ -50,7 +50,6 @@ export function getOscillatorNodeWithParams(waveform: OscillatorType = 'sine', d
 
 
 export function subscribeKeyEventForMorseCode(getOscillatorNode: () => OscillatorNode) {
-  // todo 这里可以支持改成任意键位和支持鼠标左右键
   const $keyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
     filter((e) => e.code === 'Space' && !e.repeat)
   )
@@ -63,22 +62,16 @@ export function subscribeKeyEventForMorseCode(getOscillatorNode: () => Oscillato
       return race(
         $keyUpEvent.pipe(
           map(() => {
-            // console.log('key down duration :', Date.now() - startTime)
-            oscillator.stop()
-            if (Date.now() - startTime < DOT_CRITICAL_POINT_TIME) {
-              return MorseCodeCharType.dotChar
-            } else {
-              return MorseCodeCharType.dashChar
-            }
+            return Date.now() - startTime < DOT_CRITICAL_POINT_TIME ? MorseCodeCharType.dotChar : MorseCodeCharType.dashChar
           })
         ),
         timer(MAX_KEY_DOWN_TIME_MS).pipe(
-          map(() => {
-            oscillator.stop()
-            return MorseCodeCharType.dashChar
-          })
+          map(() => MorseCodeCharType.dashChar)
         )
-      ).pipe(takeUntil($keyDownEvent))
+      ).pipe(map(morseCode => {
+        oscillator.stop()
+        return morseCode
+      }))
     })
   )
   const $fragment = $singleChar.pipe(

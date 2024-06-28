@@ -17,10 +17,10 @@ const router = createBrowserRouter([
         path: '/about',
         element: <About></About>,
       },
-      {
-        path: '/latin',
-        element: <LatinType></LatinType>,
-      },
+      // {
+      //   path: '/latin',
+      //   element: <LatinType></LatinType>,
+      // },
     ],
   },
 ])

@@ -14,7 +14,7 @@ const HeaderMenuContainer = styled.nav`
 const HeaderMenu = () => {
   return (
     <HeaderMenuContainer>
-      <LinkWithIcon name={IconParkNames['keyboard-2']} value='/latin' type='route'></LinkWithIcon>
+      <LinkWithIcon name={IconParkNames['keyboard-2']} value='/' type='route'></LinkWithIcon>
       <LinkWithIcon name={IconParkNames.setting}></LinkWithIcon>
       <LinkWithIcon name={IconParkNames.info}></LinkWithIcon>
     </HeaderMenuContainer>
