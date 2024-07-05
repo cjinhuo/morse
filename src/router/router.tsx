@@ -5,7 +5,7 @@ import About from '../pages/about/about'
 import LatinType from '../pages/latin-type/latin-type'
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/morse',
     element: <BaseLayout />,
     children: [
       {
@@ -14,13 +14,13 @@ const router = createBrowserRouter([
         element: <Home></Home>,
       },
       {
-        path: '/about',
+        path: '/morse/about',
         element: <About></About>,
       },
-      // {
-      //   path: '/latin',
-      //   element: <LatinType></LatinType>,
-      // },
+      {
+        path: '/morse/latin',
+        element: <LatinType></LatinType>,
+      },
     ],
   },
 ])

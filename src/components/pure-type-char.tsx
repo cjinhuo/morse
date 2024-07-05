@@ -41,12 +41,18 @@ const PureTypeCharContainer = styled.div`
     color: var(--color-neutral-6);
     position: relative;
     display: inline-block;
+    width: 1.6rem;
   }
 
   .${CHAR_STATUS.correct} {
     color: var(--color-neutral-4);
     background-color: var(--color-neutral-8);
   }
+  .${CHAR_STATUS.warn} {
+    color: #fb923c;
+    background-color: #fed7aa;
+  }
+  /* https://tailwindcss.com/docs/customizing-colors */
   .${CHAR_STATUS.error} {
     color: #fb7185;
     background-color: #fecdd3;
@@ -55,7 +61,7 @@ const PureTypeCharContainer = styled.div`
   }
   .${ERROR_CHAR_ANIMATION} {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     color: white;
     animation: blink_smooth 1s linear;
@@ -75,6 +81,7 @@ const PureTypeCharContainer = styled.div`
 
 export interface RefMethodsType {
   next: (status: CHAR_STATUS, inputChar?: string) => HTMLElement | null
+  prev: () => HTMLElement | null
   start: () => HTMLElement | null
 }
 
@@ -98,6 +105,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
   }
   let isStarted = false
   let activeChar: HTMLElement | null = null
+  let lastChar: HTMLElement | null = null
 
   useEffect(() => {
     if (!caretRef.current || !containerRef.current) return
@@ -122,6 +130,44 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
     ref,
     () => {
       return {
+        start() {
+          if (!containerRef.current || !caretRef.current) return
+          isStarted = true
+          const firstChar = containerRef.current.querySelector(`.${WORD_CONTAINER_CLASS_NAME}`)
+            ?.firstElementChild as HTMLElement | null
+          if (firstChar) {
+            // firstChar.classList.add(CHAR_STATUS.active)
+            activeChar = firstChar
+            return firstChar
+          } else {
+            throw new Error('Start Fn Error: not found the first char in container')
+          }
+        },
+        prev() {
+          if (!isStarted) {
+            throw new Error('Prev Fn Error: should run [start] fn first')
+          }
+          if (!activeChar || !lastChar) {
+            throw new Error('Prev Fn Error: there is no char to iterate')
+          }
+          if (lastChar.classList.contains(CHAR_STATUS.error)) {
+            lastChar.classList.add(CHAR_STATUS.warn)
+            lastChar.classList.remove(CHAR_STATUS.error)
+          } else {
+            lastChar.classList.remove(CHAR_STATUS.active)
+          }
+          activeChar = lastChar
+          caretRef.current!.style.left = `${activeChar.offsetLeft}px`
+
+          lastChar = activeChar.previousElementSibling as HTMLElement | null
+          if (!lastChar) {
+            const prevWord = activeChar.parentElement?.previousElementSibling as HTMLElement | null
+            if (prevWord && prevWord.className.includes(WORD_CONTAINER_CLASS_NAME)) {
+              lastChar = prevWord.lastElementChild as HTMLElement | null
+            }
+          }
+          return activeChar
+        },
         next(status: CHAR_STATUS, inputChar?: string) {
           if (!isStarted) {
             throw new Error('Next Fn Error: should run [start] fn first')
@@ -129,18 +175,18 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
           if (!activeChar) {
             throw new Error('Next Fn Error: there is no char to iterate')
           }
-          let lastChar = activeChar
+          lastChar = activeChar
           activeChar.classList.add(status)
-          activeChar.classList.remove(CHAR_STATUS.active)
+          // activeChar.classList.remove(CHAR_STATUS.active)
           const nextChar = activeChar.nextElementSibling as HTMLElement | null
           if (nextChar) {
             activeChar = nextChar
-            activeChar.classList.add(CHAR_STATUS.active)
+            // activeChar.classList.add(CHAR_STATUS.active)
           } else {
-            const nextWords = activeChar.parentElement?.nextElementSibling
-            if (nextWords?.className.includes(WORD_CONTAINER_CLASS_NAME)) {
-              activeChar = nextWords.firstElementChild as HTMLElement | null
-              activeChar?.classList.add(CHAR_STATUS.active)
+            const nextWord = activeChar.parentElement?.nextElementSibling
+            if (nextWord?.className.includes(WORD_CONTAINER_CLASS_NAME)) {
+              activeChar = nextWord.firstElementChild as HTMLElement | null
+              // activeChar?.classList.add(CHAR_STATUS.active)
             } else {
               activeChar = null
             }
@@ -151,8 +197,9 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
             errorChar.classList.add(ERROR_CHAR_ANIMATION)
             errorChar.innerHTML = inputChar
             lastChar.appendChild(errorChar)
+            const tempLastChar = lastChar
             setTimeout(() => {
-              lastChar.removeChild(errorChar)
+              tempLastChar!.removeChild(errorChar)
             }, 1000)
           }
           if (activeChar) {
@@ -163,19 +210,6 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
           // stop the caret animation when typing
           caretNext()
           return activeChar
-        },
-        start() {
-          if (!containerRef.current || !caretRef.current) return
-          isStarted = true
-          const firstChar = containerRef.current.querySelector(`.${WORD_CONTAINER_CLASS_NAME}`)
-            ?.firstElementChild as HTMLElement | null
-          if (firstChar) {
-            firstChar.classList.add(CHAR_STATUS.active)
-            activeChar = firstChar
-            return firstChar
-          } else {
-            throw new Error('Start Fn Error: not found the first char in container')
-          }
         },
       }
     },

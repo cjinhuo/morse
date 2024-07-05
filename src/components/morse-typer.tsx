@@ -12,7 +12,7 @@ export default function MorseTyper() {
   useEffect(() => {
     if (!pureTypeCharRef.current) return
 
-    let currentMorseCode = pureTypeCharRef.current.start()
+    let currentElement = pureTypeCharRef.current.start()
     const [$singleChar, $fragment] = subscribeKeyEventForMorseCode(getOscillatorNodeWithParams)
     const singleCharSubscription = $singleChar.subscribe((char) => {
       setCurrentMorseCode((prev) => {
@@ -30,10 +30,10 @@ export default function MorseTyper() {
     const fragmentSubscription = $fragment.subscribe((fragment) => {
       const char = transformMorseCodeToChar(fragment)
       if (char) {
-        if (currentMorseCode?.innerHTML === char) {
-          currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
+        if (currentElement?.innerHTML === char) {
+          currentElement = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
         } else {
-          currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.error, char)
+          currentElement = pureTypeCharRef.current!.next(CHAR_STATUS.error, char)
         }
       }
 
@@ -41,10 +41,10 @@ export default function MorseTyper() {
         status: TYPING_STATUS.done,
         morseCode: prev.morseCode,
       }))
-      if (currentMorseCode) {
+      if (currentElement) {
         // skip when encounter space char
-        if (currentMorseCode.innerText === '') {
-          currentMorseCode = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
+        if (currentElement.innerText === '') {
+          currentElement = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
         }
       } else {
         singleCharSubscription.unsubscribe()

@@ -11,6 +11,19 @@ export enum IconParkNames {
   'morse-code' = 'morse-code',
 }
 
+export const CHAR_KEYS = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+export const NUMBER_KEYS = ['1','2','3','4','5','6','7','8','9','0']
+export const SPECIAL_CHAR_KEYS = ['.', ',', '?', "'", '!', '/', '(', ')', '&', ':', ';', '=', '+', '-', '_', '"', '$', '@','>','<','[',']','{','}','|']
+export const DELETE_KEYS = ['Backspace', 'Delete']
+export const SPACE_KEYS = [' ']
+
+export const LATIN_ALLOWED_INPUT_KEYS = [...CHAR_KEYS, ...NUMBER_KEYS, ...SPECIAL_CHAR_KEYS, ...DELETE_KEYS, ...SPACE_KEYS]
+
+export const LATIN_ALLOWED_INPUT_KEYS_SET = new Set(LATIN_ALLOWED_INPUT_KEYS)
+
+export const DELETE_KEYS_SET = new Set(DELETE_KEYS)
+
+
 export interface EdgeData {
   type: MorseCodeType
 }
@@ -44,6 +57,7 @@ export enum CHAR_STATUS {
   active = 'active',
   correct = 'correct',
   error = 'error',
+  warn = 'warn',
 }
 
 export enum MACHINE_STATE {
