@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import PureTypeChar, { type RefMethodsType } from '../../components/pure-type-char'
-import { filter, fromEvent, map } from 'rxjs'
+import { elementAt, filter, fromEvent, map } from 'rxjs'
 import { CHAR_STATUS, DELETE_KEYS_SET, LATIN_ALLOWED_INPUT_KEYS_SET } from '../../shared/constants'
 
 export default function LatinType() {
@@ -22,17 +22,24 @@ export default function LatinType() {
     const $backwardKeyDownEvent = $allowedKeyDownEvent.pipe(filter((e) => DELETE_KEYS_SET.has(e.key)))
 
     let currentElement = pureTypeCharRef.current.start()
+    let lastElement: HTMLElement | null = null
     const forwardKeySubscription = $forwardKeyDownEvent.subscribe((e) => {
-      console.log(e.key, currentElement?.innerHTML)
       if (e.key === currentElement?.innerHTML) {
-        currentElement = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
+        ;[currentElement, lastElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
       } else {
-        currentElement = pureTypeCharRef.current!.next(CHAR_STATUS.error, e.key)
+        ;[currentElement, lastElement] = pureTypeCharRef.current!.next(CHAR_STATUS.error, e.key)
+      }
+      if (!currentElement) {
+        console.log('over')
+        return
       }
     })
 
     const backwardKeySubscription = $backwardKeyDownEvent.subscribe((e) => {
-      currentElement = pureTypeCharRef.current!.prev()
+      if (!lastElement) {
+        return
+      }
+      ;[currentElement, lastElement] = pureTypeCharRef.current!.prev()
     })
 
     return () => {

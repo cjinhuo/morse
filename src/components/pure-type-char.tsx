@@ -80,8 +80,8 @@ const PureTypeCharContainer = styled.div`
 `
 
 export interface RefMethodsType {
-  next: (status: CHAR_STATUS, inputChar?: string) => HTMLElement | null
-  prev: () => HTMLElement | null
+  next: (status: CHAR_STATUS, inputChar?: string) => [HTMLElement | null, HTMLElement | null]
+  prev: () => [HTMLElement, HTMLElement | null]
   start: () => HTMLElement | null
 }
 
@@ -147,14 +147,14 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
           if (!isStarted) {
             throw new Error('Prev Fn Error: should run [start] fn first')
           }
-          if (!activeChar || !lastChar) {
-            throw new Error('Prev Fn Error: there is no char to iterate')
+          if (!lastChar) {
+            throw new Error('Prev Fn Error: there is no last char to iterate')
           }
           if (lastChar.classList.contains(CHAR_STATUS.error)) {
             lastChar.classList.add(CHAR_STATUS.warn)
             lastChar.classList.remove(CHAR_STATUS.error)
           } else {
-            lastChar.classList.remove(CHAR_STATUS.active)
+            lastChar.classList.remove(CHAR_STATUS.correct)
           }
           activeChar = lastChar
           caretRef.current!.style.left = `${activeChar.offsetLeft}px`
@@ -166,7 +166,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
               lastChar = prevWord.lastElementChild as HTMLElement | null
             }
           }
-          return activeChar
+          return [activeChar, lastChar]
         },
         next(status: CHAR_STATUS, inputChar?: string) {
           if (!isStarted) {
@@ -176,6 +176,8 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
             throw new Error('Next Fn Error: there is no char to iterate')
           }
           lastChar = activeChar
+          // always remove the 'warn' class since it probably set by prev()
+          activeChar.classList.remove(CHAR_STATUS.warn)
           activeChar.classList.add(status)
           // activeChar.classList.remove(CHAR_STATUS.active)
           const nextChar = activeChar.nextElementSibling as HTMLElement | null
@@ -209,7 +211,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
           }
           // stop the caret animation when typing
           caretNext()
-          return activeChar
+          return [activeChar, lastChar]
         },
       }
     },
