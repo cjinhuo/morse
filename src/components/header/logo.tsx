@@ -1,9 +1,14 @@
+import { useNavigate } from 'react-router-dom'
 import { IconParkNames } from '../../shared/constants'
 import IconPark from '../icon-park'
 
 export default function Logo() {
+  const navigate = useNavigate()
+  const handleClick = () => {
+    navigate('/morse')
+  }
   return (
-    <div className='h-full flex'>
+    <div onClick={handleClick} className='h-full flex cursor-pointer'>
       <IconPark
         class='text-skin-neutral-2 relative'
         style={{ bottom: '2px' }}

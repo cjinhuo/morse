@@ -115,13 +115,13 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
     if (data.length === 0) return null
     const words = data.split(' ')
     return words.map((word, index) => (
-      <div key={word} className={`inline-block ${WORD_CONTAINER_CLASS_NAME}`}>
+      <div key={`${word}-${index}`} className={`inline-block ${WORD_CONTAINER_CLASS_NAME}`}>
         {Array.from(word).map((char, index) => (
-          <div key={`${word}-${index}`} className={CHAR_CLASS_NAME}>
+          <div key={`${char}-${index}`} className={CHAR_CLASS_NAME}>
             {char}
           </div>
         ))}
-        {index !== words.length - 1 && <div className={`${CHAR_CLASS_NAME} w-6`}></div>}
+        {index !== words.length - 1 && <div className={`${CHAR_CLASS_NAME} w-6`}> </div>}
       </div>
     ))
   }, [data])

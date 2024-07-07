@@ -31,9 +31,9 @@ export default function MorseTyper() {
       const char = transformMorseCodeToChar(fragment)
       if (char) {
         if (currentElement?.innerHTML === char) {
-          currentElement = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
+          ;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
         } else {
-          currentElement = pureTypeCharRef.current!.next(CHAR_STATUS.error, char)
+          ;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.error, char)
         }
       }
 
@@ -44,7 +44,7 @@ export default function MorseTyper() {
       if (currentElement) {
         // skip when encounter space char
         if (currentElement.innerText === '') {
-          currentElement = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
+          ;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
         }
       } else {
         singleCharSubscription.unsubscribe()
