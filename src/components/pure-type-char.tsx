@@ -10,11 +10,11 @@ const ERROR_CHAR_ANIMATION = 'blink'
 const PureTypeCharContainer = styled.div`
   position: relative;
   .${CARET_CLASS_NAME} {
-    height: 3rem;
+    height: 3.4rem;
     position: absolute;
     background-color: var(--color-neutral-4);
     width: 0.2rem;
-    top: 3px;
+    top: 0;
     left: 0;
     transition: left 0.2s;
   }
@@ -34,6 +34,7 @@ const PureTypeCharContainer = styled.div`
   .${WORD_CONTAINER_CLASS_NAME} {
     line-height: 3.4rem;
     font-size: 3rem;
+    margin-top: 0.2rem;
   }
   .${CHAR_CLASS_NAME} {
     /* outline: 1px solid var(--color-linear-bg-start); */
@@ -41,7 +42,7 @@ const PureTypeCharContainer = styled.div`
     color: var(--color-neutral-6);
     position: relative;
     display: inline-block;
-    width: 1.6rem;
+    width: 1.5rem;
   }
 
   .${CHAR_STATUS.correct} {
@@ -106,9 +107,17 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
   let isStarted = false
   let activeChar: HTMLElement | null = null
   let lastChar: HTMLElement | null = null
-
+  const calculateCaretPosition = () => {
+    if (!caretRef.current || !activeChar) return
+    caretRef.current.style.left = `${activeChar.offsetLeft}px`
+    caretRef.current.style.top = `${activeChar.offsetTop}px`
+  }
   useEffect(() => {
     if (!caretRef.current || !containerRef.current) return
+    window.addEventListener('resize', calculateCaretPosition)
+    return () => {
+      window.removeEventListener('resize', calculateCaretPosition)
+    }
   }, [])
 
   const TypeBlock = useMemo(() => {
@@ -121,7 +130,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
             {char}
           </div>
         ))}
-        {index !== words.length - 1 && <div className={`${CHAR_CLASS_NAME} w-6`}> </div>}
+        {index !== words.length - 1 && <div className={`${CHAR_CLASS_NAME} w-6 whitespace-pre-wrap`}> </div>}
       </div>
     ))
   }, [data])
@@ -151,13 +160,13 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
             throw new Error('Prev Fn Error: there is no last char to iterate')
           }
           if (lastChar.classList.contains(CHAR_STATUS.error)) {
-            lastChar.classList.add(CHAR_STATUS.warn)
-            lastChar.classList.remove(CHAR_STATUS.error)
+            calculateCaretPosition()
           } else {
             lastChar.classList.remove(CHAR_STATUS.correct)
           }
           activeChar = lastChar
           caretRef.current!.style.left = `${activeChar.offsetLeft}px`
+          caretRef.current!.style.top = `${activeChar.offsetTop}px`
 
           lastChar = activeChar.previousElementSibling as HTMLElement | null
           if (!lastChar) {
@@ -205,7 +214,7 @@ export default forwardRef(function PureTypeChar({ data }: PropType, ref) {
             }, 1000)
           }
           if (activeChar) {
-            caretRef.current!.style.left = `${activeChar.offsetLeft}px`
+            calculateCaretPosition()
           } else {
             caretRef.current!.style.left = `${lastChar.offsetLeft + lastChar.getBoundingClientRect().width}px`
           }

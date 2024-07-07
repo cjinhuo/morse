@@ -25,8 +25,6 @@ export default function LatinType() {
     let currentElement = pureTypeCharRef.current.start()
     let lastElement: HTMLElement | null = null
     const forwardKeySubscription = $forwardKeyDownEvent.subscribe((e) => {
-      console.log('currentelement', currentElement, currentElement?.innerText, currentElement?.innerHTML, e.key)
-      debugger
       if (e.key === currentElement?.innerText) {
         ;[currentElement, lastElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
       } else {

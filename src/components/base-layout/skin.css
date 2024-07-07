@@ -39,10 +39,6 @@ html {
   --color-link-href: rgb(90, 160, 223);
 }
 
-.glob {
-  --max-w-65: 65ch;
-}
-
 /* ::selection {
   color: var(--color-neutral-9);
   background-color: var(--color-normal-bg-reverse);
@@ -66,8 +62,4 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-neutral-6);
-}
-
-:root {
-  @apply glob;
 }
