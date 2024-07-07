@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import PureTypeChar, { type RefMethodsType } from '../../components/pure-type-char'
 import { elementAt, filter, fromEvent, map } from 'rxjs'
 import { CHAR_STATUS, DELETE_KEYS_SET, LATIN_ALLOWED_INPUT_KEYS_SET } from '../../shared/constants'
+import { playTypeWriterSound } from '../../shared/sound'
 
 export default function LatinType() {
   const pureTypeCharRef = useRef<RefMethodsType | null>(null)
@@ -29,6 +30,7 @@ export default function LatinType() {
       } else {
         ;[currentElement, lastElement] = pureTypeCharRef.current!.next(CHAR_STATUS.error, e.key)
       }
+      playTypeWriterSound()
       if (!currentElement) {
         console.log('over')
         return
@@ -39,6 +41,7 @@ export default function LatinType() {
       if (!lastElement) {
         return
       }
+      playTypeWriterSound()
       ;[currentElement, lastElement] = pureTypeCharRef.current!.prev()
     })
 
