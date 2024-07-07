@@ -53,7 +53,9 @@ export default function LatinType() {
 
   return (
     <div>
-      <PureTypeChar data='hello world!' ref={pureTypeCharRef}></PureTypeChar>
+      <PureTypeChar
+        data="It's tempting to want to live in the past. It's familiar. It's comfortable. But it's where fossils come from."
+        ref={pureTypeCharRef}></PureTypeChar>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { mergeWith } from 'lodash'
+import mergeWith from 'lodash/mergeWith'
 import styled from 'styled-components'
 import { MorseCodeCharType, NEWLINE_SYMBOL, SEPARATE_SYMBOL } from '../shared/constants'
 
