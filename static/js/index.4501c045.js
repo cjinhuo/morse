@@ -52,9 +52,11 @@
   width: 100%;
   height: 100%;
   border-radius: 0.8rem;
-  background-color: var(--color-neutral-7);
+  color: var(--color-neutral-5);
+  font-size: 1.6rem;
+  background-color: var(--color-neutral-8);
   &:hover {
-    background-color: var(--color-neutral-8);
+    background-color: var(--color-normal-bg);
   }
   &:active {
     top: 6px;
@@ -66,7 +68,7 @@
     }
   }
   &::before {
-    background-color: var(--color-neutral-6);
+    background-color: var(--color-neutral-7);
     position: absolute;
     content: '';
     width: calc(100% + 4px);
@@ -76,7 +78,7 @@
     border-radius: inherit;
     z-index: -1;
   }
-`;function a(){let e=(0,o.useCallback)(e=>{let t=new KeyboardEvent(e,{key:" ",code:"Space",keyCode:32,charCode:32,bubbles:!0,cancelable:!0});document.dispatchEvent(t)},[]),t=(0,o.useCallback)(()=>{e("keydown")},[e]),r=(0,o.useCallback)(()=>{e("keyup")},[e]);return(0,n.jsx)(s,{onMouseDown:t,onMouseUp:r,children:"Click Me"})}},4778:function(e,t,r){r(64072),r(87395),r(19608),r(1056);var n=r(52676),i=r(29508),o=r(59497),c=r(75271),s=r(9921),a=r(56301);let l="caret",u="caret-animation",d="blink",f=i.ZP.div`
+`;function a(){let e=(0,o.useCallback)(e=>{let t=new KeyboardEvent(e,{key:" ",code:"Space",keyCode:32,charCode:32,bubbles:!0,cancelable:!0});document.dispatchEvent(t)},[]),t=(0,o.useCallback)(()=>{e("keydown")},[e]),r=(0,o.useCallback)(()=>{e("keyup")},[e]);return(0,n.jsx)(s,{onMouseDown:t,onMouseUp:r,children:"SPACE"})}},4778:function(e,t,r){r(64072),r(87395),r(19608),r(1056);var n=r(52676),i=r(29508),o=r(59497),c=r(75271),s=r(9921),a=r(56301);let l="caret",u="caret-animation",d="blink",f=i.ZP.div`
   position: relative;
   .${l} {
     height: 3.4rem;
