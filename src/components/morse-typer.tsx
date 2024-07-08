@@ -44,7 +44,7 @@ export default function MorseTyper() {
       }))
       if (currentElement) {
         // skip when encounter space char
-        if (currentElement.innerText === '') {
+        if (currentElement.innerText === ' ') {
           ;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
         }
       } else {

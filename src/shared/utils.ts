@@ -37,7 +37,7 @@ const audioContext = new window.AudioContext()
 export function getOscillatorNodeWithParams(waveform: OscillatorType = 'sine', duration = 1) {
   const oscillator = audioContext.createOscillator()
   oscillator.type = waveform
-  oscillator.frequency.setValueAtTime(600, audioContext.currentTime) // A4 note
+  oscillator.frequency.setValueAtTime(600, audioContext.currentTime)
   const gainNode = audioContext.createGain()
   // 音量大小
   gainNode.gain.setValueAtTime(0.2, audioContext.currentTime)
@@ -58,7 +58,7 @@ export function subscribeKeyEventForMorseCode(getOscillatorNode: () => Oscillato
     switchMap(() => {
       const startTime = Date.now()
       const oscillator = getOscillatorNode()
-      oscillator.start()
+      oscillator.start(0)
       return race(
         $keyUpEvent.pipe(
           map(() => {
