@@ -7,9 +7,11 @@ const SpaceButton = styled(motion.button)`
   width: 100%;
   height: 100%;
   border-radius: 0.8rem;
-  background-color: var(--color-neutral-7);
+  color: var(--color-neutral-5);
+  font-size: 1.6rem;
+  background-color: var(--color-neutral-8);
   &:hover {
-    background-color: var(--color-neutral-8);
+    background-color: var(--color-normal-bg);
   }
   &:active {
     top: 6px;
@@ -21,7 +23,7 @@ const SpaceButton = styled(motion.button)`
     }
   }
   &::before {
-    background-color: var(--color-neutral-6);
+    background-color: var(--color-neutral-7);
     position: absolute;
     content: '';
     width: calc(100% + 4px);
@@ -62,7 +64,7 @@ export default function MotionSpaceButton() {
   // }, [triggerKeyEvent])
   return (
     <SpaceButton onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
-      Click Me
+      SPACE
     </SpaceButton>
   )
 }
