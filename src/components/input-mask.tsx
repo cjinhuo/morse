@@ -6,13 +6,13 @@ import { useMemo } from 'react'
 import { transformMorseCodeToChar } from '../shared/utils'
 import MorseCodeSvg from './morse-code-svg'
 import MotionSpaceButton from './motion-space-button'
+import useMobile from '../hooks/useMobile'
 
 const InputMaskContainer = styled.div`
   position: fixed;
   left: 20%;
   bottom: 16vh;
   width: 60%;
-  height: 10rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -45,7 +45,7 @@ const InputMaskContainer = styled.div`
 
 export default function InputMask() {
   const { morseCode, status } = useAtomValue(InputtingMorseCodeAtom)
-
+  const isMobile = useMobile()
   const [blockClassName, targetChar] = useMemo(() => {
     if (status === TYPING_STATUS.idle) return ['invisible']
     if (status === TYPING_STATUS.done) {
@@ -62,9 +62,11 @@ export default function InputMask() {
         <MorseCodeSvg morseCode={morseCode}></MorseCodeSvg>
         <div className='text-skin-neutral-4'>{targetChar === null ? '-> invalid morse code' : targetChar}</div>
       </div>
-      <div className='h-16 w-full'>
-        <MotionSpaceButton></MotionSpaceButton>
-      </div>
+      {isMobile && (
+        <div className='h-16 w-full mt-4'>
+          <MotionSpaceButton></MotionSpaceButton>
+        </div>
+      )}
     </InputMaskContainer>
   )
 }

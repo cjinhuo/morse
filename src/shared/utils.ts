@@ -33,6 +33,7 @@ export function setClassNameWithArray(...args: string[]): string {
   return args.filter(Boolean).join(' ')
 }
 
+// need to create after a click event trigger by user
 const audioContext = new window.AudioContext()
 export function getOscillatorNodeWithParams(waveform: OscillatorType = 'sine', duration = 1) {
   const oscillator = audioContext.createOscillator()
@@ -107,4 +108,17 @@ export function transformStringToMorseCode(str: string) {
     result += char ? transformCharToMorseCode(char) + SEPARATE_SYMBOL : NEWLINE_SYMBOL
      return result
   },'')
+}
+
+
+export function isMobile() {
+  if (
+    window.navigator.userAgent.match(
+      /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+    )
+  ) {
+    return true // 移动端
+  } else {
+    return false // PC端
+  }
 }
