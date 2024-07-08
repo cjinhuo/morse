@@ -2,7 +2,7 @@ import React from 'react'
 import IconPark from './icon-park'
 import { useNavigate } from 'react-router-dom'
 import type { IconParkNames } from '../shared/constants'
-
+import { motion } from 'framer-motion'
 type PropsType = {
   name: IconParkNames
   value?: string
@@ -22,8 +22,8 @@ export default function LinkWithIcon({ name, value, type, onClick }: PropsType) 
     }
   }
   return (
-    <div className='flex items-center cursor-pointer' onClick={handleOnClick}>
+    <motion.div whileHover={{ scale: 1.2 }} className='flex items-center cursor-pointer' onClick={handleOnClick}>
       <IconPark name={name}></IconPark>
-    </div>
+    </motion.div>
   )
 }

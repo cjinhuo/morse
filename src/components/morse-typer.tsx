@@ -4,6 +4,7 @@ import { InputtingMorseCodeAtom } from '../atom/atom'
 import { useSetAtom } from 'jotai'
 import { getOscillatorNodeWithParams, subscribeKeyEventForMorseCode, transformMorseCodeToChar } from '../shared/utils'
 import PureTypeChar, { type RefMethodsType } from './pure-type-char'
+import { motion } from 'framer-motion'
 
 export default function MorseTyper() {
   const setCurrentMorseCode = useSetAtom(InputtingMorseCodeAtom)

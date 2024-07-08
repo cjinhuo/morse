@@ -42,7 +42,6 @@ const PureTypeCharContainer = styled.div`
     color: var(--color-neutral-6);
     position: relative;
     display: inline-block;
-    width: 1.5rem;
   }
 
   .${CHAR_STATUS.correct} {
