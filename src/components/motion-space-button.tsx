@@ -2,23 +2,11 @@ import { motion } from 'framer-motion'
 import { useCallback } from 'react'
 import styled from 'styled-components'
 
-const ButtonContainer = styled.div`
-  position: fixed;
-  bottom: 10vh;
-  left: 30%;
-  width: 40%;
-  height: 3rem;
-  @media (max-width: 400px) {
-    left: 10%;
-    width: 80%;
-  }
-`
-
 const SpaceButton = styled(motion.button)`
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 0.5rem;
+  border-radius: 0.8rem;
   background-color: var(--color-neutral-7);
   &:hover {
     background-color: var(--color-neutral-8);
@@ -69,14 +57,12 @@ export default function MotionSpaceButton() {
   }, [triggerKeyEvent])
 
   // 处理按钮的onMouseLeave事件（防止鼠标移出后未触发onMouseUp事件）
-  const handleMouseLeave = useCallback(() => {
-    triggerKeyEvent('keyup')
-  }, [triggerKeyEvent])
+  // const handleMouseLeave = useCallback(() => {
+  //   triggerKeyEvent('keyup')
+  // }, [triggerKeyEvent])
   return (
-    <ButtonContainer>
-      <SpaceButton onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseLeave}>
-        Click Me
-      </SpaceButton>
-    </ButtonContainer>
+    <SpaceButton onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
+      Click Me
+    </SpaceButton>
   )
 }
