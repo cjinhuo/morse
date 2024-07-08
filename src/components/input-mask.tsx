@@ -11,14 +11,14 @@ const InputMaskContainer = styled.div`
   position: fixed;
   left: 20%;
   bottom: 16vh;
-  min-width: 60%;
+  width: 60%;
   height: 10rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   .visibility-hidden {
-    animation: maskHideAnimation 1s forwards;
+    animation: maskHideAnimation 1.5s forwards;
   }
   .visibility-show {
     animation: maskShowAnimation 0.5s forwards;
@@ -58,7 +58,7 @@ export default function InputMask() {
     <InputMaskContainer>
       <div
         style={{ backgroundColor: 'var(--color-neutral-8)', opacity: '0.8' }}
-        className={`text-3xl w-full h-16 flex justify-center items-center rounded-2xl ${blockClassName}`}>
+        className={`text-3xl overflow-hidden w-full h-16 flex justify-center items-center rounded-2xl ${blockClassName}`}>
         <MorseCodeSvg morseCode={morseCode}></MorseCodeSvg>
         <div className='text-skin-neutral-4'>{targetChar === null ? '-> invalid morse code' : targetChar}</div>
       </div>

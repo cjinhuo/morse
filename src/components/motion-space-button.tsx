@@ -63,7 +63,7 @@ export default function MotionSpaceButton() {
   //   triggerKeyEvent('keyup')
   // }, [triggerKeyEvent])
   return (
-    <SpaceButton onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
+    <SpaceButton className='select-none' onTouchStart={handleMouseDown} onTouchEnd={handleMouseUp}>
       SPACE
     </SpaceButton>
   )
