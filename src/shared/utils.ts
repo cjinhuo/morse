@@ -58,7 +58,7 @@ export function subscribeKeyEventForMorseCode(getOscillatorNode: () => Oscillato
     switchMap(() => {
       const startTime = Date.now()
       const oscillator = getOscillatorNode()
-      oscillator.start(0)
+      oscillator.start()
       return race(
         $keyUpEvent.pipe(
           map(() => {

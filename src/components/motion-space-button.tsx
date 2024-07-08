@@ -48,22 +48,16 @@ export default function MotionSpaceButton() {
     document.dispatchEvent(event)
   }, [])
 
-  // 处理按钮的onMouseDown事件
-  const handleMouseDown = useCallback(() => {
+  const handlePointerDown = useCallback(() => {
     triggerKeyEvent('keydown')
   }, [triggerKeyEvent])
 
-  // 处理按钮的onMouseUp事件
-  const handleMouseUp = useCallback(() => {
+  const handlePointerUp = useCallback(() => {
     triggerKeyEvent('keyup')
   }, [triggerKeyEvent])
 
-  // 处理按钮的onMouseLeave事件（防止鼠标移出后未触发onMouseUp事件）
-  // const handleMouseLeave = useCallback(() => {
-  //   triggerKeyEvent('keyup')
-  // }, [triggerKeyEvent])
   return (
-    <SpaceButton className='select-none' onTouchStart={handleMouseDown} onTouchEnd={handleMouseUp}>
+    <SpaceButton className='select-none' onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
       SPACE
     </SpaceButton>
   )
