@@ -7,7 +7,7 @@ const HeaderMenuContainer = styled.nav`
   display: flex;
   margin-left: 1rem;
   > div {
-    margin-right: 2.2rem;
+    margin-right: 2rem;
   }
 `
 

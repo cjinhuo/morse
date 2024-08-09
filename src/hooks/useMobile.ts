@@ -6,7 +6,6 @@ export default function useMobile() {
   const [isMobileState, setIsMobile] = useState(isMobile())
   useLayoutEffect(() => {
     const subscription = fromEvent(window, 'resize').pipe(debounceTime(500)).subscribe(() => {
-      console.log('isMobile', isMobile())
       setIsMobile(isMobile())
     })
     return () => {

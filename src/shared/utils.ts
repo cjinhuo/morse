@@ -1,6 +1,6 @@
-import { buffer, debounceTime, filter, finalize, fromEvent, map, race, switchMap, takeUntil, timer } from 'rxjs'
+import { buffer, debounceTime, filter, fromEvent, map, race, switchMap, timer } from 'rxjs'
 import { type BinaryTreeNode } from '../types'
-import {  ALL_MORSE_CODE_MAP, ALL_MORSE_CODE_REVERSE_MAP, CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType, NEWLINE_SYMBOL, SEPARATE_SYMBOL } from './constants'
+import { ALL_MORSE_CODE_MAP, ALL_MORSE_CODE_REVERSE_MAP, CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, LOCAL_STORAGE_THEME_KEY, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType, NEWLINE_SYMBOL, SEPARATE_SYMBOL, ThemeMode } from './constants'
 
 function createBinaryTree(label: string, value: string) {
   const tree: BinaryTreeNode = Object.create(null)
@@ -121,4 +121,20 @@ export function isMobile() {
   } else {
     return false // PC端
   }
+}
+
+export function isSystemDarkMode() {
+  return window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+}
+
+export function isLocalStorageDarkMode() {
+  return localStorage.getItem(LOCAL_STORAGE_THEME_KEY) === 'dark'
+}
+
+export function getThemeMode() {
+  if (isSystemDarkMode() || isLocalStorageDarkMode()) {
+    return ThemeMode.dark
+  }
+  return ThemeMode.light
 }

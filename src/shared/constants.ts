@@ -1,3 +1,8 @@
+
+export enum ThemeMode {
+  light = 'light',
+  dark = 'dark',
+}
 export enum IconParkNames {
   github = 'github',
   info = 'info',
@@ -36,6 +41,7 @@ export const DOT_CRITICAL_POINT_TIME = 130
 // the critical point between char and char
 export const CHAR_CRITICAL_POINT_TIME = 500
 export const LOCAL_STORAGE_KEY = 'morse'
+export const LOCAL_STORAGE_THEME_KEY = 'theme'
 
 export const FLOW_TREE_NAME = 'tree'
 
