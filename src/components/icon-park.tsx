@@ -12,7 +12,6 @@ type IconParkProps = {
   style?: React.CSSProperties
 }
 export default function IconPark(props: IconParkProps) {
-  // todo 修复类型错误 env.d.ts
   return (
     <iconpark-icon
       size='1.3rem'
