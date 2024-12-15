@@ -12,16 +12,15 @@
   "dependencies": {
     "@douyinfe/semi-ui": "^2.60.1",
     "@icon-park/react": "^1.4.2",
-    "@xyflow/react": "12.0.0-next.20",
+    "@xyflow/react": "12.3.6",
     "dagre": "^0.8.5",
-    "framer-motion": "^11.2.13",
     "jotai": "^2.8.3",
     "lodash": "^4.17.21",
     "modern-normalize": "^2.0.0",
+    "motion": "^11.14.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
-    "reactflow": "^11.11.3",
     "rxjs": "8.0.0-alpha.14",
     "styled-components": "^6.1.11"
   },
