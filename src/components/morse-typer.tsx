@@ -1,18 +1,38 @@
 import { useSetAtom } from 'jotai'
-import { useEffect, useRef, useState } from 'react'
+import { motion } from 'motion/react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import ReactCanvasConfetti from 'react-canvas-confetti/dist/presets/crossfire'
+import type { TCanvasConfettiInstance } from 'react-canvas-confetti/dist/types'
 import { InputtingMorseCodeAtom } from '../atom/atom'
 import { CHAR_STATUS, TYPING_STATUS } from '../shared/constants'
-import { getOscillatorNodeWithParams, subscribeKeyEventForMorseCode, transformMorseCodeToChar } from '../shared/utils'
+import {
+	getOscillatorNodeWithParams,
+	subscribeKeyEventForMorseCode,
+	transformCharToMorseCode,
+	transformMorseCodeToChar,
+} from '../shared/utils'
 import PureTypeChar, { type RefMethodsType } from './pure-type-char'
+
+interface TooltipData {
+	x: number
+	y: number
+	content: string
+}
+
+const canvasStyles = {
+	position: 'fixed',
+	pointerEvents: 'none',
+	width: '100%',
+	height: '100%',
+	top: 0,
+	left: 0,
+} as const
 
 export default function MorseTyper() {
 	const setCurrentMorseCode = useSetAtom(InputtingMorseCodeAtom)
 	const pureTypeCharRef = useRef<RefMethodsType | null>(null)
-	const [currentElementState, setCurrentElementState] = useState<Element | null>(null)
-
-	useEffect(() => {
-		if (!currentElementState) return
-	}, [currentElementState])
+	const [currentElementState, setCurrentElementState] = useState<HTMLElement | null | undefined>(undefined)
+	const [tooltipData, setTooltipData] = useState<TooltipData>({ x: 0, y: 0, content: '' })
 
 	useEffect(() => {
 		if (!pureTypeCharRef.current) return
@@ -35,7 +55,6 @@ export default function MorseTyper() {
 		})
 		const fragmentSubscription = $fragment.subscribe((fragment) => {
 			const char = transformMorseCodeToChar(fragment)
-			console.log('currentElement', currentElement)
 			if (char) {
 				if (currentElement?.innerHTML === char) {
 					;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
@@ -43,24 +62,20 @@ export default function MorseTyper() {
 					;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.error, char)
 				}
 			}
-			console.log('next element', currentElement)
 
 			setCurrentMorseCode((prev) => ({
 				status: TYPING_STATUS.done,
 				morseCode: prev.morseCode,
 			}))
 			if (currentElement) {
-				// skip when encounter space char
 				if (currentElement.innerText === ' ') {
 					;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
 				}
 				setCurrentElementState(currentElement)
-				//
 			} else {
 				setCurrentElementState(null)
 				singleCharSubscription.unsubscribe()
 				fragmentSubscription.unsubscribe()
-				console.log('ALL over')
 			}
 		})
 		return () => {
@@ -68,8 +83,48 @@ export default function MorseTyper() {
 			fragmentSubscription.unsubscribe()
 		}
 	}, [setCurrentMorseCode])
+
+	useEffect(() => {
+		if (!currentElementState) return
+		const content = transformCharToMorseCode(currentElementState.innerHTML)
+		if (content) {
+			setTooltipData({
+				x: currentElementState.offsetLeft + 2,
+				y: currentElementState.offsetTop - 36,
+				content,
+			})
+		}
+	}, [currentElementState])
+
 	return (
-		<div>
+		<div className='relative'>
+			{currentElementState === null && <ReactCanvasConfetti autorun={{ speed: 10, duration: 3000 }} />}
+			{/* <ReactCanvasConfetti
+				onInit={({ confetti }) => {
+					setConfettiInstance(confetti)
+				}}
+				globalOptions={{
+					useWorker: true,
+				}}
+				style={canvasStyles}
+			/> */}
+			{currentElementState && (
+				<motion.div
+					animate={{
+						opacity: 1,
+						x: tooltipData.x,
+						y: tooltipData.y,
+					}}
+					transition={{
+						type: 'spring',
+						stiffness: 300,
+						damping: 30,
+					}}
+					className='absolute transform -translate-x-1/2 px-2 py-1 bg-black text-white text-sm rounded shadow-lg'
+				>
+					{tooltipData.content}
+				</motion.div>
+			)}
 			<PureTypeChar data='HELLO WORLD' ref={pureTypeCharRef} />
 		</div>
 	)
