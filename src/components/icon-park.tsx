@@ -10,13 +10,14 @@ type IconParkProps = {
   spin?: string
   class?: string
   style?: React.CSSProperties
+  active?: boolean
 }
 export default function IconPark(props: IconParkProps) {
   return (
     <iconpark-icon
       size='1.3rem'
       style={{ transition: 'color 0.1s' }}
-      class='text-skin-neutral-7 hover:text-skin-neutral-5'
+      class={`text-skin-neutral-7 hover:text-skin-neutral-5 ${props.active ? 'text-skin-neutral-5' : ''}`}
       {...props}></iconpark-icon>
   )
 }
