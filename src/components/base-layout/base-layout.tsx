@@ -21,7 +21,7 @@ function BaseLayout() {
         </ContentContainer>
       </Layout.Content>
       <Layout.Footer>
-        <Footer />
+        {/* <Footer /> */}
       </Layout.Footer>
     </>
   )
