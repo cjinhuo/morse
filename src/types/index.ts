@@ -1,6 +1,6 @@
-import type { MorseCodeType } from "../shared/constants"
+import type { MorseCodeType } from '../shared/constants'
 
-
+export { MorseCodeType }
 
 export interface BinaryTreeNode {
   left: BinaryTreeNode | null
@@ -13,4 +13,3 @@ export interface FlowTreeNode extends BinaryTreeNode {
   parentId?: string
   morseCodeType?: MorseCodeType
 }
-

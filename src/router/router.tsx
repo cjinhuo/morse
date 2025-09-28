@@ -1,7 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
 import BaseLayout from '../components/base-layout/base-layout'
-import Home from '../pages/home/home'
+import Tree from '../components/flow/tree'
 import About from '../pages/about/about'
+import Home from '../pages/home/home'
 import LatinType from '../pages/latin-type/latin-type'
 const router = createBrowserRouter([
   {
@@ -11,15 +12,19 @@ const router = createBrowserRouter([
       {
         index: true,
         path: '/morse',
-        element: <Home></Home>,
+        element: <Home />,
       },
       {
         path: '/morse/about',
-        element: <About></About>,
+        element: <About />,
       },
       {
         path: '/morse/latin',
-        element: <LatinType></LatinType>,
+        element: <LatinType />,
+      },
+      {
+        path: '/morse/tree',
+        element: <Tree />,
       },
     ],
   },

@@ -1,12 +1,12 @@
-import ReactFlow, { type Node, type Edge, useEdgesState, useNodesState, Background } from 'reactflow'
-import 'reactflow/dist/style.css'
-import TreeEdge from './tree-edge'
-import styled from 'styled-components'
-import { builtMorseBinaryTree } from '../../shared/utils'
-import { FLOW_TREE_NAME, WORD_MORSE_CODE, type EdgeData } from '../../shared/constants'
-import { MorseCodeType, type BinaryTreeNode, type FlowTreeNode } from '../../types'
-import dagre from 'dagre'
+import { Background, type Edge, type Node, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react'
+import '@xyflow/react/dist/style.css'
 import { Position } from '@xyflow/react'
+import dagre from 'dagre'
+import styled from 'styled-components'
+import { type EdgeData, FLOW_TREE_NAME, MorseCodeType, WORD_MORSE_CODE } from '../../shared/constants'
+import { builtMorseBinaryTree } from '../../shared/utils'
+import type { BinaryTreeNode, FlowTreeNode } from '../../types'
+import TreeEdge from './tree-edge'
 import type { NodeData } from './tree-node'
 import TreeNode from './tree-node'
 const dagreGraph = new dagre.graphlib.Graph()
@@ -14,21 +14,25 @@ dagreGraph.setDefaultEdgeLabel(() => ({}))
 
 const nodeWidth = 172
 const nodeHeight = 36
-const getLayoutedElements = (nodes: Node<NodeData>[], edges: Edge<EdgeData>[], direction = 'TB') => {
+const getLayoutedElements = (
+  nodes: Node<NodeData>[],
+  edges: Edge<EdgeData>[],
+  direction = 'TB'
+): { nodes: Node<NodeData>[]; edges: Edge<EdgeData>[] } => {
   const isHorizontal = direction === 'LR'
   dagreGraph.setGraph({ rankdir: direction })
 
-  nodes.forEach((node) => {
+  for (const node of nodes) {
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight })
-  })
+  }
 
-  edges.forEach((edge) => {
+  for (const edge of edges) {
     dagreGraph.setEdge(edge.source, edge.target)
-  })
+  }
 
   dagre.layout(dagreGraph)
 
-  nodes.forEach((node) => {
+  for (const node of nodes) {
     const nodeWithPosition = dagreGraph.node(node.id)
     node.targetPosition = isHorizontal ? Position.Left : Position.Top
     node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom
@@ -39,9 +43,7 @@ const getLayoutedElements = (nodes: Node<NodeData>[], edges: Edge<EdgeData>[], d
       x: nodeWithPosition.x - nodeWidth / 2,
       y: nodeWithPosition.y - nodeHeight / 2,
     }
-
-    return node
-  })
+  }
 
   return { nodes, edges }
 }
@@ -98,7 +100,9 @@ const edgeTypes = {
 const nodeTypes = {
   tree: TreeNode,
 }
-const ReactFlowWrap = styled(ReactFlow)`
+const ReactFlowWrap = styled.div`
+  width: 100%;
+  height: 100%;
   .react-flow__edge-path {
     /* stroke: white; */
   }
@@ -150,7 +154,8 @@ const ReactFlowWrap = styled(ReactFlow)`
   }
 `
 const [morseNodes, morseEdges] = traverseMorseCodeBinaryTreeByBfs(wordMorseCodeTree)
-const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(morseNodes, morseEdges)
+const layoutedResult = getLayoutedElements(morseNodes, morseEdges)
+const { nodes: layoutedNodes, edges: layoutedEdges } = layoutedResult
 export default function Tree() {
   console.log('layoutedNodes', layoutedNodes)
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes)
@@ -164,17 +169,21 @@ export default function Tree() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-      }}>
-      <ReactFlowWrap
-        defaultEdgeOptions={{ type: 'tree' }}
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        fitView>
-        <Background />
+      }}
+    >
+      <ReactFlowWrap>
+        <ReactFlow
+          defaultEdgeOptions={{ type: 'tree' }}
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          fitView
+        >
+          <Background />
+        </ReactFlow>
       </ReactFlowWrap>
     </div>
   )

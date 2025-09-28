@@ -1,7 +1,9 @@
-import React, { memo, ReactNode, useState } from 'react'
-import { Handle, NodeProps, Position } from 'reactflow'
+import { Handle, type NodeProps, Position } from '@xyflow/react'
+import { memo, useState } from 'react'
+
 import styled from 'styled-components'
-export type NodeData = {
+
+export interface NodeData extends Record<string, unknown> {
   title: string
   value: string
 }
@@ -29,12 +31,12 @@ const Node = styled.div`
 `
 
 const NodeClassNameInit = ['react-flow__node--animated']
-export default memo(({ data }: NodeProps<NodeData>) => {
+export default memo(({ data }: NodeProps) => {
   const [className, setClassName] = useState(NodeClassNameInit)
   console.log('data', data)
   return (
     <Node className={className.join(' ')}>
-      <div className='node_content gradient'>{data.title}</div>
+      <div className='node_content gradient'>{(data as NodeData).title}</div>
       <Handle type='source' position={Position.Bottom} />
       <Handle type='target' position={Position.Top} />
     </Node>

@@ -1,11 +1,12 @@
+import { BaseEdge, type EdgeProps, getStraightPath } from '@xyflow/react'
 import { useAtomValue } from 'jotai'
 import { memo, useEffect, useState } from 'react'
-import { BaseEdge, getStraightPath, type EdgeProps } from 'reactflow'
 import { HighlightEdgeAtom } from '../../atom/atom'
-import { MorseCodeType, type EdgeData } from '../../shared/constants'
+import { type EdgeData, MorseCodeType } from '../../shared/constants'
 
 const ClassNameInit = ['react-flow__edge-path']
-export default memo(({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps<EdgeData>) => {
+export default memo((props: EdgeProps) => {
+  const { id, sourceX, sourceY, targetX, targetY, data } = props
   const edgeId = useAtomValue(HighlightEdgeAtom)
   const [className, setClassName] = useState(ClassNameInit)
   // console.log('edge', id, sourceX, sourceY, targetX, targetY)
@@ -27,7 +28,7 @@ export default memo(({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps
     }
   }, [edgeId, id])
 
-  const strokeDasharray = data!.type === MorseCodeType.dot ? '1, 4' : '4, 2'
+  const strokeDasharray = (data as EdgeData)?.type === MorseCodeType.dot ? '1, 4' : '4, 2'
 
   return (
     <>
@@ -37,7 +38,8 @@ export default memo(({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps
         stroke='deepskyblue'
         strokeDasharray={strokeDasharray}
         id={id}
-        d={edgePath}></path>
+        d={edgePath}
+      />
     </>
   )
 })

@@ -1,4 +1,3 @@
-
 export enum ThemeMode {
   light = 'light',
   dark = 'dark',
@@ -16,23 +15,106 @@ export enum IconParkNames {
   'morse-code' = 'morse-code',
 }
 
-export const CHAR_KEYS = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-export const NUMBER_KEYS = ['1','2','3','4','5','6','7','8','9','0']
-export const SPECIAL_CHAR_KEYS = ['.', ',', '?', "'", '!', '/', '(', ')', '&', ':', ';', '=', '+', '-', '_', '"', '$', '@','>','<','[',']','{','}','|']
+export const CHAR_KEYS = [
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'H',
+  'I',
+  'J',
+  'K',
+  'L',
+  'M',
+  'N',
+  'O',
+  'P',
+  'Q',
+  'R',
+  'S',
+  'T',
+  'U',
+  'V',
+  'W',
+  'X',
+  'Y',
+  'Z',
+]
+export const NUMBER_KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+export const SPECIAL_CHAR_KEYS = [
+  '.',
+  ',',
+  '?',
+  "'",
+  '!',
+  '/',
+  '(',
+  ')',
+  '&',
+  ':',
+  ';',
+  '=',
+  '+',
+  '-',
+  '_',
+  '"',
+  '$',
+  '@',
+  '>',
+  '<',
+  '[',
+  ']',
+  '{',
+  '}',
+  '|',
+]
 export const DELETE_KEYS = ['Backspace', 'Delete']
 export const SPACE_KEYS = [' ']
 
-export const LATIN_ALLOWED_INPUT_KEYS = [...CHAR_KEYS, ...NUMBER_KEYS, ...SPECIAL_CHAR_KEYS, ...DELETE_KEYS, ...SPACE_KEYS]
+export const LATIN_ALLOWED_INPUT_KEYS = [
+  ...CHAR_KEYS,
+  ...NUMBER_KEYS,
+  ...SPECIAL_CHAR_KEYS,
+  ...DELETE_KEYS,
+  ...SPACE_KEYS,
+]
 
 export const LATIN_ALLOWED_INPUT_KEYS_SET = new Set(LATIN_ALLOWED_INPUT_KEYS)
 
 export const DELETE_KEYS_SET = new Set(DELETE_KEYS)
 
-
-export interface EdgeData {
+export interface EdgeData extends Record<string, unknown> {
   type: MorseCodeType
 }
-
 
 // the max time for down Space key
 export const MAX_KEY_DOWN_TIME_MS = 400
@@ -47,7 +129,6 @@ export const FLOW_TREE_NAME = 'tree'
 
 export enum SupportKeyCodeType {
   space = 'Space',
-  
 }
 
 export enum MorseCodeType {
@@ -67,7 +148,6 @@ export enum CHAR_STATUS {
 }
 
 export enum MACHINE_STATE {
-  
   running = 'running',
   close = 'close',
 }
@@ -149,7 +229,7 @@ export const SPECIAL_CHAR_MORSE_CODE = {
 export const ALL_MORSE_CODE_MAP = {
   ...WORD_MORSE_CODE,
   ...NUMBER_MORSE_CODE,
-  ...SPECIAL_CHAR_MORSE_CODE
+  ...SPECIAL_CHAR_MORSE_CODE,
 }
 
 export const ALL_MORSE_CODE_REVERSE_MAP = Object.entries(ALL_MORSE_CODE_MAP).reduce(
@@ -159,7 +239,6 @@ export const ALL_MORSE_CODE_REVERSE_MAP = Object.entries(ALL_MORSE_CODE_MAP).red
   },
   {} as Record<string, string>
 )
-
 
 // 句点（.）：······
 // 规律：连续六个短点。简洁并与E的短点重复强调。
@@ -179,8 +258,6 @@ export const ALL_MORSE_CODE_REVERSE_MAP = Object.entries(ALL_MORSE_CODE_MAP).red
 // 规律：长短划交替形成对称的包围感，像括号包住内容。
 // 等号（=）：−···−
 // 规律：一个长划包住三个短点，表示等式的对称性。
-
-
 
 // const initialNodes: Node<NodeData>[] = [
 //   {

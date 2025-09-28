@@ -99,10 +99,10 @@ export default function MorseCodeSvg(props: LineGroupProps) {
       return [
         config.autoCalculateContainerSize ? width : config.containerWidth,
         config.autoCalculateContainerSize ? height : config.containerHeight,
-        <>{...groups}</>,
+        ...groups,
       ]
     }
-    return [0, 0, <></>]
+    return [0, 0, null]
   })()
   return (
     <SvgContainer width={width} height={height} stroke={props.stroke}>
