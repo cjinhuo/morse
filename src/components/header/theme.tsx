@@ -1,6 +1,7 @@
 import useDarkMode from '../../hooks/useThemeMode'
 import { IconParkNames, ThemeMode } from '../../shared/constants'
 import LinkWithIcon from '../link-with-icon'
+
 export default function Theme() {
   const [theme, setTheme] = useDarkMode()
 

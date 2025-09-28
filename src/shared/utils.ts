@@ -1,6 +1,6 @@
 import { buffer, debounceTime, filter, fromEvent, map, race, switchMap, timer } from 'rxjs'
 import { type BinaryTreeNode } from '../types'
-import { ALL_MORSE_CODE_MAP, ALL_MORSE_CODE_REVERSE_MAP, CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, LOCAL_STORAGE_THEME_KEY, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType, NEWLINE_SYMBOL, SEPARATE_SYMBOL, ThemeMode } from './constants'
+import { ALL_MORSE_CODE_MAP, ALL_MORSE_CODE_REVERSE_MAP, CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, LOCAL_STORAGE_THEME_KEY, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType, NEW_LINE_SYMBOL, NEW_WORD_SYMBOL, SEPARATE_SYMBOL, ThemeMode, UNKNOWN_SYMBOL_SUFFIX } from './constants'
 
 function createBinaryTree(label: string, value: string) {
   const tree: BinaryTreeNode = Object.create(null)
@@ -104,8 +104,19 @@ export function transformCharToMorseCode(char: string) {
  * @param str string
  */
 export function transformStringToMorseCode(str: string) {
+  // 先转换为大写
+  str = str.toUpperCase()
   return Array.from(str).reduce((result, char) => {
-    result += char ? transformCharToMorseCode(char) + SEPARATE_SYMBOL : NEWLINE_SYMBOL
+    if (char === ' ') {
+      result += NEW_WORD_SYMBOL
+      return result
+    }
+    if (char === '\n') {
+      result += NEW_LINE_SYMBOL
+      return result
+    }
+    const morseCode = transformCharToMorseCode(char)
+    result += morseCode ? morseCode + SEPARATE_SYMBOL : `${char}${UNKNOWN_SYMBOL_SUFFIX}`
      return result
   },'')
 }

@@ -44,30 +44,30 @@ const InputMaskContainer = styled.div`
 `
 
 export default function InputMask() {
-	const { morseCode, status } = useAtomValue(InputtingMorseCodeAtom)
-	const isMobile = useMobile()
-	const [blockClassName, targetChar] = useMemo(() => {
-		if (status === TYPING_STATUS.idle) return ['invisible']
-		if (status === TYPING_STATUS.done) {
-			return ['visibility-hidden', transformMorseCodeToChar(morseCode)]
-		}
-		return ['visibility-show']
-	}, [status, morseCode])
+  const { morseCode, status } = useAtomValue(InputtingMorseCodeAtom)
+  const isMobile = useMobile()
+  const [blockClassName, targetChar] = useMemo(() => {
+    if (status === TYPING_STATUS.idle) return ['invisible']
+    if (status === TYPING_STATUS.done) {
+      return ['visibility-hidden', transformMorseCodeToChar(morseCode)]
+    }
+    return ['visibility-show']
+  }, [status, morseCode])
 
-	return (
-		<InputMaskContainer>
-			<div
-				style={{ backgroundColor: 'var(--color-neutral-8)', opacity: '0.8' }}
-				className={`text-3xl overflow-hidden w-full h-16 flex justify-center items-center rounded-2xl ${blockClassName}`}
-			>
-				<MorseCodeSvg morseCode={morseCode} />
-				<div className='text-skin-neutral-4'>{targetChar === null ? '-> invalid morse code' : targetChar}</div>
-			</div>
-			{/* {isMobile && ( */}
-			<div className='h-16 w-full mt-4'>
-				<MotionSpaceButton />
-			</div>
-			{/* )} */}
-		</InputMaskContainer>
-	)
+  return (
+    <InputMaskContainer>
+      <div
+        style={{ backgroundColor: 'var(--color-neutral-8)', opacity: '0.8' }}
+        className={`text-3xl overflow-hidden w-full h-16 flex justify-center items-center rounded-2xl ${blockClassName}`}
+      >
+        <MorseCodeSvg morseCode={morseCode} />
+        <div className='text-skin-neutral-4'>{targetChar === null ? '-> invalid morse code' : targetChar}</div>
+      </div>
+      {/* {isMobile && ( */}
+      <div className='h-16 w-full mt-4'>
+        <MotionSpaceButton />
+      </div>
+      {/* )} */}
+    </InputMaskContainer>
+  )
 }

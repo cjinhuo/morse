@@ -19,7 +19,8 @@ html {
 }
 
 
-.dark {
+.dark,
+body[theme-mode="dark"] {
   --color-neutral-10: #171717;
   --color-neutral-9: #262626;
   --color-neutral-8: #404040;

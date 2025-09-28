@@ -1,6 +1,7 @@
 import mergeWith from 'lodash/mergeWith'
+import { forwardRef } from 'react'
 import styled from 'styled-components'
-import { MorseCodeCharType, NEWLINE_SYMBOL, SEPARATE_SYMBOL } from '../shared/constants'
+import { MorseCodeCharType, NEW_WORD_SYMBOL, SEPARATE_SYMBOL } from '../shared/constants'
 
 type LineGroupProps = {
   morseCode: string
@@ -41,13 +42,13 @@ const SvgContainer = styled.svg`
  * @param props
  * @returns
  */
-export default function MorseCodeSvg(props: LineGroupProps) {
+const MorseCodeSvg = forwardRef<SVGSVGElement, LineGroupProps>((props, ref) => {
   const config = mergeWith(DefaultConfig, props, (objValue, srcValue) => {
     if (srcValue === undefined) return objValue
     return srcValue
   })
 
-  const [width, height, group] = (() => {
+  const [width, height, ...groups] = (() => {
     let x1 = config.containerPadding
     let y1 = config.containerPadding
     let x2 = x1
@@ -55,7 +56,7 @@ export default function MorseCodeSvg(props: LineGroupProps) {
     let width = config.containerPadding * 2
     let height = config.containerPadding * 2
     if (config.morseCode.length) {
-      const groups = config.morseCode.split(NEWLINE_SYMBOL).map((word, wordIndex) => {
+      const groups = config.morseCode.split(NEW_WORD_SYMBOL).map((word, wordIndex) => {
         x1 = x2 = config.containerPadding
         if (wordIndex !== 0) {
           // the first line do not need to add height
@@ -66,10 +67,16 @@ export default function MorseCodeSvg(props: LineGroupProps) {
         const groupComponent = (
           <g key={y1}>
             {Array.from(word).map((char, charIndex) => {
+              // calculate the max width for svg container
+              if (charIndex === word.length - 1) {
+                width = Math.max(width, x2 + config.containerPadding)
+              }
+
               if (char === SEPARATE_SYMBOL) {
                 x1 += config.letterSpace
                 return <></>
               }
+              
               const isDot = char === MorseCodeCharType.dotChar
               x1 = x1 === 0 ? x1 : x1 + config.dotDashSpace
               x2 = x1 + (isDot ? config.dotWidth : config.dashWidth)
@@ -86,10 +93,6 @@ export default function MorseCodeSvg(props: LineGroupProps) {
                 />
               )
               x1 = x2 += config.dotDashSpace
-              // calculate the max width for svg container
-              if (charIndex === word.length - 1) {
-                width = Math.max(width, x2 + config.containerPadding)
-              }
               return line
             })}
           </g>
@@ -105,8 +108,12 @@ export default function MorseCodeSvg(props: LineGroupProps) {
     return [0, 0, null]
   })()
   return (
-    <SvgContainer width={width} height={height} stroke={props.stroke}>
-      {group}
+    <SvgContainer ref={ref} width={width} height={height} stroke={props.stroke}>
+      {groups}
     </SvgContainer>
   )
-}
+})
+
+MorseCodeSvg.displayName = 'MorseCodeSvg'
+
+export default MorseCodeSvg

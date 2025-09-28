@@ -1,10 +1,10 @@
 import './base-layout.css'
-import Header from '../header/header'
-import Footer from '../footer'
-import { Outlet } from 'react-router-dom'
-import React from 'react'
 import { Layout } from '@douyinfe/semi-ui'
+import React from 'react'
+import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
+import Footer from '../footer'
+import Header from '../header/header'
 
 const ContentContainer = styled.div`
   padding: 5vh 8vw;
@@ -13,15 +13,15 @@ function BaseLayout() {
   return (
     <>
       <Layout.Header>
-        <Header></Header>
+        <Header />
       </Layout.Header>
       <Layout.Content>
         <ContentContainer className='w-full grow'>
-          <Outlet></Outlet>
+          <Outlet />
         </ContentContainer>
       </Layout.Content>
       <Layout.Footer>
-        <Footer></Footer>
+        <Footer />
       </Layout.Footer>
     </>
   )

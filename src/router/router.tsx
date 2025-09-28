@@ -4,6 +4,7 @@ import Tree from '../components/flow/tree'
 import About from '../pages/about/about'
 import Home from '../pages/home/home'
 import LatinType from '../pages/latin-type/latin-type'
+import MorseConverter from '../pages/morse-converter/morse-converter'
 const router = createBrowserRouter([
   {
     path: '/morse',
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: '/morse/tree',
         element: <Tree />,
+      },
+      {
+        path: '/morse/converter',
+        element: <MorseConverter />,
       },
     ],
   },

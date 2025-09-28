@@ -10,6 +10,7 @@ export enum IconParkNames {
   'keyboard-2' = 'keyboard-2',
   dark = 'dark',
   light = 'light',
+  switch = 'switch',
   'morse-code-1' = 'morse-code-1',
   'morse-code-2' = 'morse-code-2',
   'morse-code' = 'morse-code',
@@ -162,7 +163,9 @@ export const WORD_CONTAINER_CLASS_NAME = 'word'
 export const CHAR_CLASS_NAME = 'char'
 
 export const SEPARATE_SYMBOL = '|'
-export const NEWLINE_SYMBOL = '+'
+export const NEW_WORD_SYMBOL = '+'
+export const NEW_LINE_SYMBOL = '/'
+export const UNKNOWN_SYMBOL_SUFFIX = '?'
 
 export const WORD_MORSE_CODE = {
   A: '.-',

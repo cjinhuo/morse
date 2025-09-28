@@ -96,6 +96,17 @@ export default function MorseTyper() {
     }
   }, [currentElementState])
 
+
+// 销毁时，重置状态
+  useEffect(() => {
+    return () => {
+      setCurrentMorseCode((prev) => ({
+        status: TYPING_STATUS.idle,
+        morseCode: '',
+      }))
+    }
+  }, [setCurrentMorseCode])
+
   return (
     <div className='relative'>
       {currentElementState === null && <ReactCanvasConfetti autorun={{ speed: 10, duration: 3000 }} />}
