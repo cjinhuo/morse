@@ -1,13 +1,18 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useAtomValue } from 'jotai'
 import { TextArea, Button, Typography, Space, Input } from '@douyinfe/semi-ui'
 import MorseCodeSvg from '../../components/morse-code-svg'
+import SvgConfigPanel from '../../components/svg-config-panel'
 import { transformStringToMorseCode } from '../../shared/utils'
 import { LATIN_ALLOWED_INPUT_KEYS_SET } from '../../shared/constants'
+import { svgConfigAtom } from '../../atom/svg-config-atom'
 
 export default function MorseConverter() {
   const [inputText, setInputText] = useState('')
   const [morseCode, setMorseCode] = useState('')
+  const svgConfig = useAtomValue(svgConfigAtom)
   const svgRef = useRef<SVGSVGElement>(null)
+
 
   const handleInputChange = (value: string) => {
     // Only allow characters in LATIN_ALLOWED_INPUT_KEYS_SET and spaces
@@ -120,19 +125,23 @@ export default function MorseConverter() {
 
         {/* SVG Preview and Export */}
         <div className='space-y-4'>
-          <Typography.Title className='text-xl font-semibold'>SVG Preview</Typography.Title>
+          <div className='flex items-center justify-between'>
+            <Typography.Title className='text-xl font-semibold'>SVG Preview</Typography.Title>
+            <SvgConfigPanel />
+          </div>
           <div className='border rounded'>
             {morseCode ? (
               <div className='w-full h-full overflow-x-scroll p-1'>
                   <MorseCodeSvg
+                    key={morseCode}
                     ref={svgRef}
                     morseCode={morseCode}
-                    strokeWidth={3}
-                    dashWidth={12}
-                    lineHeight={24}
-                    letterSpace={16}
-                    dotDashSpace={6}
-                    containerPadding={20}
+                    strokeWidth={svgConfig.strokeWidth}
+                    dashWidth={svgConfig.dashWidth}
+                    lineHeight={svgConfig.lineHeight}
+                    letterSpace={svgConfig.letterSpace}
+                    dotDashSpace={svgConfig.dotDashSpace}
+                    containerPadding={svgConfig.containerPadding}
                     stroke='currentColor'
                   />
               </div>

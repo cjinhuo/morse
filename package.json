@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@douyinfe/semi-icons": "^2.86.0",
-    "@douyinfe/semi-ui": "^2.60.1",
+    "@douyinfe/semi-ui": "^2.86.0",
     "@icon-park/react": "^1.4.2",
     "@xyflow/react": "12.3.6",
     "dagre": "^0.8.5",
