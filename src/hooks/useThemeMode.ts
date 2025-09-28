@@ -12,13 +12,21 @@ export default function useDarkMode() {
       // 设置暗黑主题
       body.setAttribute('theme-mode', 'dark');
       document.documentElement.classList.add(ThemeMode.dark);
-      localStorage.setItem(LOCAL_STORAGE_THEME_KEY, ThemeMode.dark);
     } else {
       body.removeAttribute('theme-mode');
       document.documentElement.classList.remove(ThemeMode.dark);
-      localStorage.removeItem(LOCAL_STORAGE_THEME_KEY);
     }
   }, [theme])
+
+  const toggleTheme = (_theme: ThemeMode) => {
+    if (_theme === ThemeMode.light) {
+      localStorage.setItem(LOCAL_STORAGE_THEME_KEY, ThemeMode.light)
+      setTheme(ThemeMode.light)
+    } else {
+      localStorage.setItem(LOCAL_STORAGE_THEME_KEY, ThemeMode.dark)
+      setTheme(ThemeMode.dark)
+    }
+  }
   
-  return [theme, setTheme] as const
+  return [theme, toggleTheme] as const
 }

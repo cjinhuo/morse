@@ -124,7 +124,7 @@ export const DOT_CRITICAL_POINT_TIME = 130
 // the critical point between char and char
 export const CHAR_CRITICAL_POINT_TIME = 500
 export const LOCAL_STORAGE_KEY = 'morse'
-export const LOCAL_STORAGE_THEME_KEY = 'theme'
+export const LOCAL_STORAGE_THEME_KEY = 'morse-theme'
 
 export const FLOW_TREE_NAME = 'tree'
 

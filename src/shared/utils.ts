@@ -144,8 +144,9 @@ export function isLocalStorageDarkMode() {
 }
 
 export function getThemeMode() {
-  if (isSystemDarkMode() || isLocalStorageDarkMode()) {
-    return ThemeMode.dark
+  const localStorageTheme = localStorage.getItem(LOCAL_STORAGE_THEME_KEY)
+  if (localStorageTheme) {
+    return localStorageTheme as ThemeMode
   }
-  return ThemeMode.light
+  return isSystemDarkMode() ? ThemeMode.dark : ThemeMode.light
 }

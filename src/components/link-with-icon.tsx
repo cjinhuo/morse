@@ -8,10 +8,12 @@ type PropsType = {
   type?: 'route' | 'link'
   onClick?: () => void
   style?: React.CSSProperties
+  active?: boolean
 }
-export default function LinkWithIcon({ name, value, type, onClick, ...rest }: PropsType) {
+export default function LinkWithIcon({ name, value, type, onClick, active = false, ...rest }: PropsType) {
   const navigate = useNavigate()
   const handleOnClick = () => {
+    if (active) return
     onClick?.()
     if (type === 'link') {
       return window.open(value)
@@ -21,7 +23,11 @@ export default function LinkWithIcon({ name, value, type, onClick, ...rest }: Pr
     }
   }
   return (
-    <motion.div whileHover={{ scale: 1.2 }} className='flex items-center cursor-pointer' onClick={handleOnClick}>
+    <motion.div 
+      whileHover={active ? {} : { scale: 1.2 }} 
+      className={`flex items-center ${active ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} 
+      onClick={handleOnClick}
+    >
       <IconPark {...rest} name={name} />
     </motion.div>
   )

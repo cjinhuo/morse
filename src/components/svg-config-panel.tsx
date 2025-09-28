@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState,  useCallback } from 'react'
 import { useAtom } from 'jotai'
-import { Button, Form, Slider, Popover, Typography } from '@douyinfe/semi-ui'
+import { Button, Form, Popover, Typography } from '@douyinfe/semi-ui'
 import { IconSetting } from '@douyinfe/semi-icons'
 import { defaultSvgConfig, svgConfigAtom, type SvgConfig } from '../atom/svg-config-atom'
 
