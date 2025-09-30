@@ -210,9 +210,20 @@ export default memo(
               errorChar.innerHTML = inputChar
               lastChar.appendChild(errorChar)
               const tempLastChar = lastChar
-              setTimeout(() => {
-                tempLastChar.removeChild(errorChar)
-              }, 1000)
+
+              // Use animationend event to ensure smooth removal after animation completes
+              const handleAnimationEnd = () => {
+                try {
+                  if (tempLastChar.contains(errorChar)) {
+                    tempLastChar.removeChild(errorChar)
+                  }
+                } catch (error) {
+                  // Silently handle case where element was already removed
+                }
+                errorChar.removeEventListener('animationend', handleAnimationEnd)
+              }
+              // 在动画结束后移除事件监听器，避免用 setTimeout 导致时间和 css 动画时间不同步 
+              errorChar.addEventListener('animationend', handleAnimationEnd)
             }
             if (activeChar) {
               calculateCaretPosition()

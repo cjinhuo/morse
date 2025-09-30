@@ -7,7 +7,7 @@ module.exports = {
       backgroundColor: {
         skin: {
           background: 'var(--color-normal-bg)',
-          'background-reverse': 'var(--color-normal-bg-reverse)'
+          'background-reverse': 'var(--color-normal-bg-reverse)',
         },
       },
       maxWidth: {
@@ -33,4 +33,4 @@ module.exports = {
     },
   },
   plugins: [],
-};
+}

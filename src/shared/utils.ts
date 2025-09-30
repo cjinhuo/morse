@@ -1,6 +1,19 @@
 import { buffer, debounceTime, filter, fromEvent, map, race, switchMap, timer } from 'rxjs'
-import { type BinaryTreeNode } from '../types'
-import { ALL_MORSE_CODE_MAP, ALL_MORSE_CODE_REVERSE_MAP, CHAR_CRITICAL_POINT_TIME, DOT_CRITICAL_POINT_TIME, LOCAL_STORAGE_THEME_KEY, MAX_KEY_DOWN_TIME_MS, MorseCodeCharType, NEW_LINE_SYMBOL, NEW_WORD_SYMBOL, SEPARATE_SYMBOL, ThemeMode, UNKNOWN_SYMBOL_SUFFIX } from './constants'
+import type { BinaryTreeNode } from '../types'
+import {
+  ALL_MORSE_CODE_MAP,
+  ALL_MORSE_CODE_REVERSE_MAP,
+  CHAR_CRITICAL_POINT_TIME,
+  DOT_CRITICAL_POINT_TIME,
+  LOCAL_STORAGE_THEME_KEY,
+  MAX_KEY_DOWN_TIME_MS,
+  MorseCodeCharType,
+  NEW_LINE_SYMBOL,
+  NEW_WORD_SYMBOL,
+  SEPARATE_SYMBOL,
+  ThemeMode,
+  UNKNOWN_SYMBOL_SUFFIX,
+} from './constants'
 
 function createBinaryTree(label: string, value: string) {
   const tree: BinaryTreeNode = Object.create(null)
@@ -49,7 +62,6 @@ export function getOscillatorNodeWithParams(waveform: OscillatorType = 'sine', d
   return oscillator
 }
 
-
 export function subscribeKeyEventForMorseCode(getOscillatorNode: () => OscillatorNode) {
   const $keyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
     filter((e) => e.code === 'Space' && !e.repeat)
@@ -63,26 +75,27 @@ export function subscribeKeyEventForMorseCode(getOscillatorNode: () => Oscillato
       return race(
         $keyUpEvent.pipe(
           map(() => {
-            return Date.now() - startTime < DOT_CRITICAL_POINT_TIME ? MorseCodeCharType.dotChar : MorseCodeCharType.dashChar
+            return Date.now() - startTime < DOT_CRITICAL_POINT_TIME
+              ? MorseCodeCharType.dotChar
+              : MorseCodeCharType.dashChar
           })
         ),
-        timer(MAX_KEY_DOWN_TIME_MS).pipe(
-          map(() => MorseCodeCharType.dashChar)
-        )
-      ).pipe(map(morseCode => {
-        oscillator.stop()
-        return morseCode
-      }))
+        timer(MAX_KEY_DOWN_TIME_MS).pipe(map(() => MorseCodeCharType.dashChar))
+      ).pipe(
+        map((morseCode) => {
+          oscillator.stop()
+          return morseCode
+        })
+      )
     })
   )
   const $fragment = $singleChar.pipe(
     buffer($singleChar.pipe(debounceTime(CHAR_CRITICAL_POINT_TIME))),
-    filter(v => v.length > 0),
-    map(v => v.join(''))
+    filter((v) => v.length > 0),
+    map((v) => v.join(''))
   )
   return [$singleChar, $fragment] as const
 }
-
 
 export function transformMorseCodeToChar(morseCode: string) {
   const char = ALL_MORSE_CODE_REVERSE_MAP[morseCode]
@@ -92,7 +105,7 @@ export function transformMorseCodeToChar(morseCode: string) {
 /**
  * transform single char to morse code
  * @param char single char
- * @returns 
+ * @returns
  */
 export function transformCharToMorseCode(char: string) {
   const morseCode = ALL_MORSE_CODE_MAP[char]
@@ -117,10 +130,9 @@ export function transformStringToMorseCode(str: string) {
     }
     const morseCode = transformCharToMorseCode(char)
     result += morseCode ? morseCode + SEPARATE_SYMBOL : `${char}${UNKNOWN_SYMBOL_SUFFIX}`
-     return result
-  },'')
+    return result
+  }, '')
 }
-
 
 export function isMobile() {
   if (
@@ -135,8 +147,7 @@ export function isMobile() {
 }
 
 export function isSystemDarkMode() {
-  return window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
 }
 
 export function isLocalStorageDarkMode() {

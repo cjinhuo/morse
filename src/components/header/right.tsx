@@ -10,7 +10,8 @@ export default function HeaderRight() {
       <LinkWithIcon
         name={IconParkNames.github}
         value='https://github.com/cjinhuo/cjinhuo.github.io'
-        type='link'></LinkWithIcon>
+        type='link'
+      ></LinkWithIcon>
       <Theme />
     </div>
   )

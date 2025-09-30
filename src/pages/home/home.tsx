@@ -1,5 +1,5 @@
-import InputMask from '../../components/input-mask'
-import MorseTyper from '../../components/morse-typer'
+import InputMask from './input-mask'
+import MorseTyper from './morse-typer'
 
 export default function Home() {
   return (

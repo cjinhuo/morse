@@ -36,29 +36,29 @@ const SpaceButton = styled(motion.button)`
 `
 
 export default function MotionSpaceButton() {
-	const triggerKeyEvent = useCallback((type: 'keydown' | 'keyup') => {
-		const event = new KeyboardEvent(type, {
-			key: ' ',
-			code: 'Space',
-			keyCode: 32, // keyCode is deprecated but still used in some browsers
-			charCode: 32,
-			bubbles: true,
-			cancelable: true,
-		})
-		document.dispatchEvent(event)
-	}, [])
+  const triggerKeyEvent = useCallback((type: 'keydown' | 'keyup') => {
+    const event = new KeyboardEvent(type, {
+      key: ' ',
+      code: 'Space',
+      keyCode: 32, // keyCode is deprecated but still used in some browsers
+      charCode: 32,
+      bubbles: true,
+      cancelable: true,
+    })
+    document.dispatchEvent(event)
+  }, [])
 
-	const handlePointerDown = useCallback(() => {
-		triggerKeyEvent('keydown')
-	}, [triggerKeyEvent])
+  const handlePointerDown = useCallback(() => {
+    triggerKeyEvent('keydown')
+  }, [triggerKeyEvent])
 
-	const handlePointerUp = useCallback(() => {
-		triggerKeyEvent('keyup')
-	}, [triggerKeyEvent])
+  const handlePointerUp = useCallback(() => {
+    triggerKeyEvent('keyup')
+  }, [triggerKeyEvent])
 
-	return (
-		<SpaceButton className='select-none' onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
-			SPACE
-		</SpaceButton>
-	)
+  return (
+    <SpaceButton className='select-none' onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
+      SPACE
+    </SpaceButton>
+  )
 }

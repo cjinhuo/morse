@@ -1,6 +1,6 @@
 import type { MorseCodeType } from '../shared/constants'
 
-export { MorseCodeType }
+export type { MorseCodeType }
 
 export interface BinaryTreeNode {
   left: BinaryTreeNode | null

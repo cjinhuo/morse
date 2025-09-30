@@ -1,9 +1,9 @@
 import { Tooltip } from '@douyinfe/semi-ui'
 import { useLocation } from 'react-router-dom'
-import LinkWithIcon from '../link-with-icon'
-import { IconParkNames } from '../../shared/constants'
 import styled from 'styled-components'
 import { CONVERTER_PATH, LATIN_PATH } from '../../router/router'
+import { IconParkNames } from '../../shared/constants'
+import LinkWithIcon from '../link-with-icon'
 
 const HeaderMenuContainer = styled.nav`
   display: flex;
@@ -12,7 +12,6 @@ const HeaderMenuContainer = styled.nav`
     margin-right: 2rem;
   }
 `
-
 
 const HeaderMenu = () => {
   const location = useLocation()

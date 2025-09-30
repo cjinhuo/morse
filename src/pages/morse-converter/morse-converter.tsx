@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { Button, Input, Space, TextArea, Typography } from '@douyinfe/semi-ui'
 import { useAtomValue } from 'jotai'
-import { TextArea, Button, Typography, Space, Input } from '@douyinfe/semi-ui'
+import { useEffect, useRef, useState } from 'react'
+import { svgConfigAtom } from '../../atom/svg-config-atom'
 import MorseCodeSvg from '../../components/morse-code-svg'
 import SvgConfigPanel from '../../components/svg-config-panel'
-import { transformStringToMorseCode } from '../../shared/utils'
 import { LATIN_ALLOWED_INPUT_KEYS_SET } from '../../shared/constants'
-import { svgConfigAtom } from '../../atom/svg-config-atom'
+import { transformStringToMorseCode } from '../../shared/utils'
 
 export default function MorseConverter() {
   const [inputText, setInputText] = useState('')
@@ -13,13 +13,15 @@ export default function MorseConverter() {
   const svgConfig = useAtomValue(svgConfigAtom)
   const svgRef = useRef<SVGSVGElement>(null)
 
-
   const handleInputChange = (value: string) => {
     // Only allow characters in LATIN_ALLOWED_INPUT_KEYS_SET and spaces
-    const filteredValue = value.split('').filter(char => {
-      return LATIN_ALLOWED_INPUT_KEYS_SET.has(char) || char === ' '
-    }).join('')
-    
+    const filteredValue = value
+      .split('')
+      .filter((char) => {
+        return LATIN_ALLOWED_INPUT_KEYS_SET.has(char) || char === ' '
+      })
+      .join('')
+
     setInputText(filteredValue)
 
     if (filteredValue.trim()) {
@@ -81,7 +83,7 @@ export default function MorseConverter() {
     if (!svgRef.current) return
 
     const svgData = new XMLSerializer().serializeToString(svgRef.current)
-    console.log('svgData',svgData)
+    console.log('svgData', svgData)
     const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' })
     const url = URL.createObjectURL(svgBlob)
 
@@ -113,12 +115,12 @@ export default function MorseConverter() {
             autosize={{ minRows: 4, maxRows: 8 }}
             className='w-full'
           />
-          
+
           {/* Show morse code text only in local environment */}
           {isLocalEnv && morseCode && (
             <div className='space-y-2'>
               <Typography.Text strong>Morse Code</Typography.Text>
-              <Input value={morseCode} readOnly/>
+              <Input value={morseCode} readOnly />
             </div>
           )}
         </div>
@@ -132,18 +134,18 @@ export default function MorseConverter() {
           <div className='border rounded'>
             {morseCode ? (
               <div className='w-full h-full overflow-x-scroll p-1'>
-                  <MorseCodeSvg
-                    key={morseCode}
-                    ref={svgRef}
-                    morseCode={morseCode}
-                    strokeWidth={svgConfig.strokeWidth}
-                    dashWidth={svgConfig.dashWidth}
-                    lineHeight={svgConfig.lineHeight}
-                    letterSpace={svgConfig.letterSpace}
-                    dotDashSpace={svgConfig.dotDashSpace}
-                    containerPadding={svgConfig.containerPadding}
-                    stroke='currentColor'
-                  />
+                <MorseCodeSvg
+                  key={morseCode}
+                  ref={svgRef}
+                  morseCode={morseCode}
+                  strokeWidth={svgConfig.strokeWidth}
+                  dashWidth={svgConfig.dashWidth}
+                  lineHeight={svgConfig.lineHeight}
+                  letterSpace={svgConfig.letterSpace}
+                  dotDashSpace={svgConfig.dotDashSpace}
+                  containerPadding={svgConfig.containerPadding}
+                  stroke='currentColor'
+                />
               </div>
             ) : (
               <div className='flex items-center justify-center min-h-[200px] p-1'>

@@ -1,13 +1,13 @@
-import { Tooltip } from "@douyinfe/semi-ui";
-import { useAtomValue, useSetAtom } from "jotai";
-import { IconParkNames, TYPING_STATUS } from "../../shared/constants";
-import { ActiveMorseCodeAtom, MorseSentenceAtom, InputtingMorseCodeAtom, LatinSentenceAtom } from "../../atom/atom";
-import { LATIN_SENTENCES, MORSE_SENTENCES } from "../../shared/sentences";
-import LinkWithIcon from "../link-with-icon";
-import styled from "styled-components";
-import { useLocation } from "react-router-dom";
-import { useCallback } from "react";
-import { LATIN_PATH, MORSE_PATH } from "../../router/router";
+import { Tooltip } from '@douyinfe/semi-ui'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useCallback } from 'react'
+import { useLocation } from 'react-router-dom'
+import styled from 'styled-components'
+import { ActiveMorseCodeAtom, InputtingMorseCodeAtom, LatinSentenceAtom, MorseSentenceAtom } from '../../atom/atom'
+import { LATIN_PATH, MORSE_PATH } from '../../router/router'
+import { IconParkNames, TYPING_STATUS } from '../../shared/constants'
+import { LATIN_SENTENCES, MORSE_SENTENCES } from '../../shared/sentences'
+import LinkWithIcon from '../link-with-icon'
 
 const HeaderMenuContainer = styled.nav`
   display: flex;
@@ -28,7 +28,6 @@ export default function RefreshSentence() {
   const setLatinSentence = useSetAtom(LatinSentenceAtom)
 
   const location = useLocation()
-
 
   const refreshMorseSentence = useCallback(() => {
     if (!MORSE_SENTENCES.length) return
@@ -67,15 +66,14 @@ export default function RefreshSentence() {
   }, [refreshMorseSentence, refreshLatinSentence, location.pathname])
 
   return (
-    (location.pathname === MORSE_PATH || location.pathname === LATIN_PATH) && <HeaderMenuContainer>
-      <Tooltip content="Random Sentence" position="right">
-        <div className="flex items-center">
-          <LinkWithIcon
-            name={IconParkNames.refresh}
-            onClick={refreshSentence}
-          />
-        </div>
-      </Tooltip>
-    </HeaderMenuContainer>
+    (location.pathname === MORSE_PATH || location.pathname === LATIN_PATH) && (
+      <HeaderMenuContainer>
+        <Tooltip content='Random Sentence' position='right'>
+          <div className='flex items-center'>
+            <LinkWithIcon name={IconParkNames.refresh} onClick={refreshSentence} />
+          </div>
+        </Tooltip>
+      </HeaderMenuContainer>
+    )
   )
 }

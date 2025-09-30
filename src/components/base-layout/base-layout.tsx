@@ -20,9 +20,7 @@ function BaseLayout() {
           <Outlet />
         </ContentContainer>
       </Layout.Content>
-      <Layout.Footer>
-        {/* <Footer /> */}
-      </Layout.Footer>
+      <Layout.Footer>{/* <Footer /> */}</Layout.Footer>
     </>
   )
 }

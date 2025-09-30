@@ -1,24 +1,22 @@
 import { useAtomValue, useSetAtom } from 'jotai'
 import { motion } from 'motion/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactCanvasConfetti from 'react-canvas-confetti/dist/presets/crossfire'
-import type { TCanvasConfettiInstance } from 'react-canvas-confetti/dist/types'
-import { InputtingMorseCodeAtom, MorseSentenceAtom } from '../atom/atom'
-import { CHAR_STATUS, TYPING_STATUS } from '../shared/constants'
+import { InputtingMorseCodeAtom, MorseSentenceAtom } from '../../atom/atom'
+import PureTypeChar, { type RefMethodsType } from '../../components/pure-type-char'
+import { CHAR_STATUS, TYPING_STATUS } from '../../shared/constants'
 import {
   getOscillatorNodeWithParams,
   subscribeKeyEventForMorseCode,
   transformCharToMorseCode,
   transformMorseCodeToChar,
-} from '../shared/utils'
-import PureTypeChar, { type RefMethodsType } from './pure-type-char'
+} from '../../shared/utils'
 
 interface TooltipData {
   x: number
   y: number
   content: string
 }
-
 
 export default function MorseTyper() {
   const currentSentence = useAtomValue(MorseSentenceAtom)
@@ -37,13 +35,13 @@ export default function MorseTyper() {
       setCurrentMorseCode((prev) => {
         return prev.status !== TYPING_STATUS.typing
           ? {
-            status: TYPING_STATUS.typing,
-            morseCode: char,
-          }
+              status: TYPING_STATUS.typing,
+              morseCode: char,
+            }
           : {
-            status: TYPING_STATUS.typing,
-            morseCode: prev.morseCode + char,
-          }
+              status: TYPING_STATUS.typing,
+              morseCode: prev.morseCode + char,
+            }
       })
     })
     const fragmentSubscription = $fragment.subscribe((fragment) => {
@@ -93,7 +91,6 @@ export default function MorseTyper() {
       })
     }
   }, [currentElementState])
-
 
   return (
     <div className='relative'>

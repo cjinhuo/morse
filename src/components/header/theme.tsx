@@ -12,7 +12,8 @@ export default function Theme() {
         name={theme === ThemeMode.light ? IconParkNames.light : IconParkNames.dark}
         onClick={() => {
           setTheme(theme === ThemeMode.light ? ThemeMode.dark : ThemeMode.light)
-        }}></LinkWithIcon>
+        }}
+      ></LinkWithIcon>
     </>
   )
 }

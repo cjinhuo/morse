@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { getThemeMode } from "../shared/utils";
-import { LOCAL_STORAGE_THEME_KEY, ThemeMode } from "../shared/constants";
+import { useEffect, useState } from 'react'
+import { LOCAL_STORAGE_THEME_KEY, ThemeMode } from '../shared/constants'
+import { getThemeMode } from '../shared/utils'
 
 export default function useDarkMode() {
   const [theme, setTheme] = useState<ThemeMode>(getThemeMode())
-  
+
   useEffect(() => {
-    const body = document.body;
-    
+    const body = document.body
+
     if (theme === ThemeMode.dark) {
       // 设置暗黑主题
-      body.setAttribute('theme-mode', 'dark');
-      document.documentElement.classList.add(ThemeMode.dark);
+      body.setAttribute('theme-mode', 'dark')
+      document.documentElement.classList.add(ThemeMode.dark)
     } else {
-      body.removeAttribute('theme-mode');
-      document.documentElement.classList.remove(ThemeMode.dark);
+      body.removeAttribute('theme-mode')
+      document.documentElement.classList.remove(ThemeMode.dark)
     }
   }, [theme])
 
@@ -27,6 +27,6 @@ export default function useDarkMode() {
       setTheme(ThemeMode.dark)
     }
   }
-  
+
   return [theme, toggleTheme] as const
 }

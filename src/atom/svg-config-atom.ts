@@ -1,5 +1,4 @@
-import { atomWithStorage } from "jotai/utils";
-
+import { atomWithStorage } from 'jotai/utils'
 
 export interface SvgConfig {
   strokeWidth: number

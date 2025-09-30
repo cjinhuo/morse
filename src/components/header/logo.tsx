@@ -13,7 +13,8 @@ export default function Logo() {
         class='text-skin-neutral-2 relative'
         style={{ bottom: '2px' }}
         name={IconParkNames['morse-code']}
-        size='2.5rem'></IconPark>
+        size='2.5rem'
+      ></IconPark>
       <div className='text-skin-neutral-3 font-medium text-3xl'>MorseType</div>
     </div>
   )

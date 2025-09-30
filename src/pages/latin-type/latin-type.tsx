@@ -1,10 +1,10 @@
+import { useAtomValue } from 'jotai'
 import { useEffect, useRef } from 'react'
 import { filter, fromEvent, map } from 'rxjs'
+import { LatinSentenceAtom } from '../../atom/atom'
 import PureTypeChar, { type RefMethodsType } from '../../components/pure-type-char'
 import { CHAR_STATUS, DELETE_KEYS_SET, LATIN_ALLOWED_INPUT_KEYS_SET } from '../../shared/constants'
 import { playErrorSound, playTypeWriterSound } from '../../shared/sound'
-import { LatinSentenceAtom } from '../../atom/atom'
-import { useAtomValue } from 'jotai'
 
 export default function LatinType() {
   const pureTypeCharRef = useRef<RefMethodsType | null>(null)
@@ -46,7 +46,7 @@ export default function LatinType() {
         return
       }
       playTypeWriterSound()
-        ;[currentElement, lastElement] = pureTypeCharRef.current!.prev()
+      ;[currentElement, lastElement] = pureTypeCharRef.current!.prev()
     })
 
     return () => {
@@ -57,11 +57,7 @@ export default function LatinType() {
 
   return (
     <div>
-      <PureTypeChar
-        key={currentLatinSentence}
-        data={currentLatinSentence}
-        ref={pureTypeCharRef}
-      />
+      <PureTypeChar key={currentLatinSentence} data={currentLatinSentence} ref={pureTypeCharRef} />
     </div>
   )
 }

@@ -1,12 +1,12 @@
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { InputtingMorseCodeAtom } from '../atom/atom'
-import useMobile from '../hooks/useMobile'
-import { TYPING_STATUS } from '../shared/constants'
-import { transformMorseCodeToChar } from '../shared/utils'
-import MorseCodeSvg from './morse-code-svg'
-import MotionSpaceButton from './motion-space-button'
+import { InputtingMorseCodeAtom } from '../../atom/atom'
+import MorseCodeSvg from '../../components/morse-code-svg'
+import MotionSpaceButton from '../../components/motion-space-button'
+import useMobile from '../../hooks/useMobile'
+import { TYPING_STATUS } from '../../shared/constants'
+import { transformMorseCodeToChar } from '../../shared/utils'
 
 const InputMaskContainer = styled.div`
   position: fixed;
