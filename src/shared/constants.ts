@@ -14,6 +14,7 @@ export enum IconParkNames {
   'morse-code-1' = 'morse-code-1',
   'morse-code-2' = 'morse-code-2',
   'morse-code' = 'morse-code',
+  refresh = 'refresh',
 }
 
 export const CHAR_KEYS = [

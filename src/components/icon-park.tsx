@@ -17,7 +17,7 @@ export default function IconPark(props: IconParkProps) {
     <iconpark-icon
       size='1.3rem'
       style={{ transition: 'color 0.1s' }}
-      class={`text-skin-neutral-7 hover:text-skin-neutral-5 ${props.active ? 'text-skin-neutral-5' : ''}`}
+      class={`hover:text-skin-neutral-5 ${props.active ? 'text-skin-neutral-5' : 'text-skin-neutral-7'}`}
       {...props}></iconpark-icon>
   )
 }

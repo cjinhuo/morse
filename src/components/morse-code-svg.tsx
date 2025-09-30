@@ -65,7 +65,7 @@ const MorseCodeSvg = forwardRef<SVGSVGElement, LineGroupProps>((props, ref) => {
           height += config.lineHeight
         }
         const groupComponent = (
-          <g key={y1}>
+          <g key={`word-${wordIndex}`}>
             {Array.from(word).map((char, charIndex) => {
               // calculate the max width for svg container
               if (charIndex === word.length - 1) {
@@ -74,15 +74,15 @@ const MorseCodeSvg = forwardRef<SVGSVGElement, LineGroupProps>((props, ref) => {
 
               if (char === SEPARATE_SYMBOL) {
                 x1 += config.letterSpace
-                return <></>
+                return null
               }
-              
+
               const isDot = char === MorseCodeCharType.dotChar
               x1 = x1 === 0 ? x1 : x1 + config.dotDashSpace
               x2 = x1 + (isDot ? config.dotWidth : config.dashWidth)
               const line = (
                 <line
-                  key={`${x1}${y1}`}
+                  key={`line-${wordIndex}-${charIndex}`}
                   strokeWidth={config.strokeWidth}
                   strokeLinecap='round'
                   className='line'

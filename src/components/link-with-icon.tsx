@@ -23,10 +23,10 @@ export default function LinkWithIcon({ name, value, type, onClick, active = fals
     }
   }
   return (
-    <motion.div 
-      whileHover={active ? {} : { scale: 1.2 }} 
+    <motion.div
+      whileHover={active ? {} : { scale: 1.2 }}
       style={{ scale: active ? 1.2 : 1 }}
-      className={`flex items-center ${active ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} 
+      className={`flex items-center ${active ? 'cursor-not-allowed' : 'cursor-pointer'}`}
       onClick={handleOnClick}
     >
       <IconPark {...rest} name={name} active={active} />

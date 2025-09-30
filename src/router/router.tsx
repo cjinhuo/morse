@@ -5,6 +5,11 @@ import About from '../pages/about/about'
 import Home from '../pages/home/home'
 import LatinType from '../pages/latin-type/latin-type'
 import MorseConverter from '../pages/morse-converter/morse-converter'
+
+export const MORSE_PATH = '/morse'
+export const CONVERTER_PATH = '/morse/converter'
+export const LATIN_PATH = '/morse/latin'
+
 const router = createHashRouter([
   {
     path: '/morse',
@@ -12,23 +17,23 @@ const router = createHashRouter([
     children: [
       {
         index: true,
-        path: '/morse',
+        path: MORSE_PATH,
         element: <Home />,
       },
       {
-        path: '/morse/about',
+        path: `${MORSE_PATH}/about`,
         element: <About />,
       },
       {
-        path: '/morse/latin',
+        path: LATIN_PATH,
         element: <LatinType />,
       },
+      // {
+      //   path: '/morse/tree',
+      //   element: <Tree />,
+      // },
       {
-        path: '/morse/tree',
-        element: <Tree />,
-      },
-      {
-        path: '/morse/converter',
+        path: CONVERTER_PATH,
         element: <MorseConverter />,
       },
     ],

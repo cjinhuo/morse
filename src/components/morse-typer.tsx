@@ -1,9 +1,9 @@
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { motion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ReactCanvasConfetti from 'react-canvas-confetti/dist/presets/crossfire'
 import type { TCanvasConfettiInstance } from 'react-canvas-confetti/dist/types'
-import { InputtingMorseCodeAtom } from '../atom/atom'
+import { InputtingMorseCodeAtom, MorseSentenceAtom } from '../atom/atom'
 import { CHAR_STATUS, TYPING_STATUS } from '../shared/constants'
 import {
   getOscillatorNodeWithParams,
@@ -19,16 +19,9 @@ interface TooltipData {
   content: string
 }
 
-const canvasStyles = {
-  position: 'fixed',
-  pointerEvents: 'none',
-  width: '100%',
-  height: '100%',
-  top: 0,
-  left: 0,
-} as const
 
 export default function MorseTyper() {
+  const currentSentence = useAtomValue(MorseSentenceAtom)
   const setCurrentMorseCode = useSetAtom(InputtingMorseCodeAtom)
   const pureTypeCharRef = useRef<RefMethodsType | null>(null)
   const [currentElementState, setCurrentElementState] = useState<HTMLElement | null | undefined>(undefined)
@@ -44,13 +37,13 @@ export default function MorseTyper() {
       setCurrentMorseCode((prev) => {
         return prev.status !== TYPING_STATUS.typing
           ? {
-              status: TYPING_STATUS.typing,
-              morseCode: char,
-            }
+            status: TYPING_STATUS.typing,
+            morseCode: char,
+          }
           : {
-              status: TYPING_STATUS.typing,
-              morseCode: prev.morseCode + char,
-            }
+            status: TYPING_STATUS.typing,
+            morseCode: prev.morseCode + char,
+          }
       })
     })
     const fragmentSubscription = $fragment.subscribe((fragment) => {
@@ -81,8 +74,13 @@ export default function MorseTyper() {
     return () => {
       singleCharSubscription.unsubscribe()
       fragmentSubscription.unsubscribe()
+      // 销毁时，重置状态
+      setCurrentMorseCode(() => ({
+        status: TYPING_STATUS.idle,
+        morseCode: '',
+      }))
     }
-  }, [setCurrentMorseCode])
+  }, [setCurrentMorseCode, currentSentence])
 
   useEffect(() => {
     if (!currentElementState) return
@@ -96,16 +94,6 @@ export default function MorseTyper() {
     }
   }, [currentElementState])
 
-
-// 销毁时，重置状态
-  useEffect(() => {
-    return () => {
-      setCurrentMorseCode((prev) => ({
-        status: TYPING_STATUS.idle,
-        morseCode: '',
-      }))
-    }
-  }, [setCurrentMorseCode])
 
   return (
     <div className='relative'>
@@ -131,7 +119,8 @@ export default function MorseTyper() {
           {tooltipData.content}
         </motion.div>
       )}
-      <PureTypeChar data='HELLO WORLD' ref={pureTypeCharRef} />
+      {/* 当 currentSentence 变化时，强制重建 PureTypeChar 以重置内部状态 */}
+      <PureTypeChar key={currentSentence} data={currentSentence} ref={pureTypeCharRef} />
     </div>
   )
 }
