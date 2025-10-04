@@ -5,7 +5,7 @@ import IconPark from '../icon-park'
 export default function Logo() {
   const navigate = useNavigate()
   const handleClick = () => {
-    navigate('/morse')
+    navigate('/')
   }
   return (
     <div onClick={handleClick} className='h-full flex cursor-pointer'>

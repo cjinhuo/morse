@@ -6,10 +6,10 @@ import Home from '../pages/home/home'
 import LatinType from '../pages/latin-type/latin-type'
 import MorseConverter from '../pages/morse-converter/morse-converter'
 
-export const MORSE_PATH = '/morse'
-export const ABOUT_PATH = `${MORSE_PATH}/about`
-export const CONVERTER_PATH = `${MORSE_PATH}/converter`
-export const LATIN_PATH = `${MORSE_PATH}/latin`
+export const MORSE_PATH = '/'
+export const ABOUT_PATH = `${MORSE_PATH}about`
+export const CONVERTER_PATH = `${MORSE_PATH}converter`
+export const LATIN_PATH = `${MORSE_PATH}latin`
 
 const router = createHashRouter([
   {
@@ -21,11 +21,11 @@ const router = createHashRouter([
         element: <Home />,
       },
       {
-        path: 'about',
+        path: ABOUT_PATH,
         element: <About />,
       },
       {
-        path: 'latin',
+        path: LATIN_PATH,
         element: <LatinType />,
       },
       // {
