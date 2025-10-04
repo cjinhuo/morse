@@ -7,37 +7,39 @@ import LatinType from '../pages/latin-type/latin-type'
 import MorseConverter from '../pages/morse-converter/morse-converter'
 
 export const MORSE_PATH = '/morse'
-export const CONVERTER_PATH = '/morse/converter'
-export const LATIN_PATH = '/morse/latin'
+export const ABOUT_PATH = `${MORSE_PATH}/about`
+export const CONVERTER_PATH = `${MORSE_PATH}/converter`
+export const LATIN_PATH = `${MORSE_PATH}/latin`
 
 const router = createHashRouter([
   {
-    path: '/morse',
+    path: '/',
     element: <BaseLayout />,
     children: [
       {
         index: true,
-        path: MORSE_PATH,
         element: <Home />,
       },
       {
-        path: `${MORSE_PATH}/about`,
+        path: 'about',
         element: <About />,
       },
       {
-        path: LATIN_PATH,
+        path: 'latin',
         element: <LatinType />,
       },
       // {
-      //   path: '/morse/tree',
+      //   path: 'tree',
       //   element: <Tree />,
       // },
       {
-        path: CONVERTER_PATH,
+        path: 'converter',
         element: <MorseConverter />,
       },
     ],
   },
-])
+], {
+  basename: '/morse'
+})
 
 export default router

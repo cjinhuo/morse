@@ -7,7 +7,7 @@ export default defineConfig({
     template: './public/index.html',
   },
   output: {
-    assetPrefix: '/morse',
+    assetPrefix: '/morse/',
   },
   server: {
     open: '/#/morse',

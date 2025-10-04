@@ -1,18 +1,17 @@
 export const MORSE_SENTENCES = [
   'HELLO WORLD', // 经典问候语
   'SOS', // 国际求救信号
-  'SHANKS IS AWESOME', // 个性化句子
+  // 'SHANKS IS AWESOME', // 个性化句子
   'CQ CQ CQ', // 呼叫任何电台的标准用语
   'QRT', // 停止发送
   'QSL', // 确认收到
-  'THE QUICK BROWN FOX', // 经典字母练习句子
+  // 'THE QUICK BROWN FOX', // 经典字母练习句子
   'PARIS PARIS', // 摩尔斯密码速度测试标准词
-  'TEST TEST', // 测试信号
+  // 'TEST TEST', // 测试信号
   'CQ DX', // 呼叫远距离电台
   'QTH', // 位置/地点
-  'NAME IS', // 自我介绍用语
-  'GOOD MORNING', // 早上问候语
-  'GOOD EVENING', // 晚上问候语
+  // 'GOOD MORNING', // 早上问候语
+  // 'GOOD EVENING', // 晚上问候语
   '73 73', // 业余无线电告别用语
 ]
 
