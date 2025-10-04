@@ -39,7 +39,7 @@ const router = createHashRouter([
     ],
   },
 ], {
-  basename: '/morse'
+  basename: '/'
 })
 
 export default router
