@@ -13,6 +13,10 @@ export default function MorseConverter() {
   const svgConfig = useAtomValue(svgConfigAtom)
   const svgRef = useRef<SVGSVGElement>(null)
 
+  useEffect(() => {
+    document.title = 'Morse Converter'
+  }, [])
+
   const handleInputChange = (value: string) => {
     // Only allow characters in LATIN_ALLOWED_INPUT_KEYS_SET and spaces
     const filteredValue = value

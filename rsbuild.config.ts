@@ -10,6 +10,6 @@ export default defineConfig({
     assetPrefix: '/morse/',
   },
   server: {
-    open: '/#/morse',
+    open: 'morse/#/',
   },
 })

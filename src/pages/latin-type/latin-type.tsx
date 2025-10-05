@@ -10,6 +10,9 @@ export default function LatinType() {
   const pureTypeCharRef = useRef<RefMethodsType | null>(null)
   const currentLatinSentence = useAtomValue(LatinSentenceAtom)
   useEffect(() => {
+    document.title = 'Latin Type'
+  }, [])
+  useEffect(() => {
     if (!pureTypeCharRef.current) return
     const $allowedKeyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
       map((e) => {
@@ -46,7 +49,7 @@ export default function LatinType() {
         return
       }
       playTypeWriterSound()
-      ;[currentElement, lastElement] = pureTypeCharRef.current!.prev()
+        ;[currentElement, lastElement] = pureTypeCharRef.current!.prev()
     })
 
     return () => {
