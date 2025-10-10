@@ -141,13 +141,12 @@ export function isMobile() {
     )
   ) {
     return true // 移动端
-  } else {
-    return false // PC端
   }
+  return false // PC端
 }
 
 export function isSystemDarkMode() {
-  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches
 }
 
 export function isLocalStorageDarkMode() {

@@ -12,6 +12,7 @@ export default function LatinType() {
   useEffect(() => {
     document.title = 'Latin Type'
   }, [])
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!pureTypeCharRef.current) return
     const $allowedKeyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
@@ -56,6 +57,7 @@ export default function LatinType() {
       forwardKeySubscription.unsubscribe()
       backwardKeySubscription.unsubscribe()
     }
+    // 当currentLatinSentence变化时，重置currentElement和lastElement
   }, [currentLatinSentence])
 
   return (
