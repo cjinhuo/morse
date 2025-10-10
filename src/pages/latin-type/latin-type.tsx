@@ -15,14 +15,14 @@ export default function LatinType() {
   const { stats, startStats, recordInput, recordBackspace, finishStats, resetStats } = useTypingStats()
 
   useEffect(() => {
-    document.title = 'Latin Type'
+    document.title = 'Latin Typer'
   }, [])
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // 重置统计状态
     resetStats()
     setIsStarted(false)
-    
+
     if (!pureTypeCharRef.current) return
     const $allowedKeyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
       map((e) => {
@@ -48,9 +48,9 @@ export default function LatinType() {
         setIsStarted(true)
         hasStarted = true
       }
-      
+
       const expectedChar = currentElement?.innerText
-      
+
       if (e.key === expectedChar) {
         ;[currentElement, lastElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
         recordInput(CHAR_STATUS.correct, e.key, expectedChar)
@@ -85,7 +85,6 @@ export default function LatinType() {
     // 当currentLatinSentence变化时，重置currentElement和lastElement
   }, [currentLatinSentence, startStats, recordInput, recordBackspace, finishStats, resetStats])
 
-  console.log('stats', isStarted, stats)
   return (
     <div>
       <PureTypeChar key={currentLatinSentence} data={currentLatinSentence} ref={pureTypeCharRef} />
