@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import ReactCanvasConfetti from 'react-canvas-confetti/dist/presets/crossfire'
 import { InputtingMorseCodeAtom, MorseSentenceAtom } from '../../atom/atom'
 import PureTypeChar, { type RefMethodsType } from '../../components/pure-type-char'
+import TypingStats from '../../components/typing-stats'
+import { useTypingStats } from '../../hooks/useTypingStats'
 import { CHAR_STATUS, TYPING_STATUS } from '../../shared/constants'
 import {
   getOscillatorNodeWithParams,
@@ -24,33 +26,52 @@ export default function MorseTyper() {
   const pureTypeCharRef = useRef<RefMethodsType | null>(null)
   const [currentElementState, setCurrentElementState] = useState<HTMLElement | null | undefined>(undefined)
   const [tooltipData, setTooltipData] = useState<TooltipData>({ x: 0, y: 0, content: '' })
+  const [isStarted, setIsStarted] = useState(false)
+  const { stats, startStats, recordInput, finishStats, resetStats } = useTypingStats()
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    // 重置统计状态
+    resetStats()
+    setIsStarted(false)
+    
     if (!pureTypeCharRef.current) return
 
     let currentElement = pureTypeCharRef.current.start()
     setCurrentElementState(currentElement)
+    let hasStarted = false
+    
     const [$singleChar, $fragment] = subscribeKeyEventForMorseCode(getOscillatorNodeWithParams)
     const singleCharSubscription = $singleChar.subscribe((char) => {
       setCurrentMorseCode((prev) => {
         return prev.status !== TYPING_STATUS.typing
           ? {
-              status: TYPING_STATUS.typing,
-              morseCode: char,
-            }
+            status: TYPING_STATUS.typing,
+            morseCode: char,
+          }
           : {
-              status: TYPING_STATUS.typing,
-              morseCode: prev.morseCode + char,
-            }
+            status: TYPING_STATUS.typing,
+            morseCode: prev.morseCode + char,
+          }
       })
     })
     const fragmentSubscription = $fragment.subscribe((fragment) => {
       const char = transformMorseCodeToChar(fragment)
       if (char) {
-        if (currentElement?.innerHTML === char) {
+        // 第一次输入时开始统计
+        if (!hasStarted) {
+          startStats()
+          setIsStarted(true)
+          hasStarted = true
+        }
+        
+        const expectedChar = currentElement?.innerHTML
+        if (expectedChar === char) {
           ;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
+          recordInput(CHAR_STATUS.correct, char, expectedChar)
         } else {
           ;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.error, char)
+          recordInput(CHAR_STATUS.error, char, expectedChar)
         }
       }
 
@@ -64,6 +85,8 @@ export default function MorseTyper() {
         }
         setCurrentElementState(currentElement)
       } else {
+        // 输入完成
+        finishStats()
         setCurrentElementState(null)
         singleCharSubscription.unsubscribe()
         fragmentSubscription.unsubscribe()
@@ -78,7 +101,7 @@ export default function MorseTyper() {
         morseCode: '',
       }))
     }
-  }, [setCurrentMorseCode, currentSentence])
+  }, [currentSentence, setCurrentMorseCode, startStats, recordInput, finishStats, resetStats])
 
   useEffect(() => {
     if (!currentElementState) return
@@ -118,6 +141,9 @@ export default function MorseTyper() {
       )}
       {/* 当 currentSentence 变化时，强制重建 PureTypeChar 以重置内部状态 */}
       <PureTypeChar key={currentSentence} data={currentSentence} ref={pureTypeCharRef} />
+      {(isStarted || stats.isCompleted) && (
+        <TypingStats data={stats} />
+      )}
     </div>
   )
 }
