@@ -10,7 +10,10 @@
 - **练习句子**：内置多个经典摩尔斯码练习句子，如"SOS"、"HELLO WORLD"等
 - **视觉提示**：当前字符的摩尔斯码会以动画形式显示在屏幕上
 
-[![摩尔斯密码演示](./docs/more_play.png)](./docs/morse.mp4)
+<video width="600" controls>
+  <source src="./docs/morse.mp4" type="video/mp4">
+  您的浏览器不支持视频播放。
+</video>
 
 
 ### ⌨️ 英文字符练习
@@ -18,7 +21,10 @@
 - **错误提示**：输入错误时会有音效和视觉反馈
 - **多样句子**：包含经典电影台词等有趣的练习内容
 
-[![英文字符演示](./docs/latin_play.png)](./docs/latin.mp4)
+<video width="600" controls>
+  <source src="./docs/latin.mp4" type="video/mp4">
+  您的浏览器不支持视频播放。
+</video>
 
 ### 🔄 摩尔斯转换器
 - **双向转换**：支持普通文本转摩尔斯码
