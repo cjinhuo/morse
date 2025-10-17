@@ -64,9 +64,25 @@ export function getOscillatorNodeWithParams(waveform: OscillatorType = 'sine', d
 
 export function subscribeKeyEventForMorseCode(getOscillatorNode: () => OscillatorNode) {
   const $keyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-    filter((e) => e.code === 'Space' && !e.repeat)
+    filter((e) => {
+      if (e.code === 'Space' && !e.repeat) {
+        e.preventDefault()
+        e.stopPropagation()
+        return true
+      }
+      return false
+    })
   )
-  const $keyUpEvent = fromEvent<KeyboardEvent>(document, 'keyup').pipe(filter((e) => e.code === 'Space'))
+  const $keyUpEvent = fromEvent<KeyboardEvent>(document, 'keyup').pipe(
+    filter((e) => {
+      if (e.code === 'Space') {
+        e.preventDefault()
+        e.stopPropagation()
+        return true
+      }
+      return false
+    })
+  )
   const $singleChar = $keyDownEvent.pipe(
     switchMap(() => {
       const startTime = Date.now()

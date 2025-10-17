@@ -26,6 +26,11 @@ export default function LatinType() {
     if (!pureTypeCharRef.current) return
     const $allowedKeyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
       map((e) => {
+        // 对空格键进行特殊处理，阻止冒泡
+        if (e.code === 'Space') {
+          e.preventDefault()
+          e.stopPropagation()
+        }
         return {
           repeat: e.repeat,
           // better to use 'Space' than ' '
