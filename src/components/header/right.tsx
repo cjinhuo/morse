@@ -9,7 +9,7 @@ export default function HeaderRight() {
       <HeaderMenu />
       <LinkWithIcon
         name={IconParkNames.github}
-        value='https://github.com/cjinhuo/cjinhuo.github.io'
+        value='https://github.com/cjinhuo/morse'
         type='link'
       ></LinkWithIcon>
       <Theme />
