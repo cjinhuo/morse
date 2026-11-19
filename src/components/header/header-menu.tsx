@@ -15,13 +15,13 @@ const HeaderMenuContainer = styled.nav`
 
 const HeaderMenu = () => {
   const location = useLocation()
-  console.log(location.pathname)
   return (
     <HeaderMenuContainer>
       <Tooltip content='Morse Code Converter'>
         <div className='flex items-center'>
           <LinkWithIcon
             name={IconParkNames.switch}
+            label='Text to Morse code converter'
             value={CONVERTER_PATH}
             type='route'
             active={location.pathname === CONVERTER_PATH}
@@ -32,6 +32,7 @@ const HeaderMenu = () => {
         <div className='flex items-center'>
           <LinkWithIcon
             name={IconParkNames['keyboard-2']}
+            label='English typing practice'
             value={LATIN_PATH}
             type='route'
             active={location.pathname === LATIN_PATH}
