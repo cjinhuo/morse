@@ -1,19 +1,33 @@
 name: github pages
 
 on:
+  pull_request:
+    branches: [master]
   push:
-    branches:
-      - master # default branch
+    branches: [master]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: npm install pnpm -g
-      - run: pnpm i
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      - name: Verify published pages
+        run: |
+          test -s dist/index.html
+          test -s dist/converter/index.html
+          test -s dist/latin/index.html
+          test -s dist/sitemap.xml
       - name: Deploy dist
+        if: github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.CI_TOKEN }}
