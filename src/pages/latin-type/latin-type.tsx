@@ -14,9 +14,6 @@ export default function LatinType() {
   const [isStarted, setIsStarted] = useState(false)
   const { stats, startStats, recordInput, recordBackspace, finishStats, resetStats } = useTypingStats()
 
-  useEffect(() => {
-    document.title = 'Latin Typer'
-  }, [])
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // 重置统计状态
@@ -92,6 +89,8 @@ export default function LatinType() {
 
   return (
     <div>
+      <h1 className='text-2xl font-semibold'>English Typing Practice</h1>
+      <p>Type the highlighted character to practice accuracy and speed.</p>
       <PureTypeChar key={currentLatinSentence} data={currentLatinSentence} ref={pureTypeCharRef} />
       {(isStarted || stats.isCompleted) && (
         <TypingStats data={stats} />

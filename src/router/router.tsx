@@ -1,4 +1,4 @@
-import { createHashRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import BaseLayout from '../components/base-layout/base-layout'
 
@@ -10,8 +10,8 @@ const MorseConverter = lazy(() => import('../pages/morse-converter/morse-convert
 
 export const MORSE_PATH = '/'
 export const ABOUT_PATH = `${MORSE_PATH}about`
-export const CONVERTER_PATH = `${MORSE_PATH}converter`
-export const LATIN_PATH = `${MORSE_PATH}latin`
+export const CONVERTER_PATH = `${MORSE_PATH}converter/`
+export const LATIN_PATH = `${MORSE_PATH}latin/`
 
 // 加载状态组件
 const LoadingFallback = () => (
@@ -20,7 +20,7 @@ const LoadingFallback = () => (
   </div>
 )
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     path: '/',
     element: <BaseLayout />,
@@ -60,7 +60,7 @@ const router = createHashRouter([
     ],
   },
 ], {
-  basename: '/'
+  basename: '/morse'
 })
 
 export default router

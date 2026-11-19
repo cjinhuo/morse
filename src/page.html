@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/morse/favicon.svg" />
+    <title><%= page.title %> | Morse Typer</title>
+    <meta name="description" content="<%= page.description %>" />
+    <link rel="canonical" href="<%= canonical %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="<%= canonical %>" />
+    <meta property="og:title" content="<%= page.title %> | Morse Typer" />
+    <meta property="og:description" content="<%= page.description %>" />
+    <meta property="og:image" content="https://raw.githubusercontent.com/cjinhuo/morse/master/docs/<%= page.image %>" />
+    <meta property="og:image:alt" content="<%= page.title %> in Morse Typer" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      // Previous releases shared practice modes as hash URLs.
+      const bookmark = location.hash.match(/^#\/(converter|latin)?\/?(\?[^#]*)?(#.*)?$/)
+      if (bookmark) {
+        const path = bookmark[1] ? bookmark[1] + '/' : ''
+        location.replace('/morse/' + path + (bookmark[2] || location.search) + (bookmark[3] || ''))
+      }
+    </script>
+    <script src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_33805_20.e5667170ad82a2cd2f6377222d7025ad.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <main>
+        <h1><%= page.title %></h1>
+        <p><%= page.description %></p>
+        <p><%= page.example %></p>
+        <nav aria-label="Practice modes">
+          <a href="/morse/">Morse code typing practice</a>
+          <a href="/morse/converter/">Text to Morse code converter</a>
+          <a href="/morse/latin/">English typing practice</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

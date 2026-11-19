@@ -1,6 +1,6 @@
 import { Button, Input, Space, TextArea, Typography } from '@douyinfe/semi-ui'
 import { useAtomValue } from 'jotai'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { svgConfigAtom } from '../../atom/svg-config-atom'
 import MorseCodeSvg from '../../components/morse-code-svg'
 import SvgConfigPanel from '../../components/svg-config-panel'
@@ -13,9 +13,6 @@ export default function MorseConverter() {
   const svgConfig = useAtomValue(svgConfigAtom)
   const svgRef = useRef<SVGSVGElement>(null)
 
-  useEffect(() => {
-    document.title = 'Morse Converter'
-  }, [])
 
   const handleInputChange = (value: string) => {
     // Only allow characters in LATIN_ALLOWED_INPUT_KEYS_SET and spaces
@@ -106,7 +103,7 @@ export default function MorseConverter() {
     <div className='w-full h-full'>
       <div className='mx-auto max-w-[1200px] space-y-4'>
         <div className='text-center'>
-          <Typography.Title className='mb-2 text-3xl font-bold'>Morse Code Converter</Typography.Title>
+          <h1 className='mb-2 text-3xl font-bold'>Text to Morse Code Converter</h1>
         </div>
 
         {/* Input Section */}
