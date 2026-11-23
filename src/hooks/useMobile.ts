@@ -1,18 +1,10 @@
-import { useLayoutEffect, useState } from 'react'
-import { debounceTime, fromEvent } from 'rxjs'
-import { isMobile } from '../shared/utils'
+import { useSyncExternalStore } from 'react'
 
+const phone = window.matchMedia('(max-width: 767px)')
+function subscribe(change: () => void) {
+  phone.addEventListener('change', change)
+  return () => phone.removeEventListener('change', change)
+}
 export default function useMobile() {
-  const [isMobileState, setIsMobile] = useState(isMobile())
-  useLayoutEffect(() => {
-    const subscription = fromEvent(window, 'resize')
-      .pipe(debounceTime(500))
-      .subscribe(() => {
-        setIsMobile(isMobile())
-      })
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [])
-  return isMobileState
+  return useSyncExternalStore(subscribe, () => phone.matches)
 }

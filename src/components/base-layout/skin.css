@@ -1,66 +1,100 @@
-html {
-  --color-neutral-1: #171717;
-  --color-neutral-2: #262626;
-  --color-neutral-3: #404040;
-  --color-neutral-4: #525252;
-  --color-neutral-5: #737373;
-  --color-neutral-6: #a3a3a3;
-  --color-neutral-7: #d4d4d4;
-  --color-neutral-8: #e5e5e5;
-  --color-neutral-9: #f5f5f5;
-  --color-neutral-10: #fafafa;
-
-  --color-normal-bg: #eeeeee;
-  --color-normal-bg-reverse: rgb(6, 12, 18);
-
-  --color-linear-bg-start: rgb(255, 255, 255);
-  --color-linear-bg-end: rgb(230, 236, 242, 0);
-  --color-link-href: rgb(90, 160, 223);
+@font-face {
+  font-family: "MorseType CJK";
+  src: url("../../assets/morsetype-cjk.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+2E80-9FFF, U+FF00-FFEF;
 }
 
-.dark,
-body[theme-mode="dark"] {
-  --color-neutral-10: #171717;
-  --color-neutral-9: #262626;
-  --color-neutral-8: #404040;
-  --color-neutral-7: #525252;
-  --color-neutral-6: #737373;
-  --color-neutral-5: #a3a3a3;
-  --color-neutral-4: #d4d4d4;
-  --color-neutral-3: #e5e5e5;
-  --color-neutral-2: #f5f5f5;
-  --color-neutral-1: #fafafa;
-
-  --color-normal-bg: rgb(6, 12, 18);
-  --color-normal-bg-reverse: rgb(230, 236, 242);
-
-  --color-linear-bg-start: rgb(6, 12, 18);
-  --color-linear-bg-end: rgb(230, 236, 242, 0.06);
-  --color-link-href: rgb(90, 160, 223);
+:root {
+  color-scheme: dark;
+  --mt-bg: #08080d;
+  --mt-surface: #111119;
+  --mt-raised: #191822;
+  --mt-border: #2b293c;
+  --mt-text: #f4f2ff;
+  --mt-muted: #a7a3ba;
+  --mt-purple: #7956ff;
+  --mt-cyan: #76dfda;
+  --mt-error: #ff8d9d;
+  --mt-correct: #b596ffd6;
+  --pending: #81798f;
+  --phone-pending: #676074;
+  --accent-text: #c1affa;
+  --nav-selected: #211936;
+  --nav-label: #d4c5ff;
+  --nav-icon: #af96ff;
+  --console-border: #353047;
+  --error-bg: #3a1c2b;
+  --error-glyph: #ff9cac;
+  --active-bg: #2a2040;
+  --active-line: #aa88ff;
+  --english-active: #38245d;
+  --key-edge: #a18bff;
+  --hint-bg: #382650;
+  --hint-edge: #9976c9;
+  --hint-ink: #f0e6ff;
+  --signal: #b69cff;
+  --signal-caption: #91869f;
+  --signal-dim: #342b48;
+  --track: #302a3c;
+  --drawer-accent: #c6b4ff;
+  --code-ink: #c7bbe0;
+  --meta-accent: #c2b4e9;
+  --bottom-bg: #0d0c13;
+  --success-bg: #142a29;
+  --feedback-bg: #201319;
+  --feedback-border: #60323f;
+  --feedback-ink: #ffb7c3;
+  --feedback-link: #d9c4ff;
+  --feedback-target: #e5c5d1;
+  --feedback-muted: #c6a8b4;
+  --mt-heading: "Chakra Petch", "MorseType CJK", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mt-body: "Instrument Sans Variable", "MorseType CJK", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mt-mono: "Fragment Mono", "MorseType CJK", "PingFang SC", "Microsoft YaHei", monospace;
 }
-
-/* ::selection {
-  color: var(--color-neutral-9);
-  background-color: var(--color-normal-bg-reverse);
-} */
-
-/* scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-normal-bg);
-  border-radius: 10px;
-}
-
-/* -webkit-scrollbar-corner: 当同时有垂直滚动条和水平滚动条时交汇的部分 */
-::-webkit-scrollbar-thumb,
-::-webkit-scrollbar-corner {
-  background: var(--color-neutral-7);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-neutral-6);
+:root[data-theme="light"] {
+  color-scheme: light;
+  --mt-bg: #f5f6fa;
+  --mt-surface: #fff;
+  --mt-raised: #eef0f6;
+  --mt-border: #dde1eb;
+  --mt-text: #252a3b;
+  --mt-muted: #687084;
+  --mt-purple: #6954d8;
+  --mt-cyan: #287d73;
+  --mt-error: #b2445d;
+  --mt-correct: #4f4698;
+  --pending: #8991a4;
+  --phone-pending: #8991a4;
+  --accent-text: #5945b0;
+  --nav-selected: #e8e4fa;
+  --nav-label: #493994;
+  --nav-icon: #6954d8;
+  --console-border: #d8dbe5;
+  --error-bg: #fbeaf0;
+  --error-glyph: #b2445d;
+  --active-bg: #e8e4fa;
+  --active-line: #6954d8;
+  --english-active: #e8e4fa;
+  --key-edge: #9889e5;
+  --hint-bg: #eeeafa;
+  --hint-edge: #a193d3;
+  --hint-ink: #493994;
+  --signal: #6954d8;
+  --signal-caption: #687084;
+  --signal-dim: #dcd8eb;
+  --track: #dde1eb;
+  --drawer-accent: #493994;
+  --code-ink: #493994;
+  --meta-accent: #5945a0;
+  --bottom-bg: #ffffff;
+  --success-bg: #e2f3ee;
+  --feedback-bg: #fff3f5;
+  --feedback-border: #e3bec9;
+  --feedback-ink: #893449;
+  --feedback-link: #493994;
+  --feedback-target: #893449;
+  --feedback-muted: #785361;
 }

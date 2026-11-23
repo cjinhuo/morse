@@ -10,3 +10,7 @@ dist/
 # IDE
 !.vscode/extensions.json
 .idea
+
+# Browser test artifacts
+/test-results/
+/playwright-report/

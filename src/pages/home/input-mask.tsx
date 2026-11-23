@@ -1,69 +1,81 @@
-import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
-import styled from 'styled-components'
-import { InputtingMorseCodeAtom } from '../../atom/atom'
-import MorseCodeSvg from '../../components/morse-code-svg'
-import MotionSpaceButton from '../../components/motion-space-button'
-import { TYPING_STATUS } from '../../shared/constants'
-import { transformMorseCodeToChar } from '../../shared/utils'
+import { characterState } from '../../components/pure-type-char'
+import { ALL_MORSE_CODE_MAP } from '../../shared/constants'
+import { displaySignal } from '../../shared/morse'
+import type { Session } from '../../shared/practice'
+import { useCopy } from '../../shared/preferences'
 
-const InputMaskContainer = styled.div`
-  position: fixed;
-  left: 20%;
-  bottom: 16vh;
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  .visibility-hidden {
-    animation: maskHideAnimation 1.5s forwards;
-  }
-  .visibility-show {
-    animation: maskShowAnimation 0.5s forwards;
-  }
-
-  @keyframes maskShowAnimation {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes maskHideAnimation {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-`
-
-export default function InputMask() {
-  const { morseCode, status } = useAtomValue(InputtingMorseCodeAtom)
-  const [blockClassName, targetChar] = useMemo(() => {
-    if (status === TYPING_STATUS.idle) return ['invisible']
-    if (status === TYPING_STATUS.done) {
-      return ['visibility-hidden', transformMorseCodeToChar(morseCode)]
-    }
-    return ['visibility-show']
-  }, [status, morseCode])
-
+export default function MobileConsole({
+  session,
+  signal,
+  complete,
+}: {
+  session: Session
+  signal: string
+  complete: boolean
+}) {
+  const t = useCopy()
+  const cursor = session.typed.length
+  const target = session.text[cursor]
+  const code = ALL_MORSE_CODE_MAP[target] || ''
+  const start = Math.max(0, Math.min(cursor - 1, session.text.length - 3))
+  const visible = session.text.slice(start, start + 3)
+  const guide =
+    code === '---'
+      ? t('三个长音', 'three dashes')
+      : code === '...'
+        ? t('三个短音', 'three dots')
+        : displaySignal(code, true)
+  const slots = signal + code.slice(signal.length)
   return (
-    <InputMaskContainer>
-      <div
-        style={{ backgroundColor: 'var(--color-neutral-8)', opacity: '0.8' }}
-        className={`text-3xl overflow-hidden w-full h-16 flex justify-center items-center rounded-2xl ${blockClassName}`}
-      >
-        <MorseCodeSvg morseCode={morseCode} />
-        <div className='text-skin-neutral-4'>{targetChar === null ? '-> invalid morse code' : targetChar}</div>
+    <div className='console phone-console'>
+      <div className='phone-toolbar between'>
+        <span>
+          {t('基础练习', 'Practice')} · {session.text.split(' ')[0]}
+        </span>
+        <span className='meta accent'>
+          {String(Math.min(cursor + 1, session.text.length)).padStart(2, '0')} /{' '}
+          {String(session.text.length).padStart(2, '0')}
+        </span>
       </div>
-      <div className='h-16 w-full mt-4'>
-        <MotionSpaceButton />
+      <section className='phone-letters' aria-label={session.text}>
+        {Array.from(visible, (char, i) => {
+          const index = start + i
+          const active = index === cursor
+          return (
+            <span
+              key={index}
+              data-char={char}
+              data-state={characterState(session, index)}
+              aria-current={active ? 'step' : undefined}
+            >
+              {active && (
+                <span className='phone-hint' aria-hidden='true'>
+                  {displaySignal(code, true)}
+                </span>
+              )}
+              {char}
+            </span>
+          )
+        })}
+      </section>
+      <div className='phone-guide'>{target ? `${target} = ${guide}` : t('练习完成', 'Complete')}</div>
+      <div className='captured'>
+        <div className='between meta'>
+          <span>{t('当前输入', 'Current signal')}</span>
+          <span className='live live-indicator'>{complete ? t('已完成', 'Complete') : t('接收中', 'Receiving')}</span>
+        </div>
+        <div
+          role='img'
+          className='captured-marks'
+          aria-label={displaySignal(signal, true) || t('等待输入', 'Waiting for input')}
+        >
+          {Array.from(slots, (mark, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: Slots are positional marks in the live signal.
+            <i key={i} data-mark={mark} data-entered={i < signal.length} />
+          ))}
+        </div>
+        <p>{t('松开后停顿半秒，自动确认字符。', 'Release and pause half a second to confirm.')}</p>
       </div>
-    </InputMaskContainer>
+    </div>
   )
 }

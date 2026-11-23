@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,6 +16,9 @@
     <meta property="og:image:alt" content="<%= page.title %> in Morse Typer" />
     <meta name="twitter:card" content="summary_large_image" />
     <script>
+      try {
+        if (localStorage.getItem('morse-theme') === 'light') document.documentElement.dataset.theme = 'light'
+      } catch {}
       // Previous releases shared practice modes as hash URLs.
       const bookmark = location.hash.match(/^#\/(converter|latin)?\/?(\?[^#]*)?(#.*)?$/)
       if (bookmark) {
@@ -23,11 +26,10 @@
         location.replace('/morse/' + path + (bookmark[2] || location.search) + (bookmark[3] || ''))
       }
     </script>
-    <script src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_33805_20.e5667170ad82a2cd2f6377222d7025ad.js"></script>
   </head>
   <body>
     <div id="root">
-      <main>
+      <main lang="en">
         <h1><%= page.title %></h1>
         <p><%= page.description %></p>
         <p><%= page.example %></p>
