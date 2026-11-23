@@ -1,10 +1,27 @@
-@import '../../../node_modules/modern-normalize/modern-normalize.css';
-@import '../../../node_modules/@icon-park/react/styles/index.css';
+@layer theme, base, components, utilities;
+@import 'modern-normalize' layer(base);
+@import 'tailwindcss' source('../..');
+@import '@icon-park/react/styles/index.css';
 @import './skin.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-skin-background: var(--color-normal-bg);
+  --color-skin-background-reverse: var(--color-normal-bg-reverse);
+  --color-skin-neutral-1: var(--color-neutral-1);
+  --color-skin-neutral-2: var(--color-neutral-2);
+  --color-skin-neutral-3: var(--color-neutral-3);
+  --color-skin-neutral-4: var(--color-neutral-4);
+  --color-skin-neutral-5: var(--color-neutral-5);
+  --color-skin-neutral-6: var(--color-neutral-6);
+  --color-skin-neutral-7: var(--color-neutral-7);
+  --color-skin-neutral-8: var(--color-neutral-8);
+  --color-skin-neutral-9: var(--color-neutral-9);
+  --color-skin-neutral-10: var(--color-neutral-10);
+  --color-skin-link: var(--color-link-href);
+  --container-custom-prose: var(--max-w-65);
+}
 
 * {
   box-sizing: border-box;

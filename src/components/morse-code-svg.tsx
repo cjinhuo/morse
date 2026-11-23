@@ -65,6 +65,7 @@ const MorseCodeSvg = forwardRef<SVGSVGElement, LineGroupProps>((props, ref) => {
           height += config.lineHeight
         }
         const groupComponent = (
+          // biome-ignore lint/suspicious/noArrayIndexKey: Repeated words are drawn on distinct lines by position.
           <g key={`word-${wordIndex}`}>
             {Array.from(word).map((char, charIndex) => {
               // calculate the max width for svg container
@@ -82,6 +83,7 @@ const MorseCodeSvg = forwardRef<SVGSVGElement, LineGroupProps>((props, ref) => {
               x2 = x1 + (isDot ? config.dotWidth : config.dashWidth)
               const line = (
                 <line
+                  // biome-ignore lint/suspicious/noArrayIndexKey: Repeated dots and dashes have distinct positions within a word.
                   key={`line-${wordIndex}-${charIndex}`}
                   strokeWidth={config.strokeWidth}
                   strokeLinecap='round'

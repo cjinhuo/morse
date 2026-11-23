@@ -125,8 +125,10 @@ export default memo(
       if (data.length === 0) return null
       const words = data.split(' ')
       return words.map((word, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: The practice sentence is fixed for the lifetime of this component.
         <div key={`${word}-${index}`} className={`inline-block ${WORD_CONTAINER_CLASS_NAME}`}>
           {Array.from(word).map((char, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: Each occurrence of a letter is a separate typing target.
             <div key={`${char}-${index}`} className={CHAR_CLASS_NAME}>
               {char}
             </div>
