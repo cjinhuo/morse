@@ -1,157 +1,49 @@
-import { useCallback, useRef, useState } from 'react'
-import type { TypingStatsData } from '../components/typing-stats'
-import { CHAR_STATUS } from '../shared/constants'
+import { useAtom } from 'jotai'
+import { useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useState } from 'react'
+import { createPracticeAtom, newPractice, type PracticeAction } from '../atom/practice-progress'
+import { type PracticeMode, scoreSession, sessionComplete } from '../shared/practice'
 
-export interface UseTypingStatsReturn {
-  /** 统计数据 */
-  stats: TypingStatsData
-  /** 开始统计 */
-  startStats: () => void
-  /** 记录输入事件 */
-  recordInput: (status: CHAR_STATUS, inputChar?: string, expectedChar?: string) => void
-  /** 记录退格事件 */
-  recordBackspace: () => void
-  /** 完成统计 */
-  finishStats: () => void
-  /** 重置统计 */
-  resetStats: () => void
-}
-
-interface InputEvent {
-  status: CHAR_STATUS
-  inputChar?: string
-  expectedChar?: string
-  timestamp: number
-}
-
-export function useTypingStats(): UseTypingStatsReturn {
-  const [stats, setStats] = useState<TypingStatsData>({
-    totalChars: 0,
-    correctChars: 0,
-    errorChars: 0,
-    startTime: null,
-    endTime: null,
-    isCompleted: false,
-  })
-
-  // 使用ref来存储输入历史，避免状态更新导致的性能问题
-  const inputHistoryRef = useRef<InputEvent[]>([])
-  const backspaceCountRef = useRef(0)
-
-  const startStats = useCallback(() => {
-    const now = Date.now()
-    setStats({
-      totalChars: 0,
-      correctChars: 0,
-      errorChars: 0,
-      startTime: now,
-      endTime: null,
-      isCompleted: false,
-    })
-    inputHistoryRef.current = []
-    backspaceCountRef.current = 0
-  }, [])
-
-  const recordInput = useCallback((status: CHAR_STATUS, inputChar?: string, expectedChar?: string) => {
-    const event: InputEvent = {
-      status,
-      inputChar,
-      expectedChar,
-      timestamp: Date.now(),
+export function useTypingStats(mode: PracticeMode, text: string, sample: string) {
+  const practiceAtom = useMemo(() => createPracticeAtom(mode), [mode])
+  const initial = useMemo(() => newPractice(text, sample), [text, sample])
+  const [{ progress, runningSince, externalSession }, update] = useAtom(practiceAtom)
+  const dispatch = useCallback(
+    (action: PracticeAction) => update({ initial, displayed: progress, action }),
+    [initial, progress, update]
+  )
+  const pause = useEffectEvent(() => dispatch({ type: 'pause', at: Date.now() }))
+  useLayoutEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden) pause()
     }
-
-    inputHistoryRef.current.push(event)
-
-    setStats((prev) => {
-      const newStats = { ...prev }
-
-      // 增加总字符数
-      newStats.totalChars += 1
-
-      // 根据状态更新计数
-      if (status === CHAR_STATUS.correct) {
-        newStats.correctChars += 1
-      } else if (status === CHAR_STATUS.error) {
-        newStats.errorChars += 1
-      }
-
-      return newStats
-    })
+    window.addEventListener('pagehide', pause)
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => {
+      window.removeEventListener('pagehide', pause)
+      document.removeEventListener('visibilitychange', onVisibility)
+      pause()
+    }
   }, [])
 
-  const recordBackspace = useCallback(() => {
-    backspaceCountRef.current += 1
+  const [now, setNow] = useState(Date.now)
+  const running = runningSince !== null
+  useEffect(() => {
+    if (!running) return
+    const timer = window.setInterval(() => setNow(Date.now()), 250)
+    return () => window.clearInterval(timer)
+  }, [running])
 
-    // 退格时需要减少相应的计数
-    setStats((prev) => {
-      if (prev.totalChars <= 0) return prev
-
-      const newStats = { ...prev }
-      newStats.totalChars -= 1
-
-      // 查找最后一个输入事件来确定要减少哪个计数
-      const lastEvent = inputHistoryRef.current[inputHistoryRef.current.length - 1]
-      if (lastEvent) {
-        if (lastEvent.status === CHAR_STATUS.correct && newStats.correctChars > 0) {
-          newStats.correctChars -= 1
-        } else if (lastEvent.status === CHAR_STATUS.error && newStats.errorChars > 0) {
-          newStats.errorChars -= 1
-        }
-
-        // 从历史记录中移除最后一个事件
-        inputHistoryRef.current.pop()
-      }
-
-      return newStats
-    })
-  }, [])
-
-  const finishStats = useCallback(() => {
-    setStats((prev) => ({
-      ...prev,
-      endTime: Date.now(),
-      isCompleted: true,
-    }))
-  }, [])
-
-  const resetStats = useCallback(() => {
-    setStats({
-      totalChars: 0,
-      correctChars: 0,
-      errorChars: 0,
-      startTime: null,
-      endTime: null,
-      isCompleted: false,
-    })
-    inputHistoryRef.current = []
-    backspaceCountRef.current = 0
-  }, [])
-
+  const current = progress ?? initial
+  const session = { ...current.session, runningSince }
   return {
-    stats,
-    startStats,
-    recordInput,
-    recordBackspace,
-    finishStats,
-    resetStats,
+    session,
+    round: current.round,
+    focus: current.focus,
+    dismissed: current.dismissed,
+    externalSession,
+    dispatch,
+    complete: sessionComplete(session),
+    score: scoreSession(session, mode, now),
+    example: session.sampleLength > 0 && session.elapsedMs === null,
   }
-}
-
-// 导出一些有用的统计计算函数
-export const calculateWPM = (correctChars: number, timeMinutes: number): number => {
-  return timeMinutes > 0 ? Math.round(correctChars / 5 / timeMinutes) : 0
-}
-
-export const calculateAccuracy = (correctChars: number, totalChars: number): number => {
-  return totalChars > 0 ? (correctChars / totalChars) * 100 : 0
-}
-
-export const calculateCPM = (correctChars: number, timeMinutes: number): number => {
-  return timeMinutes > 0 ? Math.round(correctChars / timeMinutes) : 0
-}
-
-export const formatTime = (seconds: number): string => {
-  const mins = Math.floor(seconds / 60)
-  const secs = Math.floor(seconds % 60)
-  return `${mins}:${secs.toString().padStart(2, '0')}`
 }

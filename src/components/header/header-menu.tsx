@@ -1,46 +1,22 @@
-import { Tooltip } from '@douyinfe/semi-ui'
-import { useLocation } from 'react-router-dom'
-import styled from 'styled-components'
-import { CONVERTER_PATH, LATIN_PATH } from '../../router/router'
-import { IconParkNames } from '../../shared/constants'
-import LinkWithIcon from '../link-with-icon'
+import { ArrowLeftRight, Keyboard, Radio } from 'lucide-react'
+import { NavLink } from 'react-router-dom'
+import { useCopy } from '../../shared/preferences'
 
-const HeaderMenuContainer = styled.nav`
-  display: flex;
-  margin-left: 1rem;
-  > div {
-    margin-right: 2rem;
-  }
-`
-
-const HeaderMenu = () => {
-  const location = useLocation()
+export default function HeaderMenu({ mobile = false }: { mobile?: boolean }) {
+  const t = useCopy()
+  const links = [
+    { path: '/', label: mobile ? t('摩尔斯', 'Morse') : t('摩尔斯训练', 'Morse training'), Icon: Radio },
+    { path: '/latin/', label: t('英文打字', 'English typing'), Icon: Keyboard },
+    { path: '/converter/', label: t('编码转换', 'Converter'), Icon: ArrowLeftRight },
+  ]
   return (
-    <HeaderMenuContainer>
-      <Tooltip content='Morse Code Converter'>
-        <div className='flex items-center'>
-          <LinkWithIcon
-            name={IconParkNames.switch}
-            label='Text to Morse code converter'
-            value={CONVERTER_PATH}
-            type='route'
-            active={location.pathname === CONVERTER_PATH}
-          />
-        </div>
-      </Tooltip>
-      <Tooltip content='Latin Type'>
-        <div className='flex items-center'>
-          <LinkWithIcon
-            name={IconParkNames['keyboard-2']}
-            label='English typing practice'
-            value={LATIN_PATH}
-            type='route'
-            active={location.pathname === LATIN_PATH}
-          />
-        </div>
-      </Tooltip>
-    </HeaderMenuContainer>
+    <nav className={mobile ? 'mobile-nav' : 'desktop-nav'} aria-label={t('练习模式', 'Practice modes')}>
+      {links.map(({ path, label, Icon }) => (
+        <NavLink key={path} to={path} end={path === '/'}>
+          <Icon size={mobile ? 20 : 17} />
+          <span>{label}</span>
+        </NavLink>
+      ))}
+    </nav>
   )
 }
-
-export default HeaderMenu

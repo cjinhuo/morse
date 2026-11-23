@@ -1,20 +1,13 @@
-export default function Footer() {
-  const currentYear = new Date().getFullYear()
+import useMobile from '../hooks/useMobile'
+import HeaderMenu from './header/header-menu'
 
-  return (
-    <div className='w-full px-8 h-9 flex items-center justify-center'>
-      <span className='text-skin-neutral-5'>
-        Copyright © {currentYear}{' '}
-        <a
-          href='https://github.com/cjinhuo'
-          target='_blank'
-          rel='noopener noreferrer'
-          className='hover:text-skin-accent transition-colors duration-200'
-        >
-          cjinhuo
-        </a>
-        . All rights reserved.
-      </span>
-    </div>
+export default function Footer() {
+  return useMobile() ? (
+    <HeaderMenu mobile />
+  ) : (
+    <footer className='site-footer'>
+      <span className='meta'>MORSETYPE / FIND YOUR FREQUENCY</span>
+      <span>Made by Mirage</span>
+    </footer>
   )
 }

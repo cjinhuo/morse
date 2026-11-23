@@ -1,121 +1,89 @@
-import mergeWith from 'lodash/mergeWith'
-import { forwardRef } from 'react'
-import styled from 'styled-components'
-import { MorseCodeCharType, NEW_WORD_SYMBOL, SEPARATE_SYMBOL } from '../shared/constants'
+import type { Ref } from 'react'
+import type { SvgConfig } from '../atom/svg-config-atom'
+import type { encodeWords } from '../shared/morse'
+import { useCopy } from '../shared/preferences'
 
-type LineGroupProps = {
-  morseCode: string
-  // MAY DAY: --|.-|-.--|+-..|.-|-.--|,use | as separator between char. use + as separator between word.
-  dotWidth?: number
-  dashWidth?: number
-  strokeWidth?: number
-  stroke?: string
-  lineHeight?: number
-  letterSpace?: number
-  dotDashSpace?: number
-  containerWidth?: number
-  containerHeight?: number
-  containerPadding?: number
-  autoCalculateContainerSize?: boolean
-}
-const DefaultConfig: Omit<Required<LineGroupProps>, 'morseCode'> = {
-  dotWidth: 0,
-  dashWidth: 8,
-  strokeWidth: 4,
-  stroke: '',
-  lineHeight: 20,
-  letterSpace: 10,
-  dotDashSpace: 4,
-  containerWidth: 10,
-  containerHeight: 10,
-  containerPadding: 10,
-  autoCalculateContainerSize: true,
-}
-
-const SvgContainer = styled.svg`
-  .line {
-    stroke: ${({ stroke }) => stroke || 'var(--color-neutral-4)'};
-  }
-`
-/**
- * render morse code svg container
- * @param props
- * @returns
- */
-const MorseCodeSvg = forwardRef<SVGSVGElement, LineGroupProps>((props, ref) => {
-  const config = mergeWith(DefaultConfig, props, (objValue, srcValue) => {
-    if (srcValue === undefined) return objValue
-    return srcValue
+export default function MorseCodeSvg({
+  words,
+  config,
+  ref,
+}: {
+  words: ReturnType<typeof encodeWords>
+  config: SvgConfig
+  ref?: Ref<SVGSVGElement>
+}) {
+  const t = useCopy()
+  // The Pen preview enlarges signal marks and leaves a caption below each letter.
+  const dot = config.strokeWidth * 2
+  const dash = Math.max((config.dashWidth * 5) / 3, dot + config.dashWidth)
+  const letterGap = config.letterSpace * 1.5
+  const markHeight = Math.max(8, dot)
+  const rowHeight = markHeight + 12 + 13
+  const rowGap = (config.lineHeight * 4) / 3
+  const rows = words.map((word) => {
+    let nextLetter = 0
+    const letters = word.map(({ letter, code }) => {
+      let nextMark = 0
+      const marks = Array.from(code, (symbol) => {
+        const width = symbol === '.' ? dot : dash
+        const mark = { x: nextMark, width, dot: symbol === '.' }
+        nextMark += width + config.dotDashSpace
+        return mark
+      })
+      const marksWidth = nextMark - config.dotDashSpace
+      const width = Math.max(8, marksWidth)
+      const glyph = { letter, marks, marksWidth, width, x: nextLetter }
+      nextLetter += width + letterGap
+      return glyph
+    })
+    return { letters, width: nextLetter - letterGap }
   })
-
-  const [width, height, ...groups] = (() => {
-    let x1 = config.containerPadding
-    let y1 = config.containerPadding
-    let x2 = x1
-    let y2 = y1
-    let width = config.containerPadding * 2
-    let height = config.containerPadding * 2
-    if (config.morseCode.length) {
-      const groups = config.morseCode.split(NEW_WORD_SYMBOL).map((word, wordIndex) => {
-        x1 = x2 = config.containerPadding
-        if (wordIndex !== 0) {
-          // the first line do not need to add height
-          y1 += config.lineHeight
-          y2 += config.lineHeight
-          height += config.lineHeight
-        }
-        const groupComponent = (
-          // biome-ignore lint/suspicious/noArrayIndexKey: Repeated words are drawn on distinct lines by position.
-          <g key={`word-${wordIndex}`}>
-            {Array.from(word).map((char, charIndex) => {
-              // calculate the max width for svg container
-              if (charIndex === word.length - 1) {
-                width = Math.max(width, x2 + config.containerPadding)
-              }
-
-              if (char === SEPARATE_SYMBOL) {
-                x1 += config.letterSpace
-                return null
-              }
-
-              const isDot = char === MorseCodeCharType.dotChar
-              x1 = x1 === 0 ? x1 : x1 + config.dotDashSpace
-              x2 = x1 + (isDot ? config.dotWidth : config.dashWidth)
-              const line = (
-                <line
-                  // biome-ignore lint/suspicious/noArrayIndexKey: Repeated dots and dashes have distinct positions within a word.
-                  key={`line-${wordIndex}-${charIndex}`}
-                  strokeWidth={config.strokeWidth}
-                  strokeLinecap='round'
-                  className='line'
-                  x1={x1}
-                  y1={y1}
-                  x2={x2}
-                  y2={y2}
-                />
-              )
-              x1 = x2 += config.dotDashSpace
-              return line
-            })}
+  const width = rows.reduce((max, row) => Math.max(max, row.width), 0) + config.containerPadding * 2
+  const height = rows.length * rowHeight + Math.max(0, rows.length - 1) * rowGap + config.containerPadding * 2
+  return (
+    <svg
+      ref={ref}
+      role='img'
+      aria-label={t('信号预览', 'Signal preview')}
+      width={width}
+      height={height}
+      viewBox={[0, 0, width, height].join(' ')}
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      {rows.map((row, index) => {
+        const y = config.containerPadding + index * (rowHeight + rowGap)
+        return (
+          <g key={y} transform={`translate(${(width - row.width) / 2} ${y})`}>
+            {row.letters.map((glyph) => (
+              <g key={glyph.x} transform={`translate(${glyph.x} 0)`}>
+                <g
+                  fill='var(--signal)'
+                  transform={`translate(${(glyph.width - glyph.marksWidth) / 2} ${(markHeight - dot) / 2})`}
+                >
+                  {glyph.marks.map((mark) =>
+                    mark.dot ? (
+                      <circle key={mark.x} cx={mark.x + dot / 2} cy={dot / 2} r={dot / 2} />
+                    ) : (
+                      <rect key={mark.x} x={mark.x} width={mark.width} height={dot} rx={Math.min(2, dot / 2)} />
+                    )
+                  )}
+                </g>
+                <text
+                  x={glyph.width / 2}
+                  y={markHeight + 22}
+                  textAnchor='middle'
+                  fontFamily='Fragment Mono, monospace'
+                  fontSize='11'
+                  letterSpacing='1.2'
+                  fill='var(--signal-caption)'
+                >
+                  {glyph.letter}
+                </text>
+              </g>
+            ))}
           </g>
         )
-        return groupComponent
-      })
-      return [
-        config.autoCalculateContainerSize ? width : config.containerWidth,
-        config.autoCalculateContainerSize ? height : config.containerHeight,
-        ...groups,
-      ]
-    }
-    return [0, 0, null]
-  })()
-  return (
-    <SvgContainer ref={ref} width={width} height={height} stroke={props.stroke}>
-      {groups}
-    </SvgContainer>
+      })}
+    </svg>
   )
-})
-
-MorseCodeSvg.displayName = 'MorseCodeSvg'
-
-export default MorseCodeSvg
+}

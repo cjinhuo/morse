@@ -39,5 +39,5 @@ export default defineConfig({
       return { ...defaults, page, canonical: `https://cjinhuo.github.io/morse/${page.path}` }
     },
   },
-  server: { base: '/morse/', open: true },
+  server: { base: '/morse/', open: !process.env.PLAYWRIGHT_TEST },
 })
