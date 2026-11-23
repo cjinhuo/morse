@@ -1,8 +1,8 @@
 @layer theme, base, components, utilities;
-@import 'modern-normalize' layer(base);
-@import 'tailwindcss' source('../..');
-@import '@icon-park/react/styles/index.css';
-@import './skin.css';
+@import "modern-normalize" layer(base);
+@import "tailwindcss" source('../..');
+@import "@icon-park/react/styles/index.css";
+@import "./skin.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -26,25 +26,25 @@
 * {
   box-sizing: border-box;
 }
-html, body {
+html,
+body {
   width: 100%;
   min-height: 100%;
   height: auto;
   scroll-behavior: smooth;
   margin: 0;
   padding: 0;
-  font-family: 'robot mono', "RobotoMono", monospace;
+  font-family: "Roboto Mono", monospace;
 }
 @font-face {
-  font-family: 'robot mono', "RobotoMono", monospace;
-  src:
-    url("../../assets/RobotoMono.ttf") format("ttf"),
+  font-family: "Roboto Mono";
+  src: url("../../assets/RobotoMono.ttf") format("truetype");
 }
 body {
-  	background-color: var(--color-normal-bg);
-  	background-image: linear-gradient(var(--color-linear-bg-start) 0%, var(--color-linear-bg-end) 100%);
+  background-color: var(--color-normal-bg);
+  background-image: linear-gradient(var(--color-linear-bg-start) 0%, var(--color-linear-bg-end) 100%);
 }
-#root{
+#root {
   width: 100%;
   min-height: 100%;
   height: auto;
@@ -88,4 +88,3 @@ body[theme-mode="dark"] ::-webkit-scrollbar-thumb {
 body[theme-mode="dark"] ::-webkit-scrollbar-thumb:hover {
   background: rgba(75, 85, 99, 0.6);
 }
-

@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import type { IconParkNames } from '../shared/constants'
 import IconPark from './icon-park'
+
 type PropsType = {
   name: IconParkNames
   label?: string
@@ -13,7 +14,12 @@ type PropsType = {
 export default function LinkWithIcon({ name, value, type, label, onClick, active = false, ...rest }: PropsType) {
   if (type === 'route' && value) {
     return (
-      <motion.a href={`/morse${value}`} aria-label={label} aria-current={active ? 'page' : undefined} whileHover={{ scale: 1.2 }}>
+      <motion.a
+        href={`/morse${value}`}
+        aria-label={label}
+        aria-current={active ? 'page' : undefined}
+        whileHover={{ scale: 1.2 }}
+      >
         <IconPark {...rest} name={name} active={active} />
       </motion.a>
     )

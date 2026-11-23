@@ -2,17 +2,19 @@ import { defineConfig } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 
 const pages = {
-  'index': {
+  index: {
     path: '',
     title: 'Morse Code Typing Practice',
-    description: 'Practice the Morse alphabet with the space bar. Tap for a dot and hold for a dash, then follow the visual and audio feedback as you type each letter.',
+    description:
+      'Practice the Morse alphabet with the space bar. Tap for a dot and hold for a dash, then follow the visual and audio feedback as you type each letter.',
     example: 'Try SOS: three dots, three dashes, then three dots.',
     image: 'more_play.png',
   },
   'converter/index': {
     path: 'converter/',
     title: 'Text to Morse Code Converter',
-    description: 'Convert letters, numbers and punctuation to Morse code. See the dots and dashes as a graphic and export your message as PNG or SVG.',
+    description:
+      'Convert letters, numbers and punctuation to Morse code. See the dots and dashes as a graphic and export your message as PNG or SVG.',
     example: 'Enter SOS to see ... --- ... and customize the line spacing of the graphic.',
     image: 'export_pic.png',
   },
@@ -34,7 +36,7 @@ export default defineConfig({
     template: './src/page.html',
     templateParameters(defaults, { entryName }) {
       const page = pages[entryName as keyof typeof pages]
-      return { ...defaults, page, canonical: 'https://cjinhuo.github.io/morse/' + page.path }
+      return { ...defaults, page, canonical: `https://cjinhuo.github.io/morse/${page.path}` }
     },
   },
   server: { base: '/morse/', open: true },

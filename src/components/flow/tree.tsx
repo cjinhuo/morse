@@ -158,8 +158,8 @@ const layoutedResult = getLayoutedElements(morseNodes, morseEdges)
 const { nodes: layoutedNodes, edges: layoutedEdges } = layoutedResult
 export default function Tree() {
   console.log('layoutedNodes', layoutedNodes)
-  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes)
-  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges)
+  const [nodes, , onNodesChange] = useNodesState(layoutedNodes)
+  const [edges, , onEdgesChange] = useEdgesState(layoutedEdges)
 
   return (
     <div

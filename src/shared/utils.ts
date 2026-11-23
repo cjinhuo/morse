@@ -48,7 +48,7 @@ export function setClassNameWithArray(...args: string[]): string {
 
 // need to create after a click event trigger by user
 const audioContext = new window.AudioContext()
-export function getOscillatorNodeWithParams(waveform: OscillatorType = 'sine', duration = 1) {
+export function getOscillatorNodeWithParams(waveform: OscillatorType = 'sine') {
   const oscillator = audioContext.createOscillator()
   oscillator.type = waveform
   oscillator.frequency.setValueAtTime(600, audioContext.currentTime)

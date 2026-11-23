@@ -3,7 +3,7 @@ import { Button, Form, Popover, Typography } from '@douyinfe/semi-ui'
 import type { FormApi } from '@douyinfe/semi-ui/lib/es/form/interface'
 import { useAtom } from 'jotai'
 import { useCallback, useState } from 'react'
-import { type SvgConfig, defaultSvgConfig, svgConfigAtom } from '../atom/svg-config-atom'
+import { defaultSvgConfig, type SvgConfig, svgConfigAtom } from '../atom/svg-config-atom'
 
 export default function SvgConfigPanel() {
   const [svgConfig, setSvgConfig] = useAtom(svgConfigAtom)

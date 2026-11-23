@@ -1,4 +1,4 @@
-import { BaseEdge, type EdgeProps, getStraightPath } from '@xyflow/react'
+import { type EdgeProps, getStraightPath } from '@xyflow/react'
 import { useAtomValue } from 'jotai'
 import { memo, useEffect, useState } from 'react'
 import { HighlightEdgeAtom } from '../../atom/atom'

@@ -7,11 +7,7 @@ export default function HeaderRight() {
   return (
     <div className='h-full flex'>
       <HeaderMenu />
-      <LinkWithIcon
-        name={IconParkNames.github}
-        value='https://github.com/cjinhuo/morse'
-        type='link'
-      ></LinkWithIcon>
+      <LinkWithIcon name={IconParkNames.github} value='https://github.com/cjinhuo/morse' type='link'></LinkWithIcon>
       <Theme />
     </div>
   )

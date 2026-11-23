@@ -31,13 +31,13 @@ export function useTypingStats(): UseTypingStatsReturn {
     errorChars: 0,
     startTime: null,
     endTime: null,
-    isCompleted: false
+    isCompleted: false,
   })
-  
+
   // 使用ref来存储输入历史，避免状态更新导致的性能问题
   const inputHistoryRef = useRef<InputEvent[]>([])
   const backspaceCountRef = useRef(0)
-  
+
   const startStats = useCallback(() => {
     const now = Date.now()
     setStats({
@@ -46,49 +46,49 @@ export function useTypingStats(): UseTypingStatsReturn {
       errorChars: 0,
       startTime: now,
       endTime: null,
-      isCompleted: false
+      isCompleted: false,
     })
     inputHistoryRef.current = []
     backspaceCountRef.current = 0
   }, [])
-  
+
   const recordInput = useCallback((status: CHAR_STATUS, inputChar?: string, expectedChar?: string) => {
     const event: InputEvent = {
       status,
       inputChar,
       expectedChar,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     }
-    
+
     inputHistoryRef.current.push(event)
-    
-    setStats(prev => {
+
+    setStats((prev) => {
       const newStats = { ...prev }
-      
+
       // 增加总字符数
       newStats.totalChars += 1
-      
+
       // 根据状态更新计数
       if (status === CHAR_STATUS.correct) {
         newStats.correctChars += 1
       } else if (status === CHAR_STATUS.error) {
         newStats.errorChars += 1
       }
-      
+
       return newStats
     })
   }, [])
-  
+
   const recordBackspace = useCallback(() => {
     backspaceCountRef.current += 1
-    
+
     // 退格时需要减少相应的计数
-    setStats(prev => {
+    setStats((prev) => {
       if (prev.totalChars <= 0) return prev
-      
+
       const newStats = { ...prev }
       newStats.totalChars -= 1
-      
+
       // 查找最后一个输入事件来确定要减少哪个计数
       const lastEvent = inputHistoryRef.current[inputHistoryRef.current.length - 1]
       if (lastEvent) {
@@ -97,23 +97,23 @@ export function useTypingStats(): UseTypingStatsReturn {
         } else if (lastEvent.status === CHAR_STATUS.error && newStats.errorChars > 0) {
           newStats.errorChars -= 1
         }
-        
+
         // 从历史记录中移除最后一个事件
         inputHistoryRef.current.pop()
       }
-      
+
       return newStats
     })
   }, [])
-  
+
   const finishStats = useCallback(() => {
-    setStats(prev => ({
+    setStats((prev) => ({
       ...prev,
       endTime: Date.now(),
-      isCompleted: true
+      isCompleted: true,
     }))
   }, [])
-  
+
   const resetStats = useCallback(() => {
     setStats({
       totalChars: 0,
@@ -121,25 +121,25 @@ export function useTypingStats(): UseTypingStatsReturn {
       errorChars: 0,
       startTime: null,
       endTime: null,
-      isCompleted: false
+      isCompleted: false,
     })
     inputHistoryRef.current = []
     backspaceCountRef.current = 0
   }, [])
-  
+
   return {
     stats,
     startStats,
     recordInput,
     recordBackspace,
     finishStats,
-    resetStats
+    resetStats,
   }
 }
 
 // 导出一些有用的统计计算函数
 export const calculateWPM = (correctChars: number, timeMinutes: number): number => {
-  return timeMinutes > 0 ? Math.round((correctChars / 5) / timeMinutes) : 0
+  return timeMinutes > 0 ? Math.round(correctChars / 5 / timeMinutes) : 0
 }
 
 export const calculateAccuracy = (correctChars: number, totalChars: number): number => {
