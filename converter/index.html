@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,6 +16,9 @@
     <meta property="og:image:alt" content="Text to Morse Code Converter in Morse Typer" />
     <meta name="twitter:card" content="summary_large_image" />
     <script>
+      try {
+        if (localStorage.getItem('morse-theme') === 'light') document.documentElement.dataset.theme = 'light'
+      } catch {}
       // Previous releases shared practice modes as hash URLs.
       const bookmark = location.hash.match(/^#\/(converter|latin)?\/?(\?[^#]*)?(#.*)?$/)
       if (bookmark) {
@@ -23,11 +26,10 @@
         location.replace('/morse/' + path + (bookmark[2] || location.search) + (bookmark[3] || ''))
       }
     </script>
-    <script src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_33805_20.e5667170ad82a2cd2f6377222d7025ad.js"></script>
-  <link rel="icon" href="/morse/favicon.svg" type="image/svg+xml"><script defer src="/morse/static/js/lib-react.d4fd20a0c3.js"></script><script defer src="/morse/static/js/lib-router.fdf1d9c679.js"></script><script defer src="/morse/static/js/h.e87801c622.js"></script><script defer src="/morse/static/js/a.d39283f1a7.js"></script><script defer src="/morse/static/js/converter/index.c661a769d1.js"></script><link href="/morse/static/css/h.42ce60fe45.css" rel="stylesheet"><link href="/morse/static/css/converter/index.fe75113320.css" rel="stylesheet"></head>
+  <link rel="icon" href="/morse/favicon.svg" type="image/svg+xml"><script defer src="/morse/static/js/lib-react.d4fd20a0c3.js"></script><script defer src="/morse/static/js/lib-router.6fe6b4d3f1.js"></script><script defer src="/morse/static/js/y.e98d9c0020.js"></script><script defer src="/morse/static/js/8.25fcf9c030.js"></script><script defer src="/morse/static/js/converter/index.09c4d74424.js"></script><link href="/morse/static/css/8.e154f1cafe.css" rel="stylesheet"></head>
   <body>
     <div id="root">
-      <main>
+      <main lang="en">
         <h1>Text to Morse Code Converter</h1>
         <p>Convert letters, numbers and punctuation to Morse code. See the dots and dashes as a graphic and export your message as PNG or SVG.</p>
         <p>Enter SOS to see ... --- ... and customize the line spacing of the graphic.</p>

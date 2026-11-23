@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,6 +16,9 @@
     <meta property="og:image:alt" content="English Typing Practice in Morse Typer" />
     <meta name="twitter:card" content="summary_large_image" />
     <script>
+      try {
+        if (localStorage.getItem('morse-theme') === 'light') document.documentElement.dataset.theme = 'light'
+      } catch {}
       // Previous releases shared practice modes as hash URLs.
       const bookmark = location.hash.match(/^#\/(converter|latin)?\/?(\?[^#]*)?(#.*)?$/)
       if (bookmark) {
@@ -23,11 +26,10 @@
         location.replace('/morse/' + path + (bookmark[2] || location.search) + (bookmark[3] || ''))
       }
     </script>
-    <script src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_33805_20.e5667170ad82a2cd2f6377222d7025ad.js"></script>
-  <link rel="icon" href="/morse/favicon.svg" type="image/svg+xml"><script defer src="/morse/static/js/lib-react.d4fd20a0c3.js"></script><script defer src="/morse/static/js/lib-router.fdf1d9c679.js"></script><script defer src="/morse/static/js/h.e87801c622.js"></script><script defer src="/morse/static/js/a.d39283f1a7.js"></script><script defer src="/morse/static/js/latin/index.30e39cc8a6.js"></script><link href="/morse/static/css/h.42ce60fe45.css" rel="stylesheet"><link href="/morse/static/css/latin/index.fe75113320.css" rel="stylesheet"></head>
+  <link rel="icon" href="/morse/favicon.svg" type="image/svg+xml"><script defer src="/morse/static/js/lib-react.d4fd20a0c3.js"></script><script defer src="/morse/static/js/lib-router.6fe6b4d3f1.js"></script><script defer src="/morse/static/js/y.e98d9c0020.js"></script><script defer src="/morse/static/js/8.25fcf9c030.js"></script><script defer src="/morse/static/js/latin/index.fd8b3b122f.js"></script><link href="/morse/static/css/8.e154f1cafe.css" rel="stylesheet"></head>
   <body>
     <div id="root">
-      <main>
+      <main lang="en">
         <h1>English Typing Practice</h1>
         <p>Practice English sentences on your keyboard and track typing speed, accuracy and mistakes as you go.</p>
         <p>Type the highlighted character, then use the next sentence to start another practice round.</p>
