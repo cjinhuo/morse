@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/morse/favicon.svg" />
     <title><%= page.title %> | Morse Typer</title>
     <meta name="description" content="<%= page.description %>" />
     <link rel="canonical" href="<%= canonical %>" />
@@ -28,6 +27,21 @@
     </script>
   </head>
   <body>
+    <script>
+      // Rsbuild adds the favicon link at the end of the head.
+      const favicon = document.querySelector('link[rel="icon"]')
+      if (favicon) {
+        const darkIcon = favicon.href
+        const lightIcon = new URL('favicon-light.svg', darkIcon).href
+        const root = document.documentElement
+        function syncFavicon() {
+          const href = root.dataset.theme === 'light' ? lightIcon : darkIcon
+          if (favicon.href !== href) favicon.href = href
+        }
+        syncFavicon()
+        new MutationObserver(syncFavicon).observe(root, { attributeFilter: ['data-theme'] })
+      }
+    </script>
     <div id="root">
       <main lang="en">
         <h1><%= page.title %></h1>
