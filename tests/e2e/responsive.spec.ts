@@ -1,6 +1,33 @@
 import { expect, test } from '@playwright/test'
 import { freezeInputClock } from './transmission'
 
+test('both header layouts display the active favicon when the theme changes', async ({ page }) => {
+  await page.goto('./')
+  const favicon = page.locator('head link[rel="icon"]')
+  const mark = page.locator('header .brand [aria-hidden="true"]')
+  async function expectMatchingIcon() {
+    const href = await favicon.evaluate((link: HTMLLinkElement) => link.href)
+    await expect(mark).toBeVisible()
+    await expect(mark).toHaveCSS('background-image', `url("${href}")`)
+  }
+
+  await expectMatchingIcon()
+  await page.getByRole('button', { name: '切换到浅色主题' }).click()
+  await expect(favicon).toHaveAttribute('href', /\/favicon-light\.svg$/)
+  await expectMatchingIcon()
+
+  await page.setViewportSize({ width: 390, height: 900 })
+  await page.getByLabel('MorseType 菜单').click()
+  await expectMatchingIcon()
+  await page.getByRole('button', { name: '切换到暗色主题' }).click()
+  await expect(favicon).toHaveAttribute('href', /\/favicon\.svg$/)
+  await expectMatchingIcon()
+  const lightThemeButton = page.getByRole('button', { name: '切换到浅色主题' })
+  await expect(lightThemeButton).toBeVisible()
+  await page.getByRole('heading', { level: 1 }).click()
+  await expect(lightThemeButton).toBeHidden()
+})
+
 test('a held pointer releases a single dash after its original transmit button is replaced', async ({ page }) => {
   await page.goto('./')
   await page.getByRole('button', { name: '换一组' }).click()

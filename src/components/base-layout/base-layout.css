@@ -127,10 +127,11 @@
     color: var(--mt-text);
     white-space: nowrap;
   }
-  .brand > svg {
+  .brand-mark {
     width: 27px;
     height: 27px;
-    color: var(--mt-purple);
+    flex: none;
+    background: var(--brand-icon) center / contain no-repeat;
   }
   .desktop-nav,
   .utilities {
@@ -277,7 +278,7 @@
     line-height: 29px;
     gap: 8px;
   }
-  :where(.phone-header) .brand > svg {
+  .phone-header .brand-mark {
     width: 22px;
     height: 22px;
   }

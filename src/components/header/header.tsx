@@ -59,6 +59,15 @@ export default function Header() {
   const mobile = useMobile()
   const menu = useRef<HTMLDetailsElement>(null)
   const t = useCopy()
+  useEffect(() => {
+    if (!mobile) return
+    function closeOnOutsidePress(event: PointerEvent) {
+      const details = menu.current
+      if (details?.open && !event.composedPath().includes(details)) details.open = false
+    }
+    document.addEventListener('pointerdown', closeOnOutsidePress, true)
+    return () => document.removeEventListener('pointerdown', closeOnOutsidePress, true)
+  }, [mobile])
   if (mobile)
     return (
       <header>
@@ -74,7 +83,10 @@ export default function Header() {
           <details
             ref={menu}
             onBlur={(event) => {
-              if (!event.currentTarget.contains(event.relatedTarget)) event.currentTarget.open = false
+              // WebKit can blur the summary without focusing the button being pressed.
+              if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) {
+                event.currentTarget.open = false
+              }
             }}
             onKeyDown={(event) => {
               if (event.key === 'Escape' && menu.current) {

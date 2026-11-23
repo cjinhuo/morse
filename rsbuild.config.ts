@@ -1,6 +1,8 @@
 import { defineConfig } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 
+const faviconDir = 'static/icons'
+
 const pages = {
   index: {
     path: '',
@@ -31,6 +33,16 @@ export default defineConfig({
   plugins: [pluginReact()],
   source: {
     entry: Object.fromEntries(Object.keys(pages).map((name) => [name, './src/index.tsx'])),
+  },
+  output: {
+    distPath: { favicon: faviconDir },
+    copy: [
+      {
+        from: './public/favicon.svg',
+        to: `${faviconDir}/favicon-light.svg`,
+        transform: (svg) => svg.toString().replace('data-theme="dark"', 'data-theme="light"'),
+      },
+    ],
   },
   html: {
     template: './src/page.html',
