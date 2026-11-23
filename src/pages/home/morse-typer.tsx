@@ -29,30 +29,29 @@ export default function MorseTyper() {
   const [isStarted, setIsStarted] = useState(false)
   const { stats, startStats, recordInput, finishStats, resetStats } = useTypingStats()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // 重置统计状态
     resetStats()
     setIsStarted(false)
-    
-    if (!pureTypeCharRef.current) return
+
+    if (!currentSentence || !pureTypeCharRef.current) return
 
     let currentElement = pureTypeCharRef.current.start()
     setCurrentElementState(currentElement)
     let hasStarted = false
-    
+
     const [$singleChar, $fragment] = subscribeKeyEventForMorseCode(getOscillatorNodeWithParams)
     const singleCharSubscription = $singleChar.subscribe((char) => {
       setCurrentMorseCode((prev) => {
         return prev.status !== TYPING_STATUS.typing
           ? {
-            status: TYPING_STATUS.typing,
-            morseCode: char,
-          }
+              status: TYPING_STATUS.typing,
+              morseCode: char,
+            }
           : {
-            status: TYPING_STATUS.typing,
-            morseCode: prev.morseCode + char,
-          }
+              status: TYPING_STATUS.typing,
+              morseCode: prev.morseCode + char,
+            }
       })
     })
     const fragmentSubscription = $fragment.subscribe((fragment) => {
@@ -64,8 +63,8 @@ export default function MorseTyper() {
           setIsStarted(true)
           hasStarted = true
         }
-        
-        const expectedChar = currentElement?.innerHTML
+
+        const expectedChar = currentElement?.dataset.char
         if (expectedChar === char) {
           ;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
           recordInput(CHAR_STATUS.correct, char, expectedChar)
@@ -80,7 +79,7 @@ export default function MorseTyper() {
         morseCode: prev.morseCode,
       }))
       if (currentElement) {
-        if (currentElement.innerText === ' ') {
+        if (currentElement.dataset.char === ' ') {
           ;[currentElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
         }
         setCurrentElementState(currentElement)
@@ -105,7 +104,7 @@ export default function MorseTyper() {
 
   useEffect(() => {
     if (!currentElementState) return
-    const content = transformCharToMorseCode(currentElementState.innerHTML)
+    const content = transformCharToMorseCode(currentElementState.dataset.char ?? '')
     if (content) {
       setTooltipData({
         x: currentElementState.offsetLeft + 2,
@@ -141,9 +140,7 @@ export default function MorseTyper() {
       )}
       {/* 当 currentSentence 变化时，强制重建 PureTypeChar 以重置内部状态 */}
       <PureTypeChar key={currentSentence} data={currentSentence} ref={pureTypeCharRef} />
-      {(isStarted || stats.isCompleted) && (
-        <TypingStats data={stats} />
-      )}
+      {(isStarted || stats.isCompleted) && <TypingStats data={stats} />}
     </div>
   )
 }

@@ -73,8 +73,8 @@ const ProgressBar = styled.div<{ percentage: number; color: string }>`
     content: '';
     display: block;
     height: 100%;
-    width: ${props => props.percentage}%;
-    background: linear-gradient(90deg, ${props => props.color}, ${props => props.color}dd);
+    width: ${(props) => props.percentage}%;
+    background: linear-gradient(90deg, ${(props) => props.color}, ${(props) => props.color}dd);
     border-radius: 6px;
     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
@@ -139,16 +139,12 @@ export default memo(function TypingStats({ data, className }: TypingStatsProps) 
     const accuracy = totalChars > 0 ? (correctChars / totalChars) * 100 : 0
 
     // 计算时间（秒）
-    const timeMs = isCompleted && endTime && startTime
-      ? endTime - startTime
-      : startTime
-        ? currentTime - startTime
-        : 0
+    const timeMs = isCompleted && endTime && startTime ? endTime - startTime : startTime ? currentTime - startTime : 0
     const timeSeconds = timeMs / 1000
     const timeMinutes = timeSeconds / 60
 
     // WPM (Words Per Minute) - 标准计算方式：正确字符数 / 5 / 分钟数
-    const wpm = timeMinutes > 0 ? Math.round((correctChars / 5) / timeMinutes) : 0
+    const wpm = timeMinutes > 0 ? Math.round(correctChars / 5 / timeMinutes) : 0
 
     // CPM (Characters Per Minute) - 每分钟字符数
     const cpm = timeMinutes > 0 ? Math.round(correctChars / timeMinutes) : 0
@@ -171,59 +167,53 @@ export default memo(function TypingStats({ data, className }: TypingStatsProps) 
       time: formatTime(timeSeconds),
       totalChars,
       correctChars,
-      errorChars
+      errorChars,
     }
   })()
 
   return (
     <StatsContainer className={className}>
       <StatItem>
-        <div className="stat-value">{stats.wpm}</div>
-        <div className="stat-label">WPM</div>
-        <div className="stat-description">
-          Words Per Minute
-        </div>
-      </StatItem>
-      
-      <StatItem>
-        <div className="stat-value">{stats.cpm}</div>
-        <div className="stat-label">CPM</div>
-        <div className="stat-description">
-          Characters Per Minute
-        </div>
+        <div className='stat-value'>{stats.wpm}</div>
+        <div className='stat-label'>WPM</div>
+        <div className='stat-description'>Words Per Minute</div>
       </StatItem>
 
       <StatItem>
-        <div className="stat-value">{stats.accuracy}%</div>
-        <div className="stat-label">Accuracy</div>
-        <ProgressBar 
-          percentage={stats.accuracy} 
+        <div className='stat-value'>{stats.cpm}</div>
+        <div className='stat-label'>CPM</div>
+        <div className='stat-description'>Characters Per Minute</div>
+      </StatItem>
+
+      <StatItem>
+        <div className='stat-value'>{stats.accuracy}%</div>
+        <div className='stat-label'>Accuracy</div>
+        <ProgressBar
+          percentage={stats.accuracy}
           color={stats.accuracy >= 95 ? '#10b981' : stats.accuracy >= 85 ? '#f59e0b' : '#ef4444'}
         />
       </StatItem>
-      
+
       <StatItem>
-        <div className="stat-value">{stats.errorChars}</div>
-        <div className="stat-label">Errors</div>
-        <div className="stat-description">
-          {stats.errorRate}% Error Rate
-        </div>
+        <div className='stat-value'>{stats.errorChars}</div>
+        <div className='stat-label'>Errors</div>
+        <div className='stat-description'>{stats.errorRate}% Error Rate</div>
       </StatItem>
 
       <StatItem>
-        <div className="stat-value">{stats.time}</div>
-        <div className="stat-label">Time</div>
-        <div className="stat-description">
-          {data.isCompleted ? 'Completed' : 'In Progress'}
-        </div>
+        <div className='stat-value'>{stats.time}</div>
+        <div className='stat-label'>Time</div>
+        <div className='stat-description'>{data.isCompleted ? 'Completed' : 'In Progress'}</div>
       </StatItem>
-      
+
       <StatItem>
-        <div className="stat-value">{stats.correctChars}/{stats.totalChars}</div>
-        <div className="stat-label">Progress</div>
-        <ProgressBar 
-          percentage={stats.totalChars > 0 ? (stats.correctChars / stats.totalChars) * 100 : 0} 
-          color="var(--color-link-href)"
+        <div className='stat-value'>
+          {stats.correctChars}/{stats.totalChars}
+        </div>
+        <div className='stat-label'>Progress</div>
+        <ProgressBar
+          percentage={stats.totalChars > 0 ? (stats.correctChars / stats.totalChars) * 100 : 0}
+          color='var(--color-link-href)'
         />
       </StatItem>
     </StatsContainer>

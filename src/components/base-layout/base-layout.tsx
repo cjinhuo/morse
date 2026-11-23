@@ -3,7 +3,6 @@ import { Layout } from '@douyinfe/semi-ui'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
-import Footer from '../footer'
 import Header from '../header/header'
 
 const ContentContainer = styled.div`
@@ -20,7 +19,7 @@ function BaseLayout() {
           <Outlet />
         </ContentContainer>
       </Layout.Content>
-      <Layout.Footer>{/* <Footer /> */}</Layout.Footer>
+      <Layout.Footer />
     </>
   )
 }

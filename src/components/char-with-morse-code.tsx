@@ -1,4 +1,3 @@
-import React, { useMemo } from 'react'
 import { NUMBER_MORSE_CODE, WORD_MORSE_CODE } from '../shared/constants'
 
 type PropsType = {

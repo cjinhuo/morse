@@ -1,5 +1,5 @@
-import { forwardRef, memo, useEffect, useImperativeHandle, useMemo, useRef } from 'react'
-import { Subject, debounceTime } from 'rxjs'
+import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef } from 'react'
+import { debounceTime, Subject } from 'rxjs'
 import styled from 'styled-components'
 import { CHAR_CLASS_NAME, CHAR_STATUS, WORD_CONTAINER_CLASS_NAME } from '../shared/constants'
 
@@ -88,38 +88,29 @@ type PropType = {
   data: string
 }
 export default memo(
-  forwardRef(function PureTypeChar({ data }: PropType, ref) {
+  forwardRef<RefMethodsType, PropType>(function PureTypeChar({ data }, ref) {
     const containerRef = useRef<HTMLDivElement | null>(null)
     const caretRef = useRef<HTMLDivElement | null>(null)
-    const inputSubject = new Subject()
-    // after a two-second pause, the caret will flash again
-    inputSubject.pipe(debounceTime(2000)).subscribe(() => {
-      if (!caretRef.current || caretRef.current.classList.contains(CARET_ANIMATION_CLASS_NAME)) return
-      caretRef.current.classList.add(CARET_ANIMATION_CLASS_NAME)
-    })
+    const activeCharRef = useRef<HTMLElement | null>(null)
+    const inputSubject = useMemo(() => new Subject<void>(), [])
 
-    const caretNext = () => {
-      if (!caretRef.current) return
-      caretRef.current.classList.remove(CARET_ANIMATION_CLASS_NAME)
-      inputSubject.next('')
-    }
-    let isStarted = false
-    let activeChar: HTMLElement | null = null
-    let lastChar: HTMLElement | null = null
-    const calculateCaretPosition = () => {
+    const calculateCaretPosition = useCallback(() => {
+      const activeChar = activeCharRef.current
       if (!caretRef.current || !activeChar) return
       caretRef.current.style.left = `${activeChar.offsetLeft}px`
       caretRef.current.style.top = `${activeChar.offsetTop}px`
-    }
+    }, [])
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
-      if (!caretRef.current || !containerRef.current) return
+      const idleSubscription = inputSubject.pipe(debounceTime(2000)).subscribe(() => {
+        caretRef.current?.classList.add(CARET_ANIMATION_CLASS_NAME)
+      })
       window.addEventListener('resize', calculateCaretPosition)
       return () => {
+        idleSubscription.unsubscribe()
         window.removeEventListener('resize', calculateCaretPosition)
       }
-    }, [])
+    }, [calculateCaretPosition, inputSubject])
 
     const TypeBlock = useMemo(() => {
       if (data.length === 0) return null
@@ -129,117 +120,97 @@ export default memo(
         <div key={`${word}-${index}`} className={`inline-block ${WORD_CONTAINER_CLASS_NAME}`}>
           {Array.from(word).map((char, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: Each occurrence of a letter is a separate typing target.
-            <div key={`${char}-${index}`} className={CHAR_CLASS_NAME}>
+            <div key={`${char}-${index}`} className={CHAR_CLASS_NAME} data-char={char}>
               {char}
             </div>
           ))}
-          {index !== words.length - 1 && <div className={`${CHAR_CLASS_NAME} w-6 whitespace-pre-wrap`}> </div>}
+          {index !== words.length - 1 && (
+            <div className={`${CHAR_CLASS_NAME} w-6 whitespace-pre-wrap`} data-char=' '>
+              {' '}
+            </div>
+          )}
         </div>
       ))
     }, [data])
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          start() {
-            if (!containerRef.current || !caretRef.current) return
-            isStarted = true
-            const firstChar = containerRef.current.querySelector(`.${WORD_CONTAINER_CLASS_NAME}`)
-              ?.firstElementChild as HTMLElement | null
-            if (firstChar) {
-              // firstChar.classList.add(CHAR_STATUS.active)
-              activeChar = firstChar
-              return firstChar
-            }
-            throw new Error('Start Fn Error: not found the first char in container')
-          },
-          prev() {
-            if (!isStarted) {
-              throw new Error('Prev Fn Error: should run [start] fn first')
-            }
-            if (!lastChar) {
-              throw new Error('Prev Fn Error: there is no last char to iterate')
-            }
-            if (lastChar.classList.contains(CHAR_STATUS.error)) {
-              calculateCaretPosition()
-            } else {
-              lastChar.classList.remove(CHAR_STATUS.correct)
-            }
-            activeChar = lastChar
-            caretRef.current!.style.left = `${activeChar.offsetLeft}px`
-            caretRef.current!.style.top = `${activeChar.offsetTop}px`
+    useImperativeHandle(ref, () => {
+      let isStarted = false
+      let lastChar: HTMLElement | null = null
+      return {
+        start() {
+          if (!containerRef.current || !caretRef.current) return null
+          isStarted = true
+          const firstChar = containerRef.current.querySelector(`.${WORD_CONTAINER_CLASS_NAME}`)
+            ?.firstElementChild as HTMLElement | null
+          if (firstChar) {
+            activeCharRef.current = firstChar
+            return firstChar
+          }
+          throw new Error('Start Fn Error: not found the first char in container')
+        },
+        prev() {
+          if (!isStarted) {
+            throw new Error('Prev Fn Error: should run [start] fn first')
+          }
+          if (!lastChar) {
+            throw new Error('Prev Fn Error: there is no last char to iterate')
+          }
+          if (!lastChar.classList.contains(CHAR_STATUS.error)) {
+            lastChar.classList.remove(CHAR_STATUS.correct)
+          }
+          const activeChar = lastChar
+          activeCharRef.current = activeChar
+          calculateCaretPosition()
 
-            lastChar = activeChar.previousElementSibling as HTMLElement | null
-            if (!lastChar) {
-              const prevWord = activeChar.parentElement?.previousElementSibling as HTMLElement | null
-              if (prevWord?.className.includes(WORD_CONTAINER_CLASS_NAME)) {
-                lastChar = prevWord.lastElementChild as HTMLElement | null
-              }
+          lastChar = activeChar.previousElementSibling as HTMLElement | null
+          if (!lastChar) {
+            const prevWord = activeChar.parentElement?.previousElementSibling as HTMLElement | null
+            if (prevWord?.className.includes(WORD_CONTAINER_CLASS_NAME)) {
+              lastChar = prevWord.lastElementChild as HTMLElement | null
             }
-            return [activeChar, lastChar]
-          },
-          next(status: CHAR_STATUS, inputChar?: string) {
-            if (!isStarted) {
-              throw new Error('Next Fn Error: should run [start] fn first')
-            }
-            if (!activeChar) {
-              throw new Error('Next Fn Error: there is no char to iterate')
-            }
-            lastChar = activeChar
-            // always remove the 'warn' class since it probably set by prev()
-            activeChar.classList.remove(CHAR_STATUS.warn)
-            activeChar.classList.add(status)
-            // activeChar.classList.remove(CHAR_STATUS.active)
-            const nextChar = activeChar.nextElementSibling as HTMLElement | null
-            if (nextChar) {
-              activeChar = nextChar
-              // activeChar.classList.add(CHAR_STATUS.active)
-            } else {
-              const nextWord = activeChar.parentElement?.nextElementSibling
-              if (nextWord?.className.includes(WORD_CONTAINER_CLASS_NAME)) {
-                activeChar = nextWord.firstElementChild as HTMLElement | null
-                // activeChar?.classList.add(CHAR_STATUS.active)
-              } else {
-                activeChar = null
-              }
-            }
-            if (status === CHAR_STATUS.error && inputChar) {
-              // If inputting error char, append the error char to override current char. Inspiring by 'typing club'
-              const errorChar = document.createElement('span')
-              errorChar.classList.add(ERROR_CHAR_ANIMATION)
-              errorChar.innerHTML = inputChar
-              lastChar.appendChild(errorChar)
-              const tempLastChar = lastChar
-
-              // Use animationend event to ensure smooth removal after animation completes
-              const handleAnimationEnd = () => {
-                try {
-                  if (tempLastChar.contains(errorChar)) {
-                    tempLastChar.removeChild(errorChar)
-                  }
-                } catch (error) {
-                  // Silently handle case where element was already removed
-                }
-                errorChar.removeEventListener('animationend', handleAnimationEnd)
-              }
-              // 在动画结束后移除事件监听器，避免用 setTimeout 导致时间和 css 动画时间不同步 
-              errorChar.addEventListener('animationend', handleAnimationEnd)
-            }
-            if (activeChar) {
-              calculateCaretPosition()
-            } else {
-              caretRef.current!.style.left = `${lastChar.offsetLeft + lastChar.getBoundingClientRect().width}px`
-            }
-            // stop the caret animation when typing
-            caretNext()
-            return [activeChar, lastChar]
-          },
-        }
-      },
-      []
-    )
+          }
+          return [activeChar, lastChar]
+        },
+        next(status: CHAR_STATUS, inputChar?: string) {
+          if (!isStarted) {
+            throw new Error('Next Fn Error: should run [start] fn first')
+          }
+          const activeChar = activeCharRef.current
+          if (!activeChar) {
+            throw new Error('Next Fn Error: there is no char to iterate')
+          }
+          lastChar = activeChar
+          // always remove the 'warn' class since it probably set by prev()
+          activeChar.classList.remove(CHAR_STATUS.warn)
+          activeChar.classList.add(status)
+          const nextChar = activeChar.nextElementSibling as HTMLElement | null
+          if (nextChar) {
+            activeCharRef.current = nextChar
+          } else {
+            const nextWord = activeChar.parentElement?.nextElementSibling
+            activeCharRef.current = nextWord?.classList.contains(WORD_CONTAINER_CLASS_NAME)
+              ? nextWord.querySelector<HTMLElement>(`.${CHAR_CLASS_NAME}`)
+              : null
+          }
+          if (status === CHAR_STATUS.error && inputChar) {
+            // If inputting error char, append the error char to override current char. Inspiring by 'typing club'
+            const errorChar = document.createElement('span')
+            errorChar.classList.add(ERROR_CHAR_ANIMATION)
+            errorChar.textContent = inputChar
+            lastChar.appendChild(errorChar)
+            errorChar.addEventListener('animationend', () => errorChar.remove(), { once: true })
+          }
+          if (activeCharRef.current) {
+            calculateCaretPosition()
+          } else {
+            caretRef.current!.style.left = `${lastChar.offsetLeft + lastChar.getBoundingClientRect().width}px`
+          }
+          caretRef.current?.classList.remove(CARET_ANIMATION_CLASS_NAME)
+          inputSubject.next()
+          return [activeCharRef.current, lastChar]
+        },
+      }
+    }, [calculateCaretPosition, inputSubject])
 
     return (
       <PureTypeCharContainer ref={containerRef}>

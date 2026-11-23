@@ -1,4 +1,4 @@
-import { Button, Input, Space, TextArea, Typography } from '@douyinfe/semi-ui'
+import { Button, Input, TextArea, Typography } from '@douyinfe/semi-ui'
 import { useAtomValue } from 'jotai'
 import { useRef, useState } from 'react'
 import { svgConfigAtom } from '../../atom/svg-config-atom'
@@ -12,7 +12,6 @@ export default function MorseConverter() {
   const [morseCode, setMorseCode] = useState('')
   const svgConfig = useAtomValue(svgConfigAtom)
   const svgRef = useRef<SVGSVGElement>(null)
-
 
   const handleInputChange = (value: string) => {
     // Only allow characters in LATIN_ALLOWED_INPUT_KEYS_SET and spaces

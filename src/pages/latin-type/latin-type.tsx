@@ -14,13 +14,12 @@ export default function LatinType() {
   const [isStarted, setIsStarted] = useState(false)
   const { stats, startStats, recordInput, recordBackspace, finishStats, resetStats } = useTypingStats()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // 重置统计状态
     resetStats()
     setIsStarted(false)
 
-    if (!pureTypeCharRef.current) return
+    if (!currentLatinSentence || !pureTypeCharRef.current) return
     const $allowedKeyDownEvent = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
       map((e) => {
         // 对空格键进行特殊处理，阻止冒泡
@@ -51,7 +50,7 @@ export default function LatinType() {
         hasStarted = true
       }
 
-      const expectedChar = currentElement?.innerText
+      const expectedChar = currentElement?.dataset.char
 
       if (e.key === expectedChar) {
         ;[currentElement, lastElement] = pureTypeCharRef.current!.next(CHAR_STATUS.correct)
@@ -71,13 +70,13 @@ export default function LatinType() {
       }
     })
 
-    const backwardKeySubscription = $backwardKeyDownEvent.subscribe((e) => {
+    const backwardKeySubscription = $backwardKeyDownEvent.subscribe(() => {
       if (!lastElement) {
         return
       }
       recordBackspace()
       playTypeWriterSound()
-        ;[currentElement, lastElement] = pureTypeCharRef.current!.prev()
+      ;[currentElement, lastElement] = pureTypeCharRef.current!.prev()
     })
 
     return () => {
@@ -92,9 +91,7 @@ export default function LatinType() {
       <h1 className='text-2xl font-semibold'>English Typing Practice</h1>
       <p>Type the highlighted character to practice accuracy and speed.</p>
       <PureTypeChar key={currentLatinSentence} data={currentLatinSentence} ref={pureTypeCharRef} />
-      {(isStarted || stats.isCompleted) && (
-        <TypingStats data={stats} />
-      )}
+      {(isStarted || stats.isCompleted) && <TypingStats data={stats} />}
     </div>
   )
 }
