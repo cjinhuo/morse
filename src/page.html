@@ -34,12 +34,13 @@
         const darkIcon = favicon.href
         const lightIcon = new URL('favicon-light.svg', darkIcon).href
         const root = document.documentElement
-        function syncFavicon() {
+        function syncBrandIcon() {
           const href = root.dataset.theme === 'light' ? lightIcon : darkIcon
           if (favicon.href !== href) favicon.href = href
+          root.style.setProperty('--brand-icon', 'url("' + href + '")')
         }
-        syncFavicon()
-        new MutationObserver(syncFavicon).observe(root, { attributeFilter: ['data-theme'] })
+        syncBrandIcon()
+        new MutationObserver(syncBrandIcon).observe(root, { attributeFilter: ['data-theme'] })
       }
     </script>
     <div id="root">
