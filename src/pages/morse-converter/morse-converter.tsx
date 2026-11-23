@@ -132,7 +132,7 @@ export default function MorseConverter() {
             <Typography.Title className='text-xl font-semibold'>SVG Preview</Typography.Title>
             <SvgConfigPanel />
           </div>
-          <div className='border rounded'>
+          <div className='border border-gray-200 rounded'>
             {morseCode ? (
               <div className='w-full h-full overflow-x-scroll p-1'>
                 <MorseCodeSvg

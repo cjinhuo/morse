@@ -1,7 +1,6 @@
-import { Background, type Edge, type Node, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react'
+import dagre from '@dagrejs/dagre'
+import { Background, type Edge, type Node, Position, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-import { Position } from '@xyflow/react'
-import dagre from 'dagre'
 import styled from 'styled-components'
 import { type EdgeData, FLOW_TREE_NAME, MorseCodeType, WORD_MORSE_CODE } from '../../shared/constants'
 import { builtMorseBinaryTree } from '../../shared/utils'
@@ -9,6 +8,7 @@ import type { BinaryTreeNode, FlowTreeNode } from '../../types'
 import TreeEdge from './tree-edge'
 import type { NodeData } from './tree-node'
 import TreeNode from './tree-node'
+
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
 
