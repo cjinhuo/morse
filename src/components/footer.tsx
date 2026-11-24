@@ -6,8 +6,8 @@ export default function Footer() {
     <HeaderMenu mobile />
   ) : (
     <footer className='site-footer'>
-      <span className='meta'>MORSETYPE / FIND YOUR FREQUENCY</span>
-      <span>Made by Mirage</span>
+      <span className='meta footer-dark'>{'MORSETYPE  /  FIND YOUR FREQUENCY'}</span>
+      <span className='meta footer-light'>MORSETYPE / LIGHT</span>
     </footer>
   )
 }

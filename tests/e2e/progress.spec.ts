@@ -48,7 +48,7 @@ test('English restores mistakes, focus and the caret, and resumes timing on the 
   await page.reload()
   await expect(editor).toHaveValue('X')
   await expect(page.getByRole('button', { name: '退出专注' })).toHaveAttribute('aria-pressed', 'true')
-  await expect(page.locator('[data-state="error"]')).toHaveText('I')
+  await expect(page.locator('[data-state="error"]')).toHaveText('T')
   expect(await editor.evaluate((input: HTMLTextAreaElement) => input.selectionStart)).toBe(1)
   await page.clock.setFixedTime(new Date('2026-01-01T12:10:12Z'))
   await expect(elapsed).toHaveText('00:12')
@@ -56,15 +56,44 @@ test('English restores mistakes, focus and the caret, and resumes timing on the 
   await expect(page.locator('[data-state="error"]')).toHaveCount(0)
   await page.clock.setFixedTime(new Date('2026-01-01T12:10:14Z'))
   await expect(elapsed).toHaveText('00:14')
-  await editor.press('I')
+  await editor.press('T')
   await page.getByRole('button', { name: '退出专注' }).click()
   await page.clock.setFixedTime(new Date('2026-01-01T12:10:17Z'))
   await page.getByRole('link', { name: '编码转换' }).click()
   await expect(page.getByRole('textbox', { name: '输入文字' })).toBeVisible()
   await page.clock.setFixedTime(new Date('2026-01-01T12:20:17Z'))
   await page.goBack()
-  await expect(editor).toHaveValue('I')
+  await expect(editor).toHaveValue('T')
   await expect(elapsed).toHaveText('00:17')
+})
+
+test('an English session saved with the former example resumes its original sentence and mistakes', async ({
+  page,
+}) => {
+  const text =
+    "I see dead people walking around like regular people, they don't see each other, they only see what they want to see."
+  await page.goto('latin/')
+  await page.evaluate((text) => {
+    localStorage.setItem(
+      'morse:progress:v1:latin',
+      JSON.stringify({
+        session: { text, typed: 'I see dexd people w', sampleLength: 18, elapsedMs: 12000 },
+        round: 0,
+        focus: false,
+        dismissed: false,
+        writer: 'previous-tab',
+      })
+    )
+  }, text)
+  await page.reload()
+  await expect(page.locator('.practice-text')).toHaveAttribute('aria-label', text)
+  const editor = page.getByRole('textbox', { name: '英文练习输入' })
+  await expect(editor).toHaveValue('I see dexd people w')
+  await expect(page.locator('[data-state="error"]')).toHaveText('a')
+  await expect(page.locator('.metrics dd').last()).toHaveText('00:12')
+  await editor.press('a')
+  await page.reload()
+  await expect(editor).toHaveValue('I see dexd people wa')
 })
 
 test('a converter draft keeps case and whitespace across history and stays empty when reopened', async ({
@@ -110,10 +139,10 @@ test('Morse restores confirmed letters across screen sizes and discards a partia
   await transmit(page, '---')
   await page.setViewportSize({ width: 1440, height: 913 })
   await page.reload()
-  await expect(page.locator('.practice-text')).toHaveAttribute('aria-label', 'SOS')
-  await expect(page.locator('[aria-current="step"]')).toHaveAttribute('data-char', 'S')
+  await expect(page.locator('.practice-text')).toHaveAttribute('aria-label', 'WHAT HATH GOD WROUGHT')
+  await expect(page.locator('[aria-current="step"]')).toHaveAttribute('data-char', 'D')
   await page.getByRole('button', { name: /SPACE/ }).focus()
-  await transmit(page, '...')
+  for (const code of ['-..', '.--', '.-.', '---', '..-', '--.', '....', '-']) await transmit(page, code)
   await expect(page.getByRole('dialog')).toContainText('100%')
   await page.keyboard.press('Escape')
   await page.reload()
@@ -175,10 +204,10 @@ test('a damaged practice falls back to its example and leaves the converter draf
   await page.evaluate(() => localStorage.setItem('morse:progress:v1:latin', '{"typed":123}'))
   await page.goto('latin/')
   const editor = page.getByRole('textbox', { name: '英文练习输入' })
-  await expect(editor).toHaveValue('I see dexd people ')
+  await expect(editor).toHaveValue('The qiick brown ')
   await page.evaluate(() => localStorage.setItem('morse:progress:v1:latin', '{'))
   await page.reload()
-  await expect(editor).toHaveValue('I see dexd people ')
+  await expect(editor).toHaveValue('The qiick brown ')
   await editor.fill('I')
   await page.reload()
   await expect(editor).toHaveValue('I')
@@ -257,13 +286,13 @@ test('leaving the whole document pauses time and browser Back restores the activ
   await page.goto('latin/')
   const editor = page.getByRole('textbox', { name: '英文练习输入' })
   await page.clock.setFixedTime(new Date('2026-01-01T12:00:00Z'))
-  await editor.fill('I s')
+  await editor.fill('The ')
   await page.clock.setFixedTime(new Date('2026-01-01T12:00:12Z'))
   await page.goto('about:blank')
   await page.clock.setFixedTime(new Date('2026-01-01T12:10:12Z'))
   await page.goBack()
-  await expect(editor).toHaveValue('I s')
-  await expect(page.locator('[aria-current="step"]')).toHaveAttribute('data-char', 'e')
-  await editor.press('e')
+  await expect(editor).toHaveValue('The ')
+  await expect(page.locator('[aria-current="step"]')).toHaveAttribute('data-char', 'q')
+  await editor.press('q')
   await expect(page.locator('.metrics dd').last()).toHaveText('00:12')
 })

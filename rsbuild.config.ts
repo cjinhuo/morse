@@ -37,6 +37,8 @@ export default defineConfig({
   output: {
     distPath: { favicon: faviconDir },
     copy: [
+      // Keep the dark icon available on rebuilds that reuse the generated HTML.
+      { from: './public/favicon.svg', to: `${faviconDir}/favicon.svg` },
       {
         from: './public/favicon.svg',
         to: `${faviconDir}/favicon-light.svg`,

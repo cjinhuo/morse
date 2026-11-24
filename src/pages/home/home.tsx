@@ -2,15 +2,15 @@ import PageHeading from '../../components/page-heading'
 import useMobile from '../../hooks/useMobile'
 import { useTypingStats } from '../../hooks/useTypingStats'
 import { useCopy } from '../../shared/preferences'
-import { MORSE_LONG } from '../../shared/sentences'
+import { MORSE_EXAMPLE } from '../../shared/sentences'
 import MorseTyper from './morse-typer'
 
-const desktopSample = MORSE_LONG.slice(0, 49).replace('QUICK', 'QXICK')
+const sample = 'WHET HATH G'
 
 export default function Home() {
   const mobile = useMobile()
   const t = useCopy()
-  const practice = useTypingStats('morse', mobile ? 'SOS' : MORSE_LONG, mobile ? 'S' : desktopSample)
+  const practice = useTypingStats('morse', MORSE_EXAMPLE, sample)
   return (
     <section className='morse-page page'>
       <PageHeading

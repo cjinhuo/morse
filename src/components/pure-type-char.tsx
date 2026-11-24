@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef } from 'react'
 import { ALL_MORSE_CODE_MAP } from '../shared/constants'
+import { displaySignal } from '../shared/morse'
 import type { Session } from '../shared/practice'
 import { useCopy } from '../shared/preferences'
-import { LATIN_EXAMPLE, LATIN_EXAMPLE_LINES } from '../shared/sentences'
 
 export function CharacterLegend() {
   const t = useCopy()
@@ -29,7 +29,7 @@ function SignalHint({ code }: { code: string }) {
     const line = letter?.closest<HTMLElement>('.reading-line')
     const text = line?.parentElement
     if (!letter || !line || !text) return
-    // Only the first row needs extra clearance. Later rows already have a 54 px gap.
+    // Only the first row needs extra clearance. Later rows already have space for the hint.
     const align = () => text.toggleAttribute('data-leading-hint', letter.offsetTop < 2)
     align()
     const observer = new ResizeObserver(align)
@@ -40,7 +40,7 @@ function SignalHint({ code }: { code: string }) {
     }
   }, [])
   return (
-    <span ref={hint} className='signal-hint' aria-hidden='true'>
+    <span ref={hint} className='signal-hint' data-code={displaySignal(code, true)} aria-hidden='true'>
       <span className='hint-marks'>
         {Array.from(code, (mark, position) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: Marks are identified by their position in a letter.
@@ -56,35 +56,32 @@ function SignalHint({ code }: { code: string }) {
 
 export default function PracticeText({ session, morse = false }: { session: Session; morse?: boolean }) {
   const { text } = session
-  const lines = text === LATIN_EXAMPLE ? LATIN_EXAMPLE_LINES : [text]
   let position = 0
   return (
     <section className={morse ? 'practice-text morse-text' : 'practice-text latin-text'} aria-label={text}>
-      {lines.map((line) => (
-        <div className='reading-line' key={position}>
-          {Array.from(line.matchAll(/\S+\s*/g), ([word]) => (
-            <span className='reading-word' key={position}>
-              {Array.from(word, (char) => {
-                const index = position++
-                const state = characterState(session, index)
-                const active = state === 'active'
-                return (
-                  <span
-                    key={index}
-                    className='character'
-                    data-char={char}
-                    data-state={state}
-                    aria-current={active ? 'step' : undefined}
-                  >
-                    {char}
-                    {active && morse && <SignalHint code={ALL_MORSE_CODE_MAP[char] || ''} />}
-                  </span>
-                )
-              })}
-            </span>
-          ))}
-        </div>
-      ))}
+      <div className='reading-line'>
+        {Array.from(text.matchAll(/\S+\s*/g), ([word]) => (
+          <span className='reading-word' key={position}>
+            {Array.from(word, (char) => {
+              const index = position++
+              const state = characterState(session, index)
+              const active = state === 'active'
+              return (
+                <span
+                  key={index}
+                  className='character'
+                  data-char={char}
+                  data-state={state}
+                  aria-current={active ? 'step' : undefined}
+                >
+                  {char}
+                  {active && morse && <SignalHint code={ALL_MORSE_CODE_MAP[char] || ''} />}
+                </span>
+              )
+            })}
+          </span>
+        ))}
+      </div>
     </section>
   )
 }

@@ -13,15 +13,10 @@ export const MORSE_SENTENCES = [
   // 'GOOD MORNING', // 早上问候语
   // 'GOOD EVENING', // 晚上问候语
   '73 73', // 业余无线电告别用语
+  'CQ CQ CQ DE MORSETYPE. THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG. KEEP YOUR SIGNAL CLEAR AND YOUR RHYTHM STEADY.',
 ]
 
-export const LATIN_EXAMPLE_LINES = [
-  'I see dead people walking ',
-  "around like regular people, they don't ",
-  'see each other, they only see what ',
-  'they want to see.',
-]
-export const LATIN_EXAMPLE = LATIN_EXAMPLE_LINES.join('')
+export const LATIN_EXAMPLE = 'The quick brown fox jumps over the lazy dog.'
 
 export const LATIN_SENTENCES = [
   // 人们总是想要活在过去，因为过去时熟悉的、舒适的。但那也是化石产生的地方。
@@ -31,11 +26,10 @@ export const LATIN_SENTENCES = [
   "Here's looking at you, kid. Of all the gin joints in all the towns in all the world, she walks into mine.", // 《卡萨布兰卡》经典台词
   'You talking to me? You talking to me? Then who the hell else are you talking to?', // 《出租车司机》经典台词
   "Life is like a box of chocolates, you never know what you're gonna get until you take that first bite.", // 《阿甘正传》经典台词
-  LATIN_EXAMPLE, // 《第六感》经典台词
+  "I see dead people walking around like regular people, they don't see each other, they only see what they want to see.",
   'Show me the money! Help me help you, help me help you, you complete me!', // 《甜心先生》经典台词
   "Nobody puts Baby in a corner, she's got a great rhythm and she's a wonderful dancer.", // 《热舞17》经典台词
   'Keep your friends close, but your enemies closer. Never let anyone know what you are thinking.', // 《教父2》经典台词
 ]
 
-export const MORSE_LONG =
-  'CQ CQ CQ DE MORSETYPE. THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG. KEEP YOUR SIGNAL CLEAR AND YOUR RHYTHM STEADY.'
+export const MORSE_EXAMPLE = 'WHAT HATH GOD WROUGHT'

@@ -5,14 +5,14 @@ import { startTone } from '../shared/sound'
 
 export function useMorseKey({
   disabled,
-  initialSignal,
+  exampleSignal,
   externalSession,
   sound,
   onStart,
   onCommit,
 }: {
   disabled: boolean
-  initialSignal: string
+  exampleSignal: string | null
   externalSession: SavedSession | null
   sound: boolean
   onStart: () => void
@@ -21,14 +21,20 @@ export function useMorseKey({
   const stageRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [pressed, setPressed] = useState(false)
-  const [signal, setSignal] = useState(initialSignal)
-  const buffer = useRef(initialSignal)
+  const [signal, setSignal] = useState(exampleSignal ?? '')
+  const buffer = useRef(exampleSignal ?? '')
   const cancelInput = useRef<() => void>(undefined)
   const begin = useEffectEvent(() => {
     onStart()
     return sound ? startTone() : undefined
   })
   const commit = useEffectEvent(onCommit)
+
+  useLayoutEffect(() => {
+    if (exampleSignal === null) return
+    buffer.current = exampleSignal
+    setSignal(exampleSignal)
+  }, [exampleSignal])
 
   useLayoutEffect(() => {
     const stage = stageRef.current

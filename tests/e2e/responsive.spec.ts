@@ -9,6 +9,11 @@ test('both header layouts display the active favicon when the theme changes', as
     const href = await favicon.evaluate((link: HTMLLinkElement) => link.href)
     await expect(mark).toBeVisible()
     await expect(mark).toHaveCSS('background-image', `url("${href}")`)
+    await page.evaluate(async (href) => {
+      const image = new Image()
+      image.src = href
+      await image.decode()
+    }, href)
   }
 
   await expectMatchingIcon()
@@ -76,6 +81,21 @@ test('a released Morse mark and its confirmation deadline survive switching both
 test('resizing reflows the sentence, keeps the active hint anchored, and preserves an ongoing transmission', async ({
   page,
 }) => {
+  // A long exercise saved before the new default must still wrap and resume at its original letter.
+  const text =
+    'CQ CQ CQ DE MORSETYPE. THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG. KEEP YOUR SIGNAL CLEAR AND YOUR RHYTHM STEADY.'
+  await page.addInitScript((text) => {
+    localStorage.setItem(
+      'morse:progress:v1:morse',
+      JSON.stringify({
+        session: { text, typed: text.slice(0, 49).replace('QUICK', 'QXICK'), sampleLength: 49, elapsedMs: 12000 },
+        round: 0,
+        focus: false,
+        dismissed: false,
+        writer: 'previous-tab',
+      })
+    )
+  }, text)
   await page.goto('./')
   await page.clock.install()
   await expect(page.getByRole('button', { name: /SPACE/ })).toBeVisible()
@@ -95,6 +115,30 @@ test('resizing reflows the sentence, keeps the active hint anchored, and preserv
     expect(hint.y + hint.height).toBeLessThanOrEqual(letter.y)
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width)
   }
+})
+
+test('the untouched classic telegram keeps its cursor and shows the matching signal in each layout', async ({
+  page,
+}) => {
+  await page.goto('./')
+  const text = page.locator('.practice-text')
+  await expect(text).toHaveAttribute('aria-label', 'WHAT HATH GOD WROUGHT')
+  await expect(page.getByText('1844 · 示例状态')).toBeVisible()
+  await expect(page.locator('.reading-status')).toContainText('12 / 21')
+  await expect(page.locator('.session-strip .live')).toHaveText('TRANSMITTING')
+  await page.setViewportSize({ width: 390, height: 900 })
+  await expect(page.getByText('经典电文 · 1844')).toBeVisible()
+  await expect(page.getByRole('img', { name: '− −', exact: true })).toBeVisible()
+  await expect(text.locator('[data-state="error"]')).toHaveText('A')
+  const active = text.locator('[aria-current="step"]')
+  await expect(active).toHaveAttribute('data-char', 'O')
+  await expect(active).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+  const firstRow = await active.boundingBox()
+  const lastWord = await text.locator('.reading-word').last().boundingBox()
+  if (!firstRow || !lastWord) throw new Error('Missing telegram words')
+  expect(lastWord.y).toBeGreaterThan(firstRow.y + firstRow.height)
+  await page.setViewportSize({ width: 1440, height: 755 })
+  await expect(page.locator('.session-strip .live')).toHaveText('TRANSMITTING')
 })
 
 test('opening the reference interrupts buffered input and navigating away cancels an unfinished key press', async ({

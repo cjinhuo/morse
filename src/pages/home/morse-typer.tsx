@@ -9,6 +9,7 @@ import type { useTypingStats } from '../../hooks/useTypingStats'
 import { ALL_MORSE_CODE_REVERSE_MAP } from '../../shared/constants'
 import { displaySignal } from '../../shared/morse'
 import { soundAtom, useCopy } from '../../shared/preferences'
+import { MORSE_EXAMPLE } from '../../shared/sentences'
 import MobileConsole from './input-mask'
 
 export default function MorseTyper({
@@ -26,10 +27,12 @@ export default function MorseTyper({
   const [invalid, setInvalid] = useState('')
   const index = session.typed.length
   const target = text[index] || ''
+  const classic = text === MORSE_EXAMPLE
+  const exampleSignal = example && classic && target === 'O' ? (mobile ? '--' : '') : null
   const { stageRef, buttonRef, pressed, signal } = useMorseKey({
     disabled: reference || complete,
     sound,
-    initialSignal: example && session.typed === 'S' && text === 'SOS' ? '--' : '',
+    exampleSignal,
     externalSession: practice.externalSession,
     onStart: () => dispatch({ type: 'start', at: Date.now() }),
     onCommit(code) {
@@ -80,7 +83,7 @@ export default function MorseTyper({
       {!mobile && <CornerDownLeft size={18} className='return-icon' />}
     </button>
   )
-  const lesson = text.length > 18 ? t('长句', 'long sentence') : text
+  const lesson = classic ? t('经典电文', 'Classic telegram') : text.length > 18 ? t('长句', 'long sentence') : text
   return (
     <>
       <div ref={stageRef} className='morse-stage'>
@@ -104,10 +107,16 @@ export default function MorseTyper({
               <div className='toolbar between'>
                 <div className='toolbar-source'>
                   <span className='meta'>{String(practice.round + 1).padStart(2, '0')}</span>
-                  <span>{text.length > 18 ? t('长句练习', 'Long sentence') : t('基础练习', 'Basic practice')}</span>
+                  <span>
+                    {classic
+                      ? t('经典电文', 'Classic telegram')
+                      : text.length > 18
+                        ? t('长句练习', 'Long sentence')
+                        : t('基础练习', 'Basic practice')}
+                  </span>
                   <span className='meta'>/</span>
                   <span className='set-name'>
-                    {text.split(' ')[0]}
+                    {classic ? '1844' : text.split(' ')[0]}
                     {example && t(' · 示例状态', ' · Example')}
                   </span>
                 </div>

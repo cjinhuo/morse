@@ -102,7 +102,7 @@
     align-items: center;
   }
   .morse-text[data-leading-hint] {
-    padding-top: 30px;
+    padding-top: 44px;
   }
   .morse-text .reading-line {
     position: relative;
@@ -280,15 +280,6 @@
   .latin-text {
     font-size: 34px;
     line-height: 44px;
-  }
-  .latin-text .reading-line {
-    line-height: 56px;
-  }
-  .latin-text .reading-line:first-child {
-    line-height: 44px;
-  }
-  .latin-text .reading-line + .reading-line:nth-child(2) {
-    margin-top: 14px;
   }
   .latin-text .character[data-state="active"] {
     background: var(--english-active);
@@ -575,6 +566,47 @@
       line-height: 15px;
       color: var(--mt-muted);
     }
+    .phone-message {
+      min-height: 162px;
+      padding: 12px 32px 4px;
+      display: grid;
+      align-items: center;
+    }
+    .phone-message .morse-text {
+      font-size: 28px;
+      line-height: 35px;
+      color: var(--telegram-pending);
+    }
+    .phone-message .reading-line {
+      row-gap: 32px;
+    }
+    .phone-message .character[data-state="active"] {
+      padding-inline: 1px;
+      border-radius: 0;
+      background: transparent;
+      box-shadow:
+        inset 0 -2px var(--mt-purple),
+        0 1px var(--mt-purple);
+    }
+    .phone-message .signal-hint {
+      height: 24px;
+      bottom: calc(100% + 6px);
+      padding: 0 7px;
+      background: var(--telegram-hint-bg);
+      box-shadow: 0 0 0 1px var(--telegram-hint-edge);
+    }
+    .phone-message .signal-hint::before {
+      content: attr(data-code);
+      font: 400 13px / 16px var(--mt-mono);
+      color: var(--telegram-hint-ink);
+    }
+    .phone-message .hint-marks,
+    .phone-message .hint-caret {
+      display: none;
+    }
+    .phone-message .morse-text[data-leading-hint] {
+      padding-top: 42px;
+    }
     .phone-letters {
       min-height: 160px;
       padding: 46px 0 20px;
@@ -680,13 +712,6 @@
     .latin-text {
       font-size: 22px;
       line-height: 1.65;
-    }
-    .latin-text .reading-line,
-    .latin-text .reading-line:first-child {
-      line-height: 1.65;
-    }
-    .latin-text .reading-line + .reading-line:nth-child(2) {
-      margin: 0;
     }
     .english-feedback {
       height: auto;
