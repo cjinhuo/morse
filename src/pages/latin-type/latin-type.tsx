@@ -13,7 +13,7 @@ import { soundAtom, useCopy } from '../../shared/preferences'
 import { LATIN_EXAMPLE } from '../../shared/sentences'
 import { playTypingSound } from '../../shared/sound'
 
-const sample = LATIN_EXAMPLE.slice(0, 18).replace('dead', 'dexd')
+const sample = 'The qiick brown '
 const caretKeys = new Set(['Home', 'End', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown'])
 
 function moveCaret(input: HTMLTextAreaElement) {
@@ -89,7 +89,7 @@ function EnglishPractice({ practice }: { practice: ReturnType<typeof useTypingSt
           <div className='toolbar between'>
             <div className='toolbar-source'>
               <span className='meta'>EN</span>
-              <span>{t('句子练习', 'Sentence practice')}</span>
+              <span>{text === LATIN_EXAMPLE ? t('全字母句', 'Pangram') : t('句子练习', 'Sentence practice')}</span>
               {example && <span className='meta'>{t('/ 示例状态', '/ Example')}</span>}
             </div>
             <div className='toolbar-controls'>

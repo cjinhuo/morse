@@ -21,6 +21,10 @@
   --mt-correct: #b596ffd6;
   --pending: #81798f;
   --phone-pending: #676074;
+  --telegram-pending: #91899f;
+  --telegram-hint-bg: #2b2142;
+  --telegram-hint-edge: #644a93;
+  --telegram-hint-ink: #d9c6ff;
   --accent-text: #c1affa;
   --nav-selected: #211936;
   --nav-label: #d4c5ff;
@@ -68,6 +72,10 @@
   --mt-correct: #4f4698;
   --pending: #8991a4;
   --phone-pending: #8991a4;
+  --telegram-pending: var(--pending);
+  --telegram-hint-bg: #f0ecfa;
+  --telegram-hint-edge: #c9c0e6;
+  --telegram-hint-ink: var(--hint-ink);
   --accent-text: #5945b0;
   --nav-selected: #e8e4fa;
   --nav-label: #493994;

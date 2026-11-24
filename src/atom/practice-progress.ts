@@ -8,7 +8,7 @@ import {
   sessionComplete,
   snapshotSession,
 } from '../shared/practice'
-import { LATIN_EXAMPLE, LATIN_SENTENCES, MORSE_LONG, MORSE_SENTENCES } from '../shared/sentences'
+import { LATIN_EXAMPLE, LATIN_SENTENCES, MORSE_EXAMPLE, MORSE_SENTENCES } from '../shared/sentences'
 import { isRecord, localRecord } from './local-record'
 
 interface PracticeProgress {
@@ -21,7 +21,7 @@ interface PracticeProgress {
 
 const exercises = {
   latin: [LATIN_EXAMPLE, ...LATIN_SENTENCES.filter((text) => text !== LATIN_EXAMPLE)],
-  morse: [MORSE_LONG, 'SOS', 'QRT', ...MORSE_SENTENCES.filter((text) => text !== 'SOS' && text !== 'QRT')],
+  morse: [MORSE_EXAMPLE, 'SOS', 'QRT', ...MORSE_SENTENCES.filter((text) => text !== 'SOS' && text !== 'QRT')],
 }
 
 function natural(value: unknown): value is number {

@@ -1,8 +1,9 @@
-import { characterState } from '../../components/pure-type-char'
+import PracticeText, { characterState } from '../../components/pure-type-char'
 import { ALL_MORSE_CODE_MAP } from '../../shared/constants'
 import { displaySignal } from '../../shared/morse'
 import type { Session } from '../../shared/practice'
 import { useCopy } from '../../shared/preferences'
+import { MORSE_EXAMPLE } from '../../shared/sentences'
 
 export default function MobileConsole({
   session,
@@ -14,6 +15,7 @@ export default function MobileConsole({
   complete: boolean
 }) {
   const t = useCopy()
+  const classic = session.text === MORSE_EXAMPLE
   const cursor = session.typed.length
   const target = session.text[cursor]
   const code = ALL_MORSE_CODE_MAP[target] || ''
@@ -30,34 +32,42 @@ export default function MobileConsole({
     <div className='console phone-console'>
       <div className='phone-toolbar between'>
         <span>
-          {t('基础练习', 'Practice')} · {session.text.split(' ')[0]}
+          {classic
+            ? t('经典电文 · 1844', 'Classic telegram · 1844')
+            : `${t('基础练习', 'Practice')} · ${session.text.split(' ')[0]}`}
         </span>
         <span className='meta accent'>
           {String(Math.min(cursor + 1, session.text.length)).padStart(2, '0')} /{' '}
           {String(session.text.length).padStart(2, '0')}
         </span>
       </div>
-      <section className='phone-letters' aria-label={session.text}>
-        {Array.from(visible, (char, i) => {
-          const index = start + i
-          const active = index === cursor
-          return (
-            <span
-              key={index}
-              data-char={char}
-              data-state={characterState(session, index)}
-              aria-current={active ? 'step' : undefined}
-            >
-              {active && (
-                <span className='phone-hint' aria-hidden='true'>
-                  {displaySignal(code, true)}
-                </span>
-              )}
-              {char}
-            </span>
-          )
-        })}
-      </section>
+      {classic ? (
+        <div className='phone-message'>
+          <PracticeText session={session} morse />
+        </div>
+      ) : (
+        <section className='phone-letters' aria-label={session.text}>
+          {Array.from(visible, (char, i) => {
+            const index = start + i
+            const active = index === cursor
+            return (
+              <span
+                key={index}
+                data-char={char}
+                data-state={characterState(session, index)}
+                aria-current={active ? 'step' : undefined}
+              >
+                {active && (
+                  <span className='phone-hint' aria-hidden='true'>
+                    {displaySignal(code, true)}
+                  </span>
+                )}
+                {char}
+              </span>
+            )
+          })}
+        </section>
+      )}
       <div className='phone-guide'>{target ? `${target} = ${guide}` : t('练习完成', 'Complete')}</div>
       <div className='captured'>
         <div className='between meta'>

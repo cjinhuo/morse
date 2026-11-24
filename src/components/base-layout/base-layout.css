@@ -182,13 +182,15 @@
   .site-footer {
     display: flex;
     align-items: flex-end;
-    justify-content: space-between;
-    gap: 16px;
     min-height: 78px;
     padding: 24px clamp(24px, 4.445vw, 64px) 22px;
     color: var(--mt-muted);
     font-size: 12px;
     line-height: 15px;
+  }
+  [data-theme="dark"] .footer-light,
+  [data-theme="light"] .footer-dark {
+    display: none;
   }
   .page {
     width: min(1160px, calc(100% - 80px));
