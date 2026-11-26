@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%= page.title %> | Morse Typer</title>
+    <title><%= page.title %> | <%= siteName %></title>
     <meta name="description" content="<%= page.description %>" />
     <link rel="canonical" href="<%= canonical %>" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content="zh_CN" />
     <meta property="og:url" content="<%= canonical %>" />
-    <meta property="og:title" content="<%= page.title %> | Morse Typer" />
+    <meta property="og:title" content="<%= page.title %> | <%= siteName %>" />
     <meta property="og:description" content="<%= page.description %>" />
-    <meta property="og:image" content="https://raw.githubusercontent.com/cjinhuo/morse/master/docs/<%= page.image %>" />
-    <meta property="og:image:alt" content="<%= page.title %> in Morse Typer" />
+    <meta property="og:image" content="<%= image %>" />
+    <meta property="og:image:alt" content="<%= page.title %> | <%= siteName %>" />
     <meta name="twitter:card" content="summary_large_image" />
     <script>
       try {
@@ -44,15 +44,32 @@
       }
     </script>
     <div id="root">
-      <main lang="en">
+      <main>
+        <nav aria-label="练习模式">
+          <a href="/morse/">摩尔斯电码练习</a>
+          <a href="/morse/converter/">文字转摩尔斯电码</a>
+          <a href="/morse/latin/">英文打字练习</a>
+          <a href="/morse/chart/">摩尔斯电码对照表</a>
+        </nav>
         <h1><%= page.title %></h1>
         <p><%= page.description %></p>
         <p><%= page.example %></p>
-        <nav aria-label="Practice modes">
-          <a href="/morse/">Morse code typing practice</a>
-          <a href="/morse/converter/">Text to Morse code converter</a>
-          <a href="/morse/latin/">English typing practice</a>
-        </nav>
+        <section lang="en">
+          <h2><%= page.englishTitle %></h2>
+          <p><%= page.englishDescription %></p>
+          <p><%= page.englishExample %></p>
+        </section>
+        <% if (chart) { %>
+        <table>
+          <caption>国际摩尔斯电码 <span lang="en">(International Morse code)</span></caption>
+          <thead><tr><th scope="col">字符 <span lang="en">(Character)</span></th><th scope="col">电码 <span lang="en">(Code)</span></th></tr></thead>
+          <tbody>
+            <% for (const { char, code } of chart) { %>
+            <tr><th scope="row"><%= char %></th><td><code><%= code %></code></td></tr>
+            <% } %>
+          </tbody>
+        </table>
+        <% } %>
       </main>
     </div>
   </body>
