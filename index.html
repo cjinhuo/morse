@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Morse Code Typing Practice | Morse Typer</title>
-    <meta name="description" content="Practice the Morse alphabet with the space bar. Tap for a dot and hold for a dash, then follow the visual and audio feedback as you type each letter." />
+    <title>摩尔斯电码在线练习（Morse Code Trainer） | MorseType</title>
+    <meta name="description" content="用空格键或触屏练习摩尔斯电码。短按输入点，长按输入划，跟随提示和音效练习并查看准确率。" />
     <link rel="canonical" href="https://cjinhuo.github.io/morse/" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content="zh_CN" />
     <meta property="og:url" content="https://cjinhuo.github.io/morse/" />
-    <meta property="og:title" content="Morse Code Typing Practice | Morse Typer" />
-    <meta property="og:description" content="Practice the Morse alphabet with the space bar. Tap for a dot and hold for a dash, then follow the visual and audio feedback as you type each letter." />
-    <meta property="og:image" content="https://raw.githubusercontent.com/cjinhuo/morse/master/docs/more_play.png" />
-    <meta property="og:image:alt" content="Morse Code Typing Practice in Morse Typer" />
+    <meta property="og:title" content="摩尔斯电码在线练习（Morse Code Trainer） | MorseType" />
+    <meta property="og:description" content="用空格键或触屏练习摩尔斯电码。短按输入点，长按输入划，跟随提示和音效练习并查看准确率。" />
+    <meta property="og:image" content="https://cjinhuo.github.io/morse/static/social/more_play.png" />
+    <meta property="og:image:alt" content="摩尔斯电码在线练习（Morse Code Trainer） | MorseType" />
     <meta name="twitter:card" content="summary_large_image" />
     <script>
       try {
@@ -25,7 +25,7 @@
         location.replace('/morse/' + path + (bookmark[2] || location.search) + (bookmark[3] || ''))
       }
     </script>
-  <link rel="icon" href="/morse/static/icons/favicon.svg" type="image/svg+xml"><script defer src="/morse/static/js/lib-react.d4fd20a0c3.js"></script><script defer src="/morse/static/js/lib-router.6fe6b4d3f1.js"></script><script defer src="/morse/static/js/y.e98d9c0020.js"></script><script defer src="/morse/static/js/8.de27f72b74.js"></script><script defer src="/morse/static/js/index.bc4d6187a9.js"></script><link href="/morse/static/css/8.850decf38f.css" rel="stylesheet"></head>
+  <link rel="icon" href="/morse/static/icons/favicon.svg" type="image/svg+xml"><script defer src="/morse/static/js/lib-react.d4fd20a0c3.js"></script><script defer src="/morse/static/js/lib-router.a41b306d92.js"></script><script defer src="/morse/static/js/y.e98d9c0020.js"></script><script defer src="/morse/static/js/p.1521fb2c50.js"></script><script defer src="/morse/static/js/index.6b2844bcaa.js"></script><link href="/morse/static/css/p.850decf38f.css" rel="stylesheet"></head>
   <body>
     <script>
       // Rsbuild adds the favicon link at the end of the head.
@@ -44,15 +44,22 @@
       }
     </script>
     <div id="root">
-      <main lang="en">
-        <h1>Morse Code Typing Practice</h1>
-        <p>Practice the Morse alphabet with the space bar. Tap for a dot and hold for a dash, then follow the visual and audio feedback as you type each letter.</p>
-        <p>Try SOS: three dots, three dashes, then three dots.</p>
-        <nav aria-label="Practice modes">
-          <a href="/morse/">Morse code typing practice</a>
-          <a href="/morse/converter/">Text to Morse code converter</a>
-          <a href="/morse/latin/">English typing practice</a>
+      <main>
+        <nav aria-label="练习模式">
+          <a href="/morse/">摩尔斯电码练习</a>
+          <a href="/morse/converter/">文字转摩尔斯电码</a>
+          <a href="/morse/latin/">英文打字练习</a>
+          <a href="/morse/chart/">摩尔斯电码对照表</a>
         </nav>
+        <h1>摩尔斯电码在线练习（Morse Code Trainer）</h1>
+        <p>用空格键或触屏练习摩尔斯电码。短按输入点，长按输入划，跟随提示和音效练习并查看准确率。</p>
+        <p>试试输入 SOS（... --- ...）：短按三次输入 S，长按三次输入 O，再短按三次输入 S。</p>
+        <section lang="en">
+          <h2>Morse Code Typing Practice</h2>
+          <p>Practice Morse code with the space bar or on a touchscreen. Tap for a dot, hold for a dash, and track your accuracy.</p>
+          <p>Try typing SOS (... --- ...): tap three times for S, hold three times for O, then tap three times for S.</p>
+        </section>
+        
       </main>
     </div>
   </body>

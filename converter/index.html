@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Text to Morse Code Converter | Morse Typer</title>
-    <meta name="description" content="Convert letters, numbers and punctuation to Morse code. See the dots and dashes as a graphic and export your message as PNG or SVG." />
+    <title>文字转摩尔斯电码转换器（支持 SVG / PNG） | MorseType</title>
+    <meta name="description" content="将英文字母、数字和支持的标点转换成摩尔斯电码。查看和复制点划编码，或将可自定义的图形导出为 SVG 和 PNG。" />
     <link rel="canonical" href="https://cjinhuo.github.io/morse/converter/" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content="zh_CN" />
     <meta property="og:url" content="https://cjinhuo.github.io/morse/converter/" />
-    <meta property="og:title" content="Text to Morse Code Converter | Morse Typer" />
-    <meta property="og:description" content="Convert letters, numbers and punctuation to Morse code. See the dots and dashes as a graphic and export your message as PNG or SVG." />
-    <meta property="og:image" content="https://raw.githubusercontent.com/cjinhuo/morse/master/docs/export_pic.png" />
-    <meta property="og:image:alt" content="Text to Morse Code Converter in Morse Typer" />
+    <meta property="og:title" content="文字转摩尔斯电码转换器（支持 SVG / PNG） | MorseType" />
+    <meta property="og:description" content="将英文字母、数字和支持的标点转换成摩尔斯电码。查看和复制点划编码，或将可自定义的图形导出为 SVG 和 PNG。" />
+    <meta property="og:image" content="https://cjinhuo.github.io/morse/static/social/export_pic.png" />
+    <meta property="og:image:alt" content="文字转摩尔斯电码转换器（支持 SVG / PNG） | MorseType" />
     <meta name="twitter:card" content="summary_large_image" />
     <script>
       try {
@@ -25,7 +25,7 @@
         location.replace('/morse/' + path + (bookmark[2] || location.search) + (bookmark[3] || ''))
       }
     </script>
-  <link rel="icon" href="/morse/static/icons/favicon.svg" type="image/svg+xml"><script defer src="/morse/static/js/lib-react.d4fd20a0c3.js"></script><script defer src="/morse/static/js/lib-router.6fe6b4d3f1.js"></script><script defer src="/morse/static/js/y.e98d9c0020.js"></script><script defer src="/morse/static/js/8.de27f72b74.js"></script><script defer src="/morse/static/js/converter/index.71e3e12170.js"></script><link href="/morse/static/css/8.850decf38f.css" rel="stylesheet"></head>
+  <link rel="icon" href="/morse/static/icons/favicon.svg" type="image/svg+xml"><script defer src="/morse/static/js/lib-react.d4fd20a0c3.js"></script><script defer src="/morse/static/js/lib-router.a41b306d92.js"></script><script defer src="/morse/static/js/y.e98d9c0020.js"></script><script defer src="/morse/static/js/p.1521fb2c50.js"></script><script defer src="/morse/static/js/converter/index.c133569463.js"></script><link href="/morse/static/css/p.850decf38f.css" rel="stylesheet"></head>
   <body>
     <script>
       // Rsbuild adds the favicon link at the end of the head.
@@ -44,15 +44,22 @@
       }
     </script>
     <div id="root">
-      <main lang="en">
-        <h1>Text to Morse Code Converter</h1>
-        <p>Convert letters, numbers and punctuation to Morse code. See the dots and dashes as a graphic and export your message as PNG or SVG.</p>
-        <p>Enter SOS to see ... --- ... and customize the line spacing of the graphic.</p>
-        <nav aria-label="Practice modes">
-          <a href="/morse/">Morse code typing practice</a>
-          <a href="/morse/converter/">Text to Morse code converter</a>
-          <a href="/morse/latin/">English typing practice</a>
+      <main>
+        <nav aria-label="练习模式">
+          <a href="/morse/">摩尔斯电码练习</a>
+          <a href="/morse/converter/">文字转摩尔斯电码</a>
+          <a href="/morse/latin/">英文打字练习</a>
+          <a href="/morse/chart/">摩尔斯电码对照表</a>
         </nav>
+        <h1>文字转摩尔斯电码转换器（支持 SVG / PNG）</h1>
+        <p>将英文字母、数字和支持的标点转换成摩尔斯电码。查看和复制点划编码，或将可自定义的图形导出为 SVG 和 PNG。</p>
+        <p>输入 HI 5，得到 .... .. / ..... 。空格分隔字母，斜杠分隔单词。转换方向是文字到摩尔斯码，不支持反向解码。</p>
+        <section lang="en">
+          <h2>Text to Morse Code Converter</h2>
+          <p>Convert text to Morse code, copy the dots and dashes, or export a customizable signal graphic as SVG or PNG.</p>
+          <p>Enter HI 5 to get .... .. / ..... . Spaces separate letters; a slash separates words. This tool does not decode Morse back to text.</p>
+        </section>
+        
       </main>
     </div>
   </body>
