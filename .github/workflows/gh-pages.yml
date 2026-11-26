@@ -19,11 +19,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - name: Verify published pages
-        run: |
-          test -s dist/index.html
-          test -s dist/converter/index.html
-          test -s dist/latin/index.html
-          test -s dist/sitemap.xml
+        run: node scripts/verify-pages.mjs
+      - run: pnpm test:unit
       - name: Deploy dist
         if: github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v4.1.0
