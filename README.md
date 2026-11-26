@@ -2,6 +2,13 @@
 
 一个有趣的摩尔斯密码学习和练习工具，让你轻松掌握这门古老而神秘的通信艺术！
 
+## 在线使用
+
+- [摩尔斯电码练习](https://cjinhuo.github.io/morse/)
+- [文字转摩尔斯电码](https://cjinhuo.github.io/morse/converter/)
+- [英文打字练习](https://cjinhuo.github.io/morse/latin/)
+- [摩尔斯电码对照表 / Morse Code Chart](https://cjinhuo.github.io/morse/chart/)
+
 ## ✨ 功能
 
 ### 🎮 摩尔斯码输入练习
@@ -23,12 +30,12 @@ https://github.com/user-attachments/assets/533625e1-b276-473f-b605-f0a9e3eb0d1f
 
 ### 🔄 摩尔斯转换器
 
-- **双向转换**：支持普通文本转摩尔斯码
+- **文字转摩尔斯码**：支持英文字母、数字和常见标点，例如 `HI 5` → `.... .. / .....`；不提供反向解码
 - **SVG可视化**：将摩尔斯码以美观的线条形式展示
 - **导出功能**：可将摩尔斯码图形导出为PNG或SVG格式
 - **自定义样式**：可调整线条粗细、间距等视觉参数
 
-[![export_pic](./docs/export_pic.png)](https://cjinhuo.github.io/morse/#/converter)
+[![export_pic](./docs/export_pic.png)](https://cjinhuo.github.io/morse/converter/)
 
 ## 🤝 贡献
 
