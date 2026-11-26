@@ -28,9 +28,6 @@ export function SoundToggle() {
 
 function Utilities() {
   const [language, setLanguage] = useAtom(languageAtom)
-  useEffect(() => {
-    document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN'
-  }, [language])
   return (
     <div className='utilities'>
       <a
